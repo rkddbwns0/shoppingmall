@@ -1,0 +1,73 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AppModule = void 0;
+const common_1 = require("@nestjs/common");
+const app_controller_1 = require("./app.controller");
+const app_service_1 = require("./app.service");
+const typeorm_1 = require("@nestjs/typeorm");
+const config_1 = require("@nestjs/config");
+const admin_entity_1 = require("./entites/admin.entity");
+const admin_moule_1 = require("./modules/admin.moule");
+const user_entity_1 = require("./entites/user.entity");
+const product_entity_1 = require("./entites/product.entity");
+const product_categories_entity_1 = require("./entites/product_categories.entity");
+const product_module_1 = require("./modules/product.module");
+const cart_module_1 = require("./modules/cart.module");
+const cart_entity_1 = require("./entites/cart.entity");
+const address_entity_1 = require("./entites/address.entity");
+const address_module_1 = require("./modules/address.module");
+const order_entity_1 = require("./entites/order.entity");
+const orderItem_entity_1 = require("./entites/orderItem.entity");
+const order_module_1 = require("./modules/order.module");
+let AppModule = class AppModule {
+};
+exports.AppModule = AppModule;
+exports.AppModule = AppModule = __decorate([
+    (0, common_1.Module)({
+        imports: [
+            config_1.ConfigModule.forRoot({
+                envFilePath: '.env',
+                isGlobal: true,
+            }),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: (configService) => ({
+                    type: 'mysql',
+                    host: configService.get('DB_HOST'),
+                    port: configService.get('DB_PORT'),
+                    username: configService.get('DB_USERNAME'),
+                    password: configService.get('DB_PASSWORD'),
+                    database: configService.get('DB_DATABASE'),
+                    synchronize: true,
+                    retryAttempts: 1,
+                    retryDelay: 3000,
+                    entities: [
+                        admin_entity_1.AdminEntity,
+                        user_entity_1.UserEntity,
+                        product_entity_1.ProductEntity,
+                        product_categories_entity_1.ProductCateogryEntity,
+                        cart_entity_1.CartEntity,
+                        address_entity_1.AddressEntity,
+                        order_entity_1.OrderEntity,
+                        orderItem_entity_1.OrderItemEntity,
+                    ],
+                }),
+            }),
+            admin_moule_1.AdminModule,
+            product_module_1.ProductModule,
+            cart_module_1.CartModule,
+            address_module_1.AddressModule,
+            order_module_1.OrderModule,
+        ],
+        controllers: [app_controller_1.AppController],
+        providers: [app_service_1.AppService],
+    })
+], AppModule);
+//# sourceMappingURL=app.module.js.map
