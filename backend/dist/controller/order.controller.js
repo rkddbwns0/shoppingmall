@@ -23,24 +23,52 @@ let OrderController = class OrderController {
     }
     async insertOrder(insertOrderDto, res) {
         try {
+            if (!insertOrderDto) {
+                return res
+                    .status(400)
+                    .json({ message: 'insertOrderDto 데이터가 필요합니다' });
+            }
             const result = await this.orderService.insertOrder(insertOrderDto);
             if (result.success === true) {
-                res.status(200).json({ message: '구매가 완료되었습니다.' });
+                return res.status(200).json({ message: '구매가 완료되었습니다.' });
             }
             else {
-                res.status(403).json({ message: '구매에 실패하였습니다.' });
+                return res.status(403).json({ message: '구매에 실패하였습니다.' });
             }
         }
         catch (error) {
             console.error(error);
-            res.status(403).json({ message: '구매에 실패하였습니다.', error: error });
+            return res
+                .status(403)
+                .json({ message: '구매에 실패하였습니다.', error: error });
+        }
+    }
+    async cartOrder(cartOrderDto, res) {
+        try {
+            const result = await this.orderService.cartOrder(cartOrderDto);
+            if (result.success === true) {
+                return res
+                    .status(200)
+                    .json({ message: '장바구니 제품들이 구매되었습니다.' });
+            }
+            else {
+                return res
+                    .status(403)
+                    .json({ message: '장바구니 제품 구매에 실패하였습니다.' });
+            }
+        }
+        catch (error) {
+            console.error(error);
+            return res
+                .status(403)
+                .json({ message: '구매에 실패하였습니다.', error: error });
         }
     }
 };
 exports.OrderController = OrderController;
 __decorate([
     (0, swagger_1.ApiOperation)({
-        summary: '제품 주문 라우터(장바구니 x -> 제품을 바로 구매할 경우',
+        summary: '제품 주문 라우터(경로에 :cart 부분의 yes일 경우 장바구니 구매 코드, no일 경우 일반 구매)',
     }),
     (0, common_1.Post)('/insert'),
     __param(0, (0, common_1.Body)()),
@@ -49,6 +77,14 @@ __decorate([
     __metadata("design:paramtypes", [order_dto_1.InsertOrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "insertOrder", null);
+__decorate([
+    (0, common_1.Post)('/cart_order'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [order_dto_1.CartOrderDto, Object]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "cartOrder", null);
 exports.OrderController = OrderController = __decorate([
     (0, common_1.Controller)('order'),
     __metadata("design:paramtypes", [order_service_1.OrderService])

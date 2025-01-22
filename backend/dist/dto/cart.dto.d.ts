@@ -1,6 +1,7 @@
+import { ProductEntity } from 'src/entites/product.entity';
 export declare class InsertCartDto {
     user_id: number;
-    product_id: number;
+    product_id: ProductEntity;
     quantity: number;
 }
 export declare class DeleteCartDto {

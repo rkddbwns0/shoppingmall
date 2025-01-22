@@ -31,13 +31,23 @@ export class OrderEntity {
   @PrimaryGeneratedColumn()
   order_no: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.user_id)
+  @ManyToMany(() => UserEntity, (user) => user.user_id)
   @JoinColumn({ name: 'user_id' })
   user_id: number;
 
   @ManyToMany(() => ProductEntity, (product) => product.order)
-  @JoinTable({ name: 'product_no' })
-  product_no: ProductEntity;
+  @JoinTable({
+    name: 'order_product_no',
+    joinColumn: {
+      name: 'order_no',
+      referencedColumnName: 'order_no',
+    },
+    inverseJoinColumn: {
+      name: 'product_no',
+      referencedColumnName: 'product_id',
+    },
+  })
+  product_no: ProductEntity[];
 
   @Column({ type: 'int', default: 1, nullable: false })
   quantity: number;

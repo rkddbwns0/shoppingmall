@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -63,6 +64,7 @@ export class ProductEntity {
   cart: CartEntity[];
 
   @ManyToMany(() => OrderEntity, (order) => order.product_no)
+  @JoinColumn({ name: 'order_no' })
   order: OrderEntity[];
 
   @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product_id)

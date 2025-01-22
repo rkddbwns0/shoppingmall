@@ -23,14 +23,24 @@ __decorate([
     __metadata("design:type", Number)
 ], OrderEntity.prototype, "order_no", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (user) => user.user_id),
+    (0, typeorm_1.ManyToMany)(() => user_entity_1.UserEntity, (user) => user.user_id),
     (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", Number)
 ], OrderEntity.prototype, "user_id", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => product_entity_1.ProductEntity, (product) => product.order),
-    (0, typeorm_1.JoinTable)({ name: 'product_no' }),
-    __metadata("design:type", product_entity_1.ProductEntity)
+    (0, typeorm_1.JoinTable)({
+        name: 'order_product_no',
+        joinColumn: {
+            name: 'order_no',
+            referencedColumnName: 'order_no',
+        },
+        inverseJoinColumn: {
+            name: 'product_no',
+            referencedColumnName: 'product_id',
+        },
+    }),
+    __metadata("design:type", Array)
 ], OrderEntity.prototype, "product_no", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'int', default: 1, nullable: false }),

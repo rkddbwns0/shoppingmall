@@ -19,7 +19,7 @@ export class CartEntity {
 
   @ManyToOne(() => ProductEntity, (product) => product.product_id)
   @JoinColumn({ name: 'product_id' })
-  product_id: number;
+  product_id: ProductEntity;
 
   @Column({ type: 'int', default: 1, nullable: false })
   quantity: number;

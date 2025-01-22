@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddressEntity = void 0;
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("./user.entity");
-const order_entity_1 = require("./order.entity");
 let AddressEntity = class AddressEntity {
 };
 exports.AddressEntity = AddressEntity;
@@ -53,10 +52,6 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'enum', enum: ['Y', 'N'], default: 'N' }),
     __metadata("design:type", String)
 ], AddressEntity.prototype, "default_addr", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => order_entity_1.OrderEntity, (order) => order.address_no),
-    __metadata("design:type", Array)
-], AddressEntity.prototype, "order", void 0);
 exports.AddressEntity = AddressEntity = __decorate([
     (0, typeorm_1.Entity)('address')
 ], AddressEntity);

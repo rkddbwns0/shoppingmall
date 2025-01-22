@@ -48,6 +48,7 @@ __decorate([
         description: '제품 주문 현황',
         enum: ['주문 완료', '배송 중', '배송 완료', '환불 진행 중', '환불 완료'],
         default: '주문 완료',
+        required: true,
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),

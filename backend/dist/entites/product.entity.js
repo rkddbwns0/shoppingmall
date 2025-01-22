@@ -81,6 +81,7 @@ __decorate([
 ], ProductEntity.prototype, "cart", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => order_entity_1.OrderEntity, (order) => order.product_no),
+    (0, typeorm_1.JoinColumn)({ name: 'order_no' }),
     __metadata("design:type", Array)
 ], ProductEntity.prototype, "order", void 0);
 __decorate([

@@ -46,7 +46,6 @@ let OrderService = class OrderService {
             if (product.stock < insertOrderDto.quantity) {
                 throw new common_1.BadRequestException('재고가 부족합니다. 다시 확인해 주세요.');
             }
-            console.log(product.stock, insertOrderDto.quantity);
             product.stock = product.stock - insertOrderDto.quantity;
             await this.productRepository.update(product.product_id, {
                 stock: product.stock,
@@ -55,9 +54,8 @@ let OrderService = class OrderService {
             insertOrderDto.total_price = product.price * insertOrderDto.quantity;
             const orderData = {
                 ...insertOrderDto,
-                product_no: product,
+                product_no: [product],
             };
-            console.log(insertOrderDto);
             const result = await this.orderRepository.create(orderData);
             await this.orderRepository.save(result);
             return { success: true };
@@ -67,7 +65,57 @@ let OrderService = class OrderService {
             return { success: false };
         }
     }
-    async cartOrder() { }
+    async cartOrder(cartOrderDto) {
+        try {
+            const user = await this.userRepository.findOne({
+                where: { user_id: cartOrderDto.user_id },
+            });
+            const cart_product = await this.cartRepository.find({
+                where: { user_id: user.user_id },
+                relations: ['product_id'],
+            });
+            const product_nos = cart_product.map((cartItem) => cartItem.product_id.product_id);
+            const product_data = await this.productRepository.find({
+                where: { product_id: (0, typeorm_2.In)(product_nos) },
+            });
+            if (!user || !cart_product || !product_data) {
+                throw new common_1.BadRequestException('정보가 없습니다.');
+            }
+            let total_price = 0;
+            let total_quantity = 0;
+            cart_product.forEach((cartItem) => {
+                const product = product_data.find((product) => product.product_id === cartItem.product_id.product_id);
+                if (product) {
+                    total_price += product.price * cartItem.quantity;
+                    total_quantity += cartItem.quantity;
+                }
+            });
+            const cartOrder_data = {
+                ...cartOrderDto,
+                product_no: product_data,
+                quantity: total_quantity,
+                total_price: total_price,
+            };
+            const result = await this.orderRepository.create(cartOrder_data);
+            await this.orderRepository.save(result);
+            await Promise.all(cart_product.map(async (cartItem) => {
+                const product = product_data.find((product) => product.product_id === cartItem.product_id.product_id);
+                if (product) {
+                    const updateStock = product.stock - cartItem.quantity;
+                    if (updateStock < 0) {
+                        throw new common_1.BadRequestException('현재 재고가 부족합니다. 다시 확인해 주세요.');
+                    }
+                    await this.productRepository.update({ product_id: product.product_id }, { stock: updateStock });
+                }
+            }));
+            await this.cartRepository.delete({ user_id: user.user_id });
+            return { success: true };
+        }
+        catch (error) {
+            console.error(error);
+            return { success: false };
+        }
+    }
 };
 exports.OrderService = OrderService;
 exports.OrderService = OrderService = __decorate([

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber } from 'class-validator';
+import { ProductEntity } from 'src/entites/product.entity';
 
 export class InsertCartDto {
   @ApiProperty({
@@ -16,7 +17,7 @@ export class InsertCartDto {
   })
   @IsNotEmpty()
   @IsNumber()
-  product_id: number;
+  product_id: ProductEntity;
 
   @ApiProperty({
     description: '수량',

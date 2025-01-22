@@ -65,7 +65,7 @@ let CartService = class CartService {
             if (!findCart) {
                 throw new common_1.BadRequestException('장바구니에 존재하지 않는 제품입니다.');
             }
-            const result = await this.cartRepository.delete(deleteCartDto);
+            await this.cartRepository.delete(deleteCartDto);
             return { success: true };
         }
         catch (error) {

@@ -40,6 +40,6 @@ export class AddressEntity {
   @Column({ type: 'enum', enum: ['Y', 'N'], default: 'N' })
   default_addr: string;
 
-  @OneToMany(() => OrderEntity, (order) => order.address_no)
-  order: OrderEntity[];
+  // @OneToMany(() => OrderEntity, (order) => order.address_no)
+  // order: OrderEntity[];
 }
