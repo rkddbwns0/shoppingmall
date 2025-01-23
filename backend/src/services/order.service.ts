@@ -1,9 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartOrderDto, InsertOrderDto } from 'src/dto/order.dto';
+import { OrderItemsDto } from 'src/dto/orderItems.dto';
 import { AddressEntity } from 'src/entites/address.entity';
 import { CartEntity } from 'src/entites/cart.entity';
 import { OrderEntity } from 'src/entites/order.entity';
+import { OrderItemEntity } from 'src/entites/orderItem.entity';
 import { ProductEntity } from 'src/entites/product.entity';
 import { UserEntity } from 'src/entites/user.entity';
 import { In, Repository } from 'typeorm';
@@ -25,6 +27,9 @@ export class OrderService {
 
     @InjectRepository(AddressEntity)
     private readonly addressRepository: Repository<AddressEntity>,
+
+    @InjectRepository(OrderItemEntity)
+    private readonly orderItemsRepository: Repository<OrderItemEntity>,
   ) {}
 
   async insertOrder(insertOrderDto: InsertOrderDto) {
@@ -63,7 +68,19 @@ export class OrderService {
       };
 
       const result = await this.orderRepository.create(orderData);
-      await this.orderRepository.save(result);
+      const saveResult = await this.orderRepository.save(result);
+      const orderItems = {
+        user_id: user.user_id,
+        order_no: saveResult.order_no,
+        product_no: product,
+        quantity: insertOrderDto.quantity,
+        unit_price: product.price,
+        total_price: insertOrderDto.total_price,
+      };
+
+      const saveItems = await this.orderItemsRepository.create(orderItems);
+      await this.orderItemsRepository.save(saveItems);
+
       return { success: true };
     } catch (error) {
       console.error(error);
@@ -97,6 +114,12 @@ export class OrderService {
       let total_price = 0;
       let total_quantity = 0;
 
+      const product_items = {
+        product_no: null,
+        product_price: null,
+        qauntity: null,
+      };
+
       cart_product.forEach((cartItem) => {
         const product = product_data.find(
           (product) => product.product_id === cartItem.product_id.product_id,
@@ -104,8 +127,20 @@ export class OrderService {
         if (product) {
           total_price += product.price * cartItem.quantity;
           total_quantity += cartItem.quantity;
+          product_items.product_no = product;
+          product_items.product_price = product.price;
+          product_items.qauntity = cartItem.quantity;
         }
+        return { product_no: product.product_id, unit_price: product.price };
       });
+
+      console.log(
+        product_items.product_no,
+        '\t',
+        product_items.qauntity,
+        '\t',
+        product_items.product_price,
+      );
 
       const cartOrder_data = {
         ...cartOrderDto,
@@ -115,7 +150,19 @@ export class OrderService {
       };
 
       const result = await this.orderRepository.create(cartOrder_data);
-      await this.orderRepository.save(result);
+      const saveResult = await this.orderRepository.save(result);
+
+      const orderItems = {
+        user_id: user.user_id,
+        order_no: saveResult.order_no,
+        product_no: product_items.product_no,
+        quantity: product_items.qauntity,
+        unit_price: product_items.product_price,
+        total_price: total_price,
+      };
+
+      const saveItems = await this.orderItemsRepository.create(orderItems);
+      await this.orderItemsRepository.save(saveItems);
 
       await Promise.all(
         cart_product.map(async (cartItem) => {

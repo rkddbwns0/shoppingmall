@@ -23,7 +23,7 @@ __decorate([
     __metadata("design:type", Number)
 ], OrderEntity.prototype, "order_no", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => user_entity_1.UserEntity, (user) => user.user_id),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (user) => user.user_id),
     (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", Number)
 ], OrderEntity.prototype, "user_id", void 0);
@@ -76,7 +76,9 @@ __decorate([
     __metadata("design:type", Date)
 ], OrderEntity.prototype, "order_at", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => orderItem_entity_1.OrderItemEntity, (orderItem) => orderItem.order_no),
+    (0, typeorm_1.OneToMany)(() => orderItem_entity_1.OrderItemEntity, (orderItem) => orderItem.order_no, {
+        cascade: true,
+    }),
     __metadata("design:type", Array)
 ], OrderEntity.prototype, "orderItem", void 0);
 exports.OrderEntity = OrderEntity = __decorate([

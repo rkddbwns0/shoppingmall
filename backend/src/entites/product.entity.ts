@@ -67,6 +67,6 @@ export class ProductEntity {
   @JoinColumn({ name: 'order_no' })
   order: OrderEntity[];
 
-  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product_id)
+  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product_no)
   orderItem: OrderItemEntity[];
 }

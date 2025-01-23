@@ -4,6 +4,7 @@ import { OrderController } from 'src/controller/order.controller';
 import { AddressEntity } from 'src/entites/address.entity';
 import { CartEntity } from 'src/entites/cart.entity';
 import { OrderEntity } from 'src/entites/order.entity';
+import { OrderItemEntity } from 'src/entites/orderItem.entity';
 import { ProductEntity } from 'src/entites/product.entity';
 import { UserEntity } from 'src/entites/user.entity';
 import { OrderService } from 'src/services/order.service';
@@ -16,6 +17,7 @@ import { OrderService } from 'src/services/order.service';
       UserEntity,
       CartEntity,
       ProductEntity,
+      OrderItemEntity,
     ]),
   ],
   controllers: [OrderController],

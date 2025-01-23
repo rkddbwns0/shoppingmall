@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -16,15 +17,15 @@ export class OrderItemEntity {
 
   @ManyToOne(() => OrderEntity, (order) => order.order_no)
   @JoinColumn({ name: 'order_no' })
-  order_no: OrderEntity;
+  order_no: number;
 
   @ManyToOne(() => UserEntity, (user) => user.user_id)
   @JoinColumn({ name: 'user_id' })
-  user_id: UserEntity;
+  user_id: number;
 
   @ManyToOne(() => ProductEntity, (product) => product.product_id)
-  @JoinColumn({ name: 'product_id' })
-  product_id: ProductEntity;
+  @JoinColumn({ name: 'product_no' })
+  product_no: ProductEntity;
 
   @Column({ type: 'int', nullable: false })
   quantity: number;

@@ -31,7 +31,7 @@ export class OrderEntity {
   @PrimaryGeneratedColumn()
   order_no: number;
 
-  @ManyToMany(() => UserEntity, (user) => user.user_id)
+  @ManyToOne(() => UserEntity, (user) => user.user_id)
   @JoinColumn({ name: 'user_id' })
   user_id: number;
 
@@ -75,6 +75,8 @@ export class OrderEntity {
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   order_at: Date;
 
-  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.order_no)
+  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.order_no, {
+    cascade: true,
+  })
   orderItem: OrderItemEntity[];
 }

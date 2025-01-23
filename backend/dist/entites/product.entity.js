@@ -85,7 +85,7 @@ __decorate([
     __metadata("design:type", Array)
 ], ProductEntity.prototype, "order", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => orderItem_entity_1.OrderItemEntity, (orderItem) => orderItem.product_id),
+    (0, typeorm_1.OneToMany)(() => orderItem_entity_1.OrderItemEntity, (orderItem) => orderItem.product_no),
     __metadata("design:type", Array)
 ], ProductEntity.prototype, "orderItem", void 0);
 exports.ProductEntity = ProductEntity = __decorate([

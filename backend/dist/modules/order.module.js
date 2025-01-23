@@ -13,6 +13,7 @@ const order_controller_1 = require("../controller/order.controller");
 const address_entity_1 = require("../entites/address.entity");
 const cart_entity_1 = require("../entites/cart.entity");
 const order_entity_1 = require("../entites/order.entity");
+const orderItem_entity_1 = require("../entites/orderItem.entity");
 const product_entity_1 = require("../entites/product.entity");
 const user_entity_1 = require("../entites/user.entity");
 const order_service_1 = require("../services/order.service");
@@ -28,6 +29,7 @@ exports.OrderModule = OrderModule = __decorate([
                 user_entity_1.UserEntity,
                 cart_entity_1.CartEntity,
                 product_entity_1.ProductEntity,
+                orderItem_entity_1.OrderItemEntity,
             ]),
         ],
         controllers: [order_controller_1.OrderController],
