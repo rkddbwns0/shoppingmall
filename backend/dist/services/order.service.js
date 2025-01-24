@@ -82,6 +82,9 @@ let OrderService = class OrderService {
             const user = await this.userRepository.findOne({
                 where: { user_id: cartOrderDto.user_id },
             });
+            const address = await this.addressRepository.findOne({
+                where: { user_id: user.user_id, default_addr: 'Y' },
+            });
             const cart_product = await this.cartRepository.find({
                 where: { user_id: user.user_id },
                 relations: ['product_id'],
@@ -95,39 +98,36 @@ let OrderService = class OrderService {
             }
             let total_price = 0;
             let total_quantity = 0;
-            const product_items = {
-                product_no: null,
-                product_price: null,
-                qauntity: null,
-            };
+            const product_items = [];
             cart_product.forEach((cartItem) => {
                 const product = product_data.find((product) => product.product_id === cartItem.product_id.product_id);
                 if (product) {
                     total_price += product.price * cartItem.quantity;
                     total_quantity += cartItem.quantity;
-                    product_items.product_no = product;
-                    product_items.product_price = product.price;
-                    product_items.qauntity = cartItem.quantity;
+                    product_items.push({
+                        product_no: product.product_id,
+                        unit_price: product.price * cartItem.quantity,
+                        quantity: cartItem.quantity,
+                    });
                 }
-                return { product_no: product.product_id, unit_price: product.price };
             });
-            console.log(product_items.product_no, '\t', product_items.qauntity, '\t', product_items.product_price);
+            cartOrderDto.address_no = address.address_no;
             const cartOrder_data = {
                 ...cartOrderDto,
                 product_no: product_data,
                 quantity: total_quantity,
                 total_price: total_price,
             };
+            console.log(cartOrder_data);
             const result = await this.orderRepository.create(cartOrder_data);
             const saveResult = await this.orderRepository.save(result);
-            const orderItems = {
+            const orderItems = product_items.map((item) => ({
+                ...item,
                 user_id: user.user_id,
                 order_no: saveResult.order_no,
-                product_no: product_items.product_no,
-                quantity: product_items.qauntity,
-                unit_price: product_items.product_price,
                 total_price: total_price,
-            };
+            }));
+            console.log(orderItems);
             const saveItems = await this.orderItemsRepository.create(orderItems);
             await this.orderItemsRepository.save(saveItems);
             await Promise.all(cart_product.map(async (cartItem) => {
