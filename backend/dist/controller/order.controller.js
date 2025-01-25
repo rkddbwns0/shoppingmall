@@ -64,11 +64,29 @@ let OrderController = class OrderController {
                 .json({ message: '구매에 실패하였습니다.', error: error });
         }
     }
+    async refundOrder(refundOrderDto, res) {
+        try {
+            const result = await this.orderService.refundOrder(refundOrderDto);
+            if (result.success === true) {
+                res
+                    .status(200)
+                    .json({ message: '환불 요청이 정상적으로 완료되었습니다.' });
+            }
+            else {
+                res
+                    .status(403)
+                    .json({ message: '환불에 실패하였습니다. 다시 시도해 주세요.' });
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
 };
 exports.OrderController = OrderController;
 __decorate([
     (0, swagger_1.ApiOperation)({
-        summary: '제품 주문 라우터(경로에 :cart 부분의 yes일 경우 장바구니 구매 코드, no일 경우 일반 구매)',
+        summary: '제품 주문 라우터',
     }),
     (0, common_1.Post)('/insert'),
     __param(0, (0, common_1.Body)()),
@@ -78,6 +96,9 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "insertOrder", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({
+        summary: '장바구니 제품 구매 라우터',
+    }),
     (0, common_1.Post)('/cart_order'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
@@ -85,6 +106,14 @@ __decorate([
     __metadata("design:paramtypes", [order_dto_1.CartOrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "cartOrder", null);
+__decorate([
+    (0, common_1.Put)('/refund'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [order_dto_1.RefundOrderDto, Object]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "refundOrder", null);
 exports.OrderController = OrderController = __decorate([
     (0, common_1.Controller)('order'),
     __metadata("design:paramtypes", [order_service_1.OrderService])

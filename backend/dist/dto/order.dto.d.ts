@@ -18,3 +18,9 @@ export declare class CartOrderDto {
     payment_method: string;
     total_price: number;
 }
+export declare class RefundOrderDto {
+    user_id: number;
+    order_no: number;
+    order_state: string;
+    refund_reason: string;
+}

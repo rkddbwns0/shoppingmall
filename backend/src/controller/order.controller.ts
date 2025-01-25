@@ -1,7 +1,11 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Put, Res } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
-import { CartOrderDto, InsertOrderDto } from 'src/dto/order.dto';
+import {
+  CartOrderDto,
+  InsertOrderDto,
+  RefundOrderDto,
+} from 'src/dto/order.dto';
 import { OrderService } from 'src/services/order.service';
 
 @Controller('order')
@@ -9,8 +13,7 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @ApiOperation({
-    summary:
-      '제품 주문 라우터(경로에 :cart 부분의 yes일 경우 장바구니 구매 코드, no일 경우 일반 구매)',
+    summary: '제품 주문 라우터',
   })
   @Post('/insert')
   async insertOrder(
@@ -37,6 +40,9 @@ export class OrderController {
     }
   }
 
+  @ApiOperation({
+    summary: '장바구니 제품 구매 라우터',
+  })
   @Post('/cart_order')
   async cartOrder(@Body() cartOrderDto: CartOrderDto, @Res() res: Response) {
     try {
@@ -55,6 +61,27 @@ export class OrderController {
       return res
         .status(403)
         .json({ message: '구매에 실패하였습니다.', error: error });
+    }
+  }
+
+  @Put('/refund')
+  async refundOrder(
+    @Body() refundOrderDto: RefundOrderDto,
+    @Res() res: Response,
+  ) {
+    try {
+      const result = await this.orderService.refundOrder(refundOrderDto);
+      if (result.success === true) {
+        res
+          .status(200)
+          .json({ message: '환불 요청이 정상적으로 완료되었습니다.' });
+      } else {
+        res
+          .status(403)
+          .json({ message: '환불에 실패하였습니다. 다시 시도해 주세요.' });
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 }

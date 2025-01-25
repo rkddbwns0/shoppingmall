@@ -137,3 +137,38 @@ export class CartOrderDto {
   @IsNumber()
   total_price: number;
 }
+
+export class RefundOrderDto {
+  @ApiProperty({
+    description: '유저 고유 넘버',
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsNumber()
+  user_id: number;
+
+  @ApiProperty({
+    description: '주문 번호',
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsNumber()
+  order_no: number;
+
+  @ApiProperty({
+    description: '주문 상태',
+    enum: ['주문 완료', '배송 중', '배송 완료', '환불 진행 중', '환불 완료'],
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsString()
+  order_state: string;
+
+  @ApiProperty({
+    description: '환불 사유',
+    required: false,
+  })
+  @IsNotEmpty()
+  @IsString()
+  refund_reason: string;
+}

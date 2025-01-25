@@ -1,7 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CartOrderDto, InsertOrderDto } from 'src/dto/order.dto';
-import { OrderItemsDto } from 'src/dto/orderItems.dto';
+import {
+  CartOrderDto,
+  InsertOrderDto,
+  RefundOrderDto,
+} from 'src/dto/order.dto';
 import { AddressEntity } from 'src/entites/address.entity';
 import { CartEntity } from 'src/entites/cart.entity';
 import { OrderEntity } from 'src/entites/order.entity';
@@ -144,8 +147,6 @@ export class OrderService {
         total_price: total_price,
       };
 
-      console.log(cartOrder_data);
-
       const result = await this.orderRepository.create(cartOrder_data);
       const saveResult = await this.orderRepository.save(result);
 
@@ -182,6 +183,37 @@ export class OrderService {
       );
 
       await this.cartRepository.delete({ user_id: user.user_id });
+      return { success: true };
+    } catch (error) {
+      console.error(error);
+      return { success: false };
+    }
+  }
+
+  async refundOrder(refundOrderDto: RefundOrderDto) {
+    try {
+      const findOrderItems = await this.orderItemsRepository.find({
+        where: {
+          order_no: refundOrderDto.order_no,
+        },
+        relations: ['product_no'],
+      });
+
+      refundOrderDto.order_state = '환불 진행 중';
+      console.log(refundOrderDto);
+      await this.orderRepository.update(refundOrderDto.user_id, refundOrderDto);
+
+      Promise.all(
+        findOrderItems.map(async (item) => {
+          const product = item.product_no;
+          const order_quantity = item.quantity;
+
+          product.stock += order_quantity;
+
+          await this.productRepository.save(product);
+        }),
+      );
+
       return { success: true };
     } catch (error) {
       console.error(error);

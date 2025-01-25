@@ -1,4 +1,4 @@
-import { CartOrderDto, InsertOrderDto } from 'src/dto/order.dto';
+import { CartOrderDto, InsertOrderDto, RefundOrderDto } from 'src/dto/order.dto';
 import { AddressEntity } from 'src/entites/address.entity';
 import { CartEntity } from 'src/entites/cart.entity';
 import { OrderEntity } from 'src/entites/order.entity';
@@ -18,6 +18,9 @@ export declare class OrderService {
         success: boolean;
     }>;
     cartOrder(cartOrderDto: CartOrderDto): Promise<{
+        success: boolean;
+    }>;
+    refundOrder(refundOrderDto: RefundOrderDto): Promise<{
         success: boolean;
     }>;
 }

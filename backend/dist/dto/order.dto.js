@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CartOrderDto = exports.InsertOrderDto = void 0;
+exports.RefundOrderDto = exports.CartOrderDto = exports.InsertOrderDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class InsertOrderDto {
@@ -167,4 +167,44 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], CartOrderDto.prototype, "total_price", void 0);
+class RefundOrderDto {
+}
+exports.RefundOrderDto = RefundOrderDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: '유저 고유 넘버',
+        required: true,
+    }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], RefundOrderDto.prototype, "user_id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: '주문 번호',
+        required: true,
+    }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], RefundOrderDto.prototype, "order_no", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: '주문 상태',
+        enum: ['주문 완료', '배송 중', '배송 완료', '환불 진행 중', '환불 완료'],
+        required: true,
+    }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], RefundOrderDto.prototype, "order_state", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: '환불 사유',
+        required: false,
+    }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], RefundOrderDto.prototype, "refund_reason", void 0);
 //# sourceMappingURL=order.dto.js.map
