@@ -15,6 +15,7 @@ const product_categories_entity_1 = require("./product_categories.entity");
 const cart_entity_1 = require("./cart.entity");
 const orderItem_entity_1 = require("./orderItem.entity");
 const order_entity_1 = require("./order.entity");
+const review_entity_1 = require("./review.entity");
 let ProductEntity = class ProductEntity {
 };
 exports.ProductEntity = ProductEntity;
@@ -35,7 +36,12 @@ __decorate([
     __metadata("design:type", String)
 ], ProductEntity.prototype, "product_name", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', nullable: false }),
+    (0, typeorm_1.Column)({
+        type: 'varchar',
+        nullable: false,
+        charset: 'utf8mb4',
+        collation: 'utf8mb4_unicode_ci',
+    }),
     __metadata("design:type", String)
 ], ProductEntity.prototype, "product_content", void 0);
 __decorate([
@@ -88,6 +94,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => orderItem_entity_1.OrderItemEntity, (orderItem) => orderItem.product_no),
     __metadata("design:type", Array)
 ], ProductEntity.prototype, "orderItem", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => review_entity_1.ReviewEntity, (review) => review.product_no),
+    __metadata("design:type", review_entity_1.ReviewEntity)
+], ProductEntity.prototype, "review", void 0);
 exports.ProductEntity = ProductEntity = __decorate([
     (0, typeorm_1.Entity)('product')
 ], ProductEntity);

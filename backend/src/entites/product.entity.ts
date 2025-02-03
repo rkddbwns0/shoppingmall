@@ -12,6 +12,7 @@ import { ProductCateogryEntity } from './product_categories.entity';
 import { CartEntity } from './cart.entity';
 import { OrderItemEntity } from './orderItem.entity';
 import { OrderEntity } from './order.entity';
+import { ReviewEntity } from './review.entity';
 
 @Entity('product')
 export class ProductEntity {
@@ -28,7 +29,12 @@ export class ProductEntity {
   @Column({ type: 'varchar', nullable: false })
   product_name: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    charset: 'utf8mb4',
+    collation: 'utf8mb4_unicode_ci',
+  })
   product_content: string;
 
   @Column({ type: 'enum', enum: ['남성', '여성', '남녀공용'], nullable: false })
@@ -69,4 +75,7 @@ export class ProductEntity {
 
   @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product_no)
   orderItem: OrderItemEntity[];
+
+  @OneToMany(() => ReviewEntity, (review) => review.product_no)
+  review: ReviewEntity;
 }

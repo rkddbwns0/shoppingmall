@@ -6,36 +6,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderModule = void 0;
+exports.ReviewModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const order_controller_1 = require("../controller/order.controller");
-const address_entity_1 = require("../entites/address.entity");
-const admin_entity_1 = require("../entites/admin.entity");
-const cart_entity_1 = require("../entites/cart.entity");
+const review_controller_1 = require("../controller/review.controller");
 const order_entity_1 = require("../entites/order.entity");
-const orderItem_entity_1 = require("../entites/orderItem.entity");
 const product_entity_1 = require("../entites/product.entity");
+const review_entity_1 = require("../entites/review.entity");
 const user_entity_1 = require("../entites/user.entity");
-const order_service_1 = require("../services/order.service");
-let OrderModule = class OrderModule {
+const review_service_1 = require("../services/review.service");
+let ReviewModule = class ReviewModule {
 };
-exports.OrderModule = OrderModule;
-exports.OrderModule = OrderModule = __decorate([
+exports.ReviewModule = ReviewModule;
+exports.ReviewModule = ReviewModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forFeature([
-                order_entity_1.OrderEntity,
-                address_entity_1.AddressEntity,
-                user_entity_1.UserEntity,
-                cart_entity_1.CartEntity,
+                review_entity_1.ReviewEntity,
                 product_entity_1.ProductEntity,
-                orderItem_entity_1.OrderItemEntity,
-                admin_entity_1.AdminEntity,
+                user_entity_1.UserEntity,
+                order_entity_1.OrderEntity,
             ]),
         ],
-        controllers: [order_controller_1.OrderController],
-        providers: [order_service_1.OrderService],
+        controllers: [review_controller_1.ReviewController],
+        providers: [review_service_1.ReviewService],
     })
-], OrderModule);
-//# sourceMappingURL=order.module.js.map
+], ReviewModule);
+//# sourceMappingURL=review.module.js.map

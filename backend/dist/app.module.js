@@ -25,6 +25,8 @@ const address_module_1 = require("./modules/address.module");
 const order_entity_1 = require("./entites/order.entity");
 const orderItem_entity_1 = require("./entites/orderItem.entity");
 const order_module_1 = require("./modules/order.module");
+const review_entity_1 = require("./entites/review.entity");
+const review_module_1 = require("./modules/review.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -45,6 +47,7 @@ exports.AppModule = AppModule = __decorate([
                     username: configService.get('DB_USERNAME'),
                     password: configService.get('DB_PASSWORD'),
                     database: configService.get('DB_DATABASE'),
+                    charset: 'utf8mb4',
                     synchronize: true,
                     retryAttempts: 1,
                     retryDelay: 3000,
@@ -57,7 +60,9 @@ exports.AppModule = AppModule = __decorate([
                         address_entity_1.AddressEntity,
                         order_entity_1.OrderEntity,
                         orderItem_entity_1.OrderItemEntity,
+                        review_entity_1.ReviewEntity,
                     ],
+                    logging: true,
                 }),
             }),
             admin_moule_1.AdminModule,
@@ -65,6 +70,7 @@ exports.AppModule = AppModule = __decorate([
             cart_module_1.CartModule,
             address_module_1.AddressModule,
             order_module_1.OrderModule,
+            review_module_1.ReviewModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

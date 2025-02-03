@@ -24,3 +24,8 @@ export declare class RefundOrderDto {
     order_state: string;
     refund_reason: string;
 }
+export declare class SuccessRefundDto {
+    admin_id: number;
+    order_no: number;
+    order_state: string;
+}

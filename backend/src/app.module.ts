@@ -16,6 +16,8 @@ import { AddressModule } from './modules/address.module';
 import { OrderEntity } from './entites/order.entity';
 import { OrderItemEntity } from './entites/orderItem.entity';
 import { OrderModule } from './modules/order.module';
+import { ReviewEntity } from './entites/review.entity';
+import { ReviewModule } from './modules/review.module';
 
 @Module({
   imports: [
@@ -33,6 +35,7 @@ import { OrderModule } from './modules/order.module';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
+        charset: 'utf8mb4',
         synchronize: true,
         retryAttempts: 1,
         retryDelay: 3000,
@@ -45,7 +48,9 @@ import { OrderModule } from './modules/order.module';
           AddressEntity,
           OrderEntity,
           OrderItemEntity,
+          ReviewEntity,
         ],
+        logging: true,
       }),
     }),
     AdminModule,
@@ -53,6 +58,7 @@ import { OrderModule } from './modules/order.module';
     CartModule,
     AddressModule,
     OrderModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],

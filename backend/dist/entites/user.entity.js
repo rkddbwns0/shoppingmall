@@ -15,6 +15,7 @@ const cart_entity_1 = require("./cart.entity");
 const address_entity_1 = require("./address.entity");
 const orderItem_entity_1 = require("./orderItem.entity");
 const order_entity_1 = require("./order.entity");
+const review_entity_1 = require("./review.entity");
 let UserEntity = class UserEntity {
 };
 exports.UserEntity = UserEntity;
@@ -66,6 +67,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => orderItem_entity_1.OrderItemEntity, (orderItem) => orderItem.user_id),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "orderItem", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => review_entity_1.ReviewEntity, (review) => review.user_id),
+    __metadata("design:type", review_entity_1.ReviewEntity)
+], UserEntity.prototype, "review", void 0);
 exports.UserEntity = UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);

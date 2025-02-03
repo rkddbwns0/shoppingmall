@@ -73,9 +73,21 @@ let OrderController = class OrderController {
                     .json({ message: '환불 요청이 정상적으로 완료되었습니다.' });
             }
             else {
-                res
-                    .status(403)
-                    .json({ message: '환불에 실패하였습니다. 다시 시도해 주세요.' });
+                res.status(403).json({ message: result.message });
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async successRefund(successRefundDto, res) {
+        try {
+            const result = await this.orderService.successRefund(successRefundDto);
+            if (result.success === true) {
+                res.status(200).json({ message: '환불 처리가 완료되었습니다.' });
+            }
+            else {
+                res.status(403).json({ message: result.message });
             }
         }
         catch (error) {
@@ -107,6 +119,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "cartOrder", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: '고객 환불 요청 라우터' }),
     (0, common_1.Put)('/refund'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
@@ -114,6 +127,15 @@ __decorate([
     __metadata("design:paramtypes", [order_dto_1.RefundOrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "refundOrder", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: '관리자 환불 처리 라우터' }),
+    (0, common_1.Put)('/admin_refund'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [order_dto_1.SuccessRefundDto, Object]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "successRefund", null);
 exports.OrderController = OrderController = __decorate([
     (0, common_1.Controller)('order'),
     __metadata("design:paramtypes", [order_service_1.OrderService])

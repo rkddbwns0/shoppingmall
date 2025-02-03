@@ -1,5 +1,6 @@
-import { CartOrderDto, InsertOrderDto, RefundOrderDto } from 'src/dto/order.dto';
+import { CartOrderDto, InsertOrderDto, RefundOrderDto, SuccessRefundDto } from 'src/dto/order.dto';
 import { AddressEntity } from 'src/entites/address.entity';
+import { AdminEntity } from 'src/entites/admin.entity';
 import { CartEntity } from 'src/entites/cart.entity';
 import { OrderEntity } from 'src/entites/order.entity';
 import { OrderItemEntity } from 'src/entites/orderItem.entity';
@@ -13,7 +14,8 @@ export declare class OrderService {
     private readonly productRepository;
     private readonly addressRepository;
     private readonly orderItemsRepository;
-    constructor(orderRepository: Repository<OrderEntity>, userRepository: Repository<UserEntity>, cartRepository: Repository<CartEntity>, productRepository: Repository<ProductEntity>, addressRepository: Repository<AddressEntity>, orderItemsRepository: Repository<OrderItemEntity>);
+    private readonly adminRepository;
+    constructor(orderRepository: Repository<OrderEntity>, userRepository: Repository<UserEntity>, cartRepository: Repository<CartEntity>, productRepository: Repository<ProductEntity>, addressRepository: Repository<AddressEntity>, orderItemsRepository: Repository<OrderItemEntity>, adminRepository: Repository<AdminEntity>);
     insertOrder(insertOrderDto: InsertOrderDto): Promise<{
         success: boolean;
     }>;
@@ -22,5 +24,17 @@ export declare class OrderService {
     }>;
     refundOrder(refundOrderDto: RefundOrderDto): Promise<{
         success: boolean;
+        message?: undefined;
+    } | {
+        success: boolean;
+        message: any;
+    }>;
+    private checkOrderState;
+    successRefund(successRefundDto: SuccessRefundDto): Promise<{
+        success: boolean;
+        message?: undefined;
+    } | {
+        success: boolean;
+        message: any;
     }>;
 }

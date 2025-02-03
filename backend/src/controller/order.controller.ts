@@ -5,6 +5,7 @@ import {
   CartOrderDto,
   InsertOrderDto,
   RefundOrderDto,
+  SuccessRefundDto,
 } from 'src/dto/order.dto';
 import { OrderService } from 'src/services/order.service';
 
@@ -64,6 +65,7 @@ export class OrderController {
     }
   }
 
+  @ApiOperation({ summary: '고객 환불 요청 라우터' })
   @Put('/refund')
   async refundOrder(
     @Body() refundOrderDto: RefundOrderDto,
@@ -76,9 +78,25 @@ export class OrderController {
           .status(200)
           .json({ message: '환불 요청이 정상적으로 완료되었습니다.' });
       } else {
-        res
-          .status(403)
-          .json({ message: '환불에 실패하였습니다. 다시 시도해 주세요.' });
+        res.status(403).json({ message: result.message });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  @ApiOperation({ summary: '관리자 환불 처리 라우터' })
+  @Put('/admin_refund')
+  async successRefund(
+    @Body() successRefundDto: SuccessRefundDto,
+    @Res() res: Response,
+  ) {
+    try {
+      const result = await this.orderService.successRefund(successRefundDto);
+      if (result.success === true) {
+        res.status(200).json({ message: '환불 처리가 완료되었습니다.' });
+      } else {
+        res.status(403).json({ message: result.message });
       }
     } catch (error) {
       console.error(error);

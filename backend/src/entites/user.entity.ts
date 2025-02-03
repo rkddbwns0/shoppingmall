@@ -3,6 +3,7 @@ import { CartEntity } from './cart.entity';
 import { AddressEntity } from './address.entity';
 import { OrderItemEntity } from './orderItem.entity';
 import { OrderEntity } from './order.entity';
+import { ReviewEntity } from './review.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -41,4 +42,7 @@ export class UserEntity {
 
   @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.user_id)
   orderItem: OrderItemEntity[];
+
+  @OneToMany(() => ReviewEntity, (review) => review.user_id)
+  review: ReviewEntity;
 }
