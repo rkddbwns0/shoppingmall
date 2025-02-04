@@ -33,6 +33,12 @@ let ProductController = class ProductController {
         }
         return await this.productService.selectProduct(product_category);
     }
+    async selectOneProduct(product_id) {
+        if (!product_id) {
+            throw new common_1.BadRequestException('제품 넘버가 없습니다. 다시 확인해 주세요.');
+        }
+        return await this.productService.selectOneProduct(product_id);
+    }
     async insertProduct(regProductDto, res) {
         try {
             const result = await this.productService.insertProduct(regProductDto);
@@ -81,12 +87,20 @@ __decorate([
 ], ProductController.prototype, "selectProductCategory", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '입력 받은 값에 대한 product 데이터 정보를 가져옴' }),
-    (0, common_1.Get)('select_product/:product_category'),
+    (0, common_1.Get)('select_products/:product_category'),
     __param(0, (0, common_1.Param)('product_category')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "selectProduct", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: '특정 제품 정보 라우터' }),
+    (0, common_1.Get)('select_product/:product_id'),
+    __param(0, (0, common_1.Param)('product_id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "selectOneProduct", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '제품 등록 라우터' }),
     (0, common_1.Post)('insert'),

@@ -44,11 +44,45 @@ export class ProductService {
 
     const categoryResult = category.map((category) => category.category_id);
 
-    const ProductResult = await this.productRepository.find({
-      where: { product_category: In(categoryResult) },
-      relations: ['product_category'],
-    });
+    const ProductResult = await this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.product_category', 'category')
+      .leftJoin('review', 'review', 'review.product_no = product.product_id')
+      .where('product.product_category IN (:...categoryResult)', {
+        categoryResult,
+      })
+      .select([
+        'product',
+        'IFNULL(COUNT(review.product_no), 0) AS review_count',
+        'IFNULL(ROUND(AVG(review.scope), 1), 0) AS review_scope',
+      ])
+      .groupBy('product.product_id')
+      .getRawMany();
+
+    console.log(ProductResult);
     return ProductResult;
+  }
+
+  async selectOneProduct(product_id: number) {
+    try {
+      const selectProduct = await this.productRepository
+        .createQueryBuilder('product')
+        .leftJoin('review', 'review', 'review.product_no = product.product_id')
+        .where('product.product_id = :product_id', { product_id })
+        .select([
+          'product',
+          'IFNULL(COUNT(review.product_no), 0) AS review_count',
+          'IFNULL(ROUND(AVG(review.scope), 1), 0) AS review_scope',
+        ])
+        .groupBy('product.product_id')
+        .getRawOne();
+
+      console.log(selectProduct);
+
+      return selectProduct;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async insertProduct(regProductDto: RegProductDto) {

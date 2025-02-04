@@ -15,7 +15,10 @@ export class OrderItemEntity {
   @PrimaryGeneratedColumn()
   orderItem_no: number;
 
-  @ManyToOne(() => OrderEntity, (order) => order.order_no)
+  @ManyToOne(() => OrderEntity, (order) => order.order_no, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'order_no' })
   order_no: number;
 
@@ -35,6 +38,9 @@ export class OrderItemEntity {
 
   @Column({ type: 'int', nullable: false })
   total_price: number;
+
+  @Column({ type: 'enum', enum: ['O', 'X'], default: 'X' })
+  review_status: string;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   create_at: Date;

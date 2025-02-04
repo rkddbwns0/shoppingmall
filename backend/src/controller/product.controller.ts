@@ -30,12 +30,24 @@ export class ProductController {
   }
 
   @ApiOperation({ summary: '입력 받은 값에 대한 product 데이터 정보를 가져옴' })
-  @Get('select_product/:product_category')
+  @Get('select_products/:product_category')
   async selectProduct(@Param('product_category') product_category: number) {
     if (!product_category) {
       throw new BadRequestException('카테고리 넘버가 없습니다.');
     }
     return await this.productService.selectProduct(product_category);
+  }
+
+  @ApiOperation({ summary: '특정 제품 정보 라우터' })
+  @Get('select_product/:product_id')
+  async selectOneProduct(@Param('product_id') product_id: number) {
+    if (!product_id) {
+      throw new BadRequestException(
+        '제품 넘버가 없습니다. 다시 확인해 주세요.',
+      );
+    }
+
+    return await this.productService.selectOneProduct(product_id);
   }
 
   @ApiOperation({ summary: '제품 등록 라우터' })

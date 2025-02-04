@@ -27,6 +27,8 @@ const orderItem_entity_1 = require("./entites/orderItem.entity");
 const order_module_1 = require("./modules/order.module");
 const review_entity_1 = require("./entites/review.entity");
 const review_module_1 = require("./modules/review.module");
+const qna_entity_1 = require("./entites/qna.entity");
+const qna_module_1 = require("./modules/qna.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -61,8 +63,8 @@ exports.AppModule = AppModule = __decorate([
                         order_entity_1.OrderEntity,
                         orderItem_entity_1.OrderItemEntity,
                         review_entity_1.ReviewEntity,
+                        qna_entity_1.QnAEntity,
                     ],
-                    logging: true,
                 }),
             }),
             admin_moule_1.AdminModule,
@@ -71,6 +73,7 @@ exports.AppModule = AppModule = __decorate([
             address_module_1.AddressModule,
             order_module_1.OrderModule,
             review_module_1.ReviewModule,
+            qna_module_1.QnAModoule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

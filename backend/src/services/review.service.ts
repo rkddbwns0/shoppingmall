@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InsertReviewDto } from 'src/dto/review.dto';
 import { OrderEntity } from 'src/entites/order.entity';
+import { OrderItemEntity } from 'src/entites/orderItem.entity';
 import { ProductEntity } from 'src/entites/product.entity';
 import { ReviewEntity } from 'src/entites/review.entity';
 import { UserEntity } from 'src/entites/user.entity';
@@ -18,6 +19,9 @@ export class ReviewService {
 
     @InjectRepository(OrderEntity)
     private readonly orderRepository: Repository<OrderEntity>,
+
+    @InjectRepository(OrderItemEntity)
+    private readonly orderItemRepository: Repository<OrderItemEntity>,
 
     @InjectRepository(ReviewEntity)
     private readonly reviewRepository: Repository<ReviewEntity>,
@@ -41,17 +45,60 @@ export class ReviewService {
 
   async insertReview(insertReviewDto: InsertReviewDto) {
     try {
-      const writeReview = await this.reviewRepository.create(insertReviewDto);
-      const saveReview = await this.reviewRepository.save(writeReview);
-      if (!saveReview) {
-        throw new BadRequestException(
-          '리뷰 작성에 실패하였습니다. 다시 시도해 주세요.',
-        );
+      const result = await this.findItemReview(
+        insertReviewDto.order_no,
+        insertReviewDto.product_no,
+        insertReviewDto.user_id,
+      );
+
+      if (result.check === true) {
+        const writeReview = await this.reviewRepository.create(insertReviewDto);
+        const saveReview = await this.reviewRepository.save(writeReview);
+        await this.orderItemRepository.update(result.result, {
+          review_status: 'O',
+        });
+
+        if (!saveReview) {
+          throw new BadRequestException(
+            '리뷰 작성에 실패하였습니다. 다시 시도해 주세요.',
+          );
+        }
+      } else {
+        return { message: result.message };
       }
       return { success: true };
     } catch (error) {
       console.error(error);
       return { success: false, message: error.message };
+    }
+  }
+
+  private async findItemReview(
+    order_no: number,
+    product_no: number,
+    user_id: number,
+  ) {
+    try {
+      const findItem = await this.orderItemRepository.findOne({
+        where: {
+          order_no,
+          product_no: { product_id: product_no },
+          user_id,
+        },
+        relations: ['product_no'],
+      });
+
+      if (!findItem) {
+        throw new BadRequestException('구매 내역에 존재하지 않는 제품입니다.');
+      }
+
+      if (findItem.review_status === 'O') {
+        throw new BadRequestException('이미 리뷰를 작성한 제품입니다.');
+      }
+
+      return { check: true, result: findItem };
+    } catch (error) {
+      return { check: false, message: error.message };
     }
   }
 }

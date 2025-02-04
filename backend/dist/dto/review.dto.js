@@ -16,6 +16,12 @@ class InsertReviewDto {
 }
 exports.InsertReviewDto = InsertReviewDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: '주문 번호' }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], InsertReviewDto.prototype, "order_no", void 0);
+__decorate([
     (0, swagger_1.ApiProperty)({
         description: '제품 번호',
     }),

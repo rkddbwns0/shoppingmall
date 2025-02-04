@@ -7,8 +7,14 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { ProductEntity } from 'src/entites/product.entity';
 
 export class InsertReviewDto {
+  @ApiProperty({ description: '주문 번호' })
+  @IsNotEmpty()
+  @IsNumber()
+  order_no: number;
+
   @ApiProperty({
     description: '제품 번호',
   })

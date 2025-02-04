@@ -18,6 +18,8 @@ import { OrderItemEntity } from './entites/orderItem.entity';
 import { OrderModule } from './modules/order.module';
 import { ReviewEntity } from './entites/review.entity';
 import { ReviewModule } from './modules/review.module';
+import { QnAEntity } from './entites/qna.entity';
+import { QnAModoule } from './modules/qna.module';
 
 @Module({
   imports: [
@@ -49,8 +51,8 @@ import { ReviewModule } from './modules/review.module';
           OrderEntity,
           OrderItemEntity,
           ReviewEntity,
+          QnAEntity,
         ],
-        logging: true,
       }),
     }),
     AdminModule,
@@ -59,6 +61,7 @@ import { ReviewModule } from './modules/review.module';
     AddressModule,
     OrderModule,
     ReviewModule,
+    QnAModoule,
   ],
   controllers: [AppController],
   providers: [AppService],

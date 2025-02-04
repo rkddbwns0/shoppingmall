@@ -3,6 +3,7 @@ import { AddressEntity } from './address.entity';
 import { OrderItemEntity } from './orderItem.entity';
 import { OrderEntity } from './order.entity';
 import { ReviewEntity } from './review.entity';
+import { QnAEntity } from './qna.entity';
 export declare class UserEntity {
     user_id: number;
     name: string;
@@ -17,4 +18,5 @@ export declare class UserEntity {
     order: OrderEntity[];
     orderItem: OrderItemEntity[];
     review: ReviewEntity;
+    qna: QnAEntity;
 }

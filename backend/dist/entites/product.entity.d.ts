@@ -3,6 +3,7 @@ import { CartEntity } from './cart.entity';
 import { OrderItemEntity } from './orderItem.entity';
 import { OrderEntity } from './order.entity';
 import { ReviewEntity } from './review.entity';
+import { QnAEntity } from './qna.entity';
 export declare class ProductEntity {
     product_id: number;
     product_category: ProductCateogryEntity;
@@ -20,4 +21,5 @@ export declare class ProductEntity {
     order: OrderEntity[];
     orderItem: OrderItemEntity[];
     review: ReviewEntity;
+    qna: QnAEntity[];
 }

@@ -8,6 +8,7 @@ export declare class ProductService {
     constructor(productRepository: Repository<ProductEntity>, productCategoryRepository: Repository<ProductCateogryEntity>);
     selectProductCategory(category_id: number): Promise<ProductCateogryEntity[]>;
     selectProduct(product_category: number): Promise<ProductEntity[]>;
+    selectOneProduct(product_id: number): Promise<any>;
     insertProduct(regProductDto: RegProductDto): Promise<{
         success: boolean;
     }>;

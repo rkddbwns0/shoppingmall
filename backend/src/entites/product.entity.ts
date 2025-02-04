@@ -13,6 +13,7 @@ import { CartEntity } from './cart.entity';
 import { OrderItemEntity } from './orderItem.entity';
 import { OrderEntity } from './order.entity';
 import { ReviewEntity } from './review.entity';
+import { QnAEntity } from './qna.entity';
 
 @Entity('product')
 export class ProductEntity {
@@ -78,4 +79,7 @@ export class ProductEntity {
 
   @OneToMany(() => ReviewEntity, (review) => review.product_no)
   review: ReviewEntity;
+
+  @OneToMany(() => QnAEntity, (qna) => qna.product_no)
+  qna: QnAEntity[];
 }

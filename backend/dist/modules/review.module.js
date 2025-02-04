@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const review_controller_1 = require("../controller/review.controller");
 const order_entity_1 = require("../entites/order.entity");
+const orderItem_entity_1 = require("../entites/orderItem.entity");
 const product_entity_1 = require("../entites/product.entity");
 const review_entity_1 = require("../entites/review.entity");
 const user_entity_1 = require("../entites/user.entity");
@@ -26,6 +27,7 @@ exports.ReviewModule = ReviewModule = __decorate([
                 product_entity_1.ProductEntity,
                 user_entity_1.UserEntity,
                 order_entity_1.OrderEntity,
+                orderItem_entity_1.OrderItemEntity,
             ]),
         ],
         controllers: [review_controller_1.ReviewController],

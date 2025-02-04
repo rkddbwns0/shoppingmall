@@ -7,5 +7,6 @@ export declare class OrderItemEntity {
     quantity: number;
     unit_price: number;
     total_price: number;
+    review_status: string;
     create_at: Date;
 }

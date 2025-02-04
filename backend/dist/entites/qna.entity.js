@@ -9,57 +9,54 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderItemEntity = void 0;
+exports.QnAEntity = void 0;
 const typeorm_1 = require("typeorm");
-const order_entity_1 = require("./order.entity");
 const product_entity_1 = require("./product.entity");
 const user_entity_1 = require("./user.entity");
-let OrderItemEntity = class OrderItemEntity {
+let QnAEntity = class QnAEntity {
 };
-exports.OrderItemEntity = OrderItemEntity;
+exports.QnAEntity = QnAEntity;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], OrderItemEntity.prototype, "orderItem_no", void 0);
+], QnAEntity.prototype, "qna_no", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => order_entity_1.OrderEntity, (order) => order.order_no, {
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-    }),
-    (0, typeorm_1.JoinColumn)({ name: 'order_no' }),
+    (0, typeorm_1.ManyToOne)(() => product_entity_1.ProductEntity, (product) => product.product_id),
+    (0, typeorm_1.JoinColumn)({ name: 'product_no' }),
     __metadata("design:type", Number)
-], OrderItemEntity.prototype, "order_no", void 0);
+], QnAEntity.prototype, "product_no", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (user) => user.user_id),
     (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", Number)
-], OrderItemEntity.prototype, "user_id", void 0);
+], QnAEntity.prototype, "user_id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => product_entity_1.ProductEntity, (product) => product.product_id),
-    (0, typeorm_1.JoinColumn)({ name: 'product_no' }),
-    __metadata("design:type", product_entity_1.ProductEntity)
-], OrderItemEntity.prototype, "product_no", void 0);
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: false, length: 50 }),
+    __metadata("design:type", String)
+], QnAEntity.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int', nullable: false }),
-    __metadata("design:type", Number)
-], OrderItemEntity.prototype, "quantity", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'int', nullable: false }),
-    __metadata("design:type", Number)
-], OrderItemEntity.prototype, "unit_price", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'int', nullable: false }),
-    __metadata("design:type", Number)
-], OrderItemEntity.prototype, "total_price", void 0);
+    (0, typeorm_1.Column)({
+        type: 'varchar',
+        nullable: false,
+        length: 1000,
+        charset: 'utf8mb4',
+        collation: 'utf8mb4_unicode_ci',
+    }),
+    __metadata("design:type", String)
+], QnAEntity.prototype, "content", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'enum', enum: ['O', 'X'], default: 'X' }),
     __metadata("design:type", String)
-], OrderItemEntity.prototype, "review_status", void 0);
+], QnAEntity.prototype, "private", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true, length: 20 }),
+    __metadata("design:type", String)
+], QnAEntity.prototype, "private_pwd", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
-], OrderItemEntity.prototype, "create_at", void 0);
-exports.OrderItemEntity = OrderItemEntity = __decorate([
-    (0, typeorm_1.Entity)('order_items')
-], OrderItemEntity);
-//# sourceMappingURL=orderItem.entity.js.map
+], QnAEntity.prototype, "write_at", void 0);
+exports.QnAEntity = QnAEntity = __decorate([
+    (0, typeorm_1.Entity)('qna')
+], QnAEntity);
+//# sourceMappingURL=qna.entity.js.map

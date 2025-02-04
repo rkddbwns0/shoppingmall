@@ -4,6 +4,7 @@ import { AddressEntity } from './address.entity';
 import { OrderItemEntity } from './orderItem.entity';
 import { OrderEntity } from './order.entity';
 import { ReviewEntity } from './review.entity';
+import { QnAEntity } from './qna.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -45,4 +46,7 @@ export class UserEntity {
 
   @OneToMany(() => ReviewEntity, (review) => review.user_id)
   review: ReviewEntity;
+
+  @OneToMany(() => QnAEntity, (qna) => qna.user_id)
+  qna: QnAEntity;
 }
