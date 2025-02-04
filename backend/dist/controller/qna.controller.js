@@ -37,7 +37,8 @@ let QnAController = class QnAController {
     }
     async selectQnA(product_no, res) {
         try {
-            const result = await this.qnaService.selectAllQnA(product_no);
+            console.log(product_no);
+            const result = await this.qnaService.selectAllQnATitle(product_no);
             res.status(200).json({ data: result.data });
         }
         catch (error) {

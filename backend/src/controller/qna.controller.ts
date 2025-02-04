@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
 import { InsertQnADto } from 'src/dto/qna.dto';
@@ -30,7 +30,8 @@ export class QnAController {
     @Res() res: Response,
   ) {
     try {
-      const result = await this.qnaService.selectAllQnA(product_no);
+      console.log(product_no);
+      const result = await this.qnaService.selectAllQnATitle(product_no);
       res.status(200).json({ data: result.data });
     } catch (error) {
       console.error(error);

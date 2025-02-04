@@ -15,7 +15,7 @@ export class QnAEntity {
 
   @ManyToOne(() => ProductEntity, (product) => product.product_id)
   @JoinColumn({ name: 'product_no' })
-  product_no: number;
+  product_no: ProductEntity;
 
   @ManyToOne(() => UserEntity, (user) => user.user_id)
   @JoinColumn({ name: 'user_id' })

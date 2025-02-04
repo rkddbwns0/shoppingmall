@@ -6,6 +6,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { ProductEntity } from 'src/entites/product.entity';
 
 export class InsertQnADto {
   @ApiProperty({
@@ -14,7 +15,7 @@ export class InsertQnADto {
   })
   @IsNotEmpty()
   @IsNumber()
-  product_no: number;
+  product_no: ProductEntity;
 
   @ApiProperty({
     description: '유저 고유 넘버',

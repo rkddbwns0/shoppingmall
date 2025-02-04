@@ -36,10 +36,10 @@ export class QnAService {
     }
   }
 
-  async selectAllQnA(product_no: number) {
+  async selectAllQnATitle(product_no: number) {
     try {
       const allQna = await this.qnaRepository.find({
-        where: { product_no: product_no },
+        where: { product_no: { product_id: product_no } },
         select: ['qna_no', 'title', 'private'],
         relations: ['product_no'],
       });

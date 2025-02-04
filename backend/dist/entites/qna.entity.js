@@ -23,7 +23,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.ManyToOne)(() => product_entity_1.ProductEntity, (product) => product.product_id),
     (0, typeorm_1.JoinColumn)({ name: 'product_no' }),
-    __metadata("design:type", Number)
+    __metadata("design:type", product_entity_1.ProductEntity)
 ], QnAEntity.prototype, "product_no", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (user) => user.user_id),

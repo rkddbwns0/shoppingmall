@@ -38,10 +38,10 @@ let QnAService = class QnAService {
             return { success: false, message: error.message };
         }
     }
-    async selectAllQnA(product_no) {
+    async selectAllQnATitle(product_no) {
         try {
             const allQna = await this.qnaRepository.find({
-                where: { product_no: product_no },
+                where: { product_no: { product_id: product_no } },
                 select: ['qna_no', 'title', 'private'],
                 relations: ['product_no'],
             });

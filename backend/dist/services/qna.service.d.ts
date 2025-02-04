@@ -15,11 +15,11 @@ export declare class QnAService {
         success: boolean;
         message: any;
     }>;
-    selectAllQnA(product_no: number): Promise<{
+    selectAllQnATitle(product_no: number): Promise<{
         data: {
             title: string;
             qna_no: number;
-            product_no: number;
+            product_no: ProductEntity;
             user_id: number;
             content: string;
             private: string;

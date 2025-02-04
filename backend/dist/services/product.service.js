@@ -64,11 +64,13 @@ let ProductService = class ProductService {
             const selectProduct = await this.productRepository
                 .createQueryBuilder('product')
                 .leftJoin('review', 'review', 'review.product_no = product.product_id')
+                .leftJoin('qna', 'qna', 'qna.product_no = product.product_id')
                 .where('product.product_id = :product_id', { product_id })
                 .select([
                 'product',
                 'IFNULL(COUNT(review.product_no), 0) AS review_count',
                 'IFNULL(ROUND(AVG(review.scope), 1), 0) AS review_scope',
+                'IFNULL(COUNT(qna.product_no), 0) AS qna_count',
             ])
                 .groupBy('product.product_id')
                 .getRawOne();
