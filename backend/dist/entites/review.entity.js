@@ -39,7 +39,7 @@ __decorate([
         length: 1000,
     }),
     __metadata("design:type", String)
-], ReviewEntity.prototype, "content", void 0);
+], ReviewEntity.prototype, "contents", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'decimal', precision: 2, scale: 1, nullable: false }),
     __metadata("design:type", Number)

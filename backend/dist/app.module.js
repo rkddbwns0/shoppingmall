@@ -13,7 +13,7 @@ const app_service_1 = require("./app.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const config_1 = require("@nestjs/config");
 const admin_entity_1 = require("./entites/admin.entity");
-const admin_moule_1 = require("./modules/admin.moule");
+const admin_moule_1 = require("./admin/modules/admin.moule");
 const user_entity_1 = require("./entites/user.entity");
 const product_entity_1 = require("./entites/product.entity");
 const product_categories_entity_1 = require("./entites/product_categories.entity");
@@ -29,6 +29,9 @@ const review_entity_1 = require("./entites/review.entity");
 const review_module_1 = require("./modules/review.module");
 const qna_entity_1 = require("./entites/qna.entity");
 const qna_module_1 = require("./modules/qna.module");
+const qna_answer_entity_1 = require("./entites/qna_answer.entity");
+const qna_answer_module_1 = require("./admin/modules/qna_answer.module");
+const order_mng_module_1 = require("./admin/modules/order_mng.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -64,16 +67,19 @@ exports.AppModule = AppModule = __decorate([
                         orderItem_entity_1.OrderItemEntity,
                         review_entity_1.ReviewEntity,
                         qna_entity_1.QnAEntity,
+                        qna_answer_entity_1.QnA_AnswerEntity,
                     ],
                 }),
             }),
             admin_moule_1.AdminModule,
+            qna_answer_module_1.QnA_AnswerModule,
             product_module_1.ProductModule,
             cart_module_1.CartModule,
             address_module_1.AddressModule,
             order_module_1.OrderModule,
             review_module_1.ReviewModule,
             qna_module_1.QnAModoule,
+            order_mng_module_1.OrderMngModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

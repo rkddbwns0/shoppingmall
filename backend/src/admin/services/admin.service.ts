@@ -1,15 +1,19 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AdminLoginDto, CreateAdminDto } from 'src/dto/admin.dto';
+import { AdminLoginDto, CreateAdminDto } from 'src/admin/dto/admin.dto';
 import { AdminEntity } from 'src/entites/admin.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { OrderEntity } from 'src/entites/order.entity';
 
 @Injectable()
 export class AdminService {
   constructor(
     @InjectRepository(AdminEntity)
     private readonly admin: Repository<AdminEntity>,
+
+    @InjectRepository(OrderEntity)
+    private readonly orderRepository: Repository<OrderEntity>,
   ) {}
 
   async duplicateEmail(email: string) {

@@ -42,12 +42,14 @@ let QnAService = class QnAService {
         try {
             const allQna = await this.qnaRepository.find({
                 where: { product_no: { product_id: product_no } },
-                select: ['qna_no', 'title', 'private'],
+                select: ['qna_no', 'title', 'private', 'answer_yn'],
                 relations: ['product_no'],
             });
+            console.log(allQna);
             const qnaData = allQna.map((item) => ({
                 ...item,
                 title: item.private === 'O' ? (item.title = '비밀글 입니다.') : item.title,
+                answer_yn: item.answer_yn === true ? '답변 완료' : '답변 대기 중',
             }));
             if (!qnaData) {
                 return null;

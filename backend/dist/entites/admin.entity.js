@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminEntity = void 0;
 const typeorm_1 = require("typeorm");
+const qna_answer_entity_1 = require("./qna_answer.entity");
 let AdminEntity = class AdminEntity {
 };
 exports.AdminEntity = AdminEntity;
@@ -46,6 +47,10 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'datetime', nullable: true }),
     __metadata("design:type", Date)
 ], AdminEntity.prototype, "update_at", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => qna_answer_entity_1.QnA_AnswerEntity, (qna_answer) => qna_answer.admin_no),
+    __metadata("design:type", qna_answer_entity_1.QnA_AnswerEntity)
+], AdminEntity.prototype, "qna_answer", void 0);
 exports.AdminEntity = AdminEntity = __decorate([
     (0, typeorm_1.Entity)('admin')
 ], AdminEntity);

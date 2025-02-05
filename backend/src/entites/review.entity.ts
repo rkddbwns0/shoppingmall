@@ -28,7 +28,7 @@ export class ReviewEntity {
     collation: 'utf8mb4_unicode_ci',
     length: 1000,
   })
-  content: string;
+  contents: string;
 
   @Column({ type: 'decimal', precision: 2, scale: 1, nullable: false })
   scope: number;

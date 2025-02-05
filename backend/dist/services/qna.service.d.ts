@@ -18,6 +18,7 @@ export declare class QnAService {
     selectAllQnATitle(product_no: number): Promise<{
         data: {
             title: string;
+            answer_yn: string;
             qna_no: number;
             product_no: ProductEntity;
             user_id: number;
@@ -25,6 +26,7 @@ export declare class QnAService {
             private: string;
             private_pwd: string;
             write_at: Date;
+            qna_answer: import("../entites/qna_answer.entity").QnA_AnswerEntity[];
         }[];
     }>;
 }

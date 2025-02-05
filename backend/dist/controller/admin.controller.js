@@ -16,7 +16,7 @@ exports.AdminController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const admin_dto_1 = require("../dto/admin.dto");
-const admin_service_1 = require("../services/admin.service");
+const admin_service_1 = require("../admin/services/admin.service");
 let AdminController = class AdminController {
     constructor(adminService) {
         this.adminService = adminService;

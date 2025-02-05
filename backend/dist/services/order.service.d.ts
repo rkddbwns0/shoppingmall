@@ -1,4 +1,4 @@
-import { CartOrderDto, InsertOrderDto, RefundOrderDto, SuccessRefundDto } from 'src/dto/order.dto';
+import { CartOrderDto, InsertOrderDto, RefundOrderDto } from 'src/dto/order.dto';
 import { AddressEntity } from 'src/entites/address.entity';
 import { AdminEntity } from 'src/entites/admin.entity';
 import { CartEntity } from 'src/entites/cart.entity';
@@ -30,11 +30,4 @@ export declare class OrderService {
         message: any;
     }>;
     private checkOrderState;
-    successRefund(successRefundDto: SuccessRefundDto): Promise<{
-        success: boolean;
-        message?: undefined;
-    } | {
-        success: boolean;
-        message: any;
-    }>;
 }

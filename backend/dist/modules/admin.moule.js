@@ -9,9 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const admin_controller_1 = require("../controller/admin.controller");
+const admin_controller_1 = require("src/controller/admin.controller");
 const admin_entity_1 = require("../entites/admin.entity");
-const admin_service_1 = require("../services/admin.service");
+const admin_service_1 = require("../admin/services/admin.service");
 let AdminModule = class AdminModule {
 };
 exports.AdminModule = AdminModule;

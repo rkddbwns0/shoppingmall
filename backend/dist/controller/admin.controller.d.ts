@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AdminLoginDto, CreateAdminDto } from 'src/dto/admin.dto';
-import { AdminService } from 'src/services/admin.service';
+import { AdminService } from 'src/admin/services/admin.service';
 export declare class AdminController {
     private readonly adminService;
     constructor(adminService: AdminService);

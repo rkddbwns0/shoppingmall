@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AdminEntity } from './entites/admin.entity';
-import { AdminModule } from './modules/admin.moule';
+import { AdminModule } from './admin/modules/admin.moule';
 import { UserEntity } from './entites/user.entity';
 import { ProductEntity } from './entites/product.entity';
 import { ProductCateogryEntity } from './entites/product_categories.entity';
@@ -20,6 +20,9 @@ import { ReviewEntity } from './entites/review.entity';
 import { ReviewModule } from './modules/review.module';
 import { QnAEntity } from './entites/qna.entity';
 import { QnAModoule } from './modules/qna.module';
+import { QnA_AnswerEntity } from './entites/qna_answer.entity';
+import { QnA_AnswerModule } from './admin/modules/qna_answer.module';
+import { OrderMngModule } from './admin/modules/order_mng.module';
 
 @Module({
   imports: [
@@ -52,16 +55,19 @@ import { QnAModoule } from './modules/qna.module';
           OrderItemEntity,
           ReviewEntity,
           QnAEntity,
+          QnA_AnswerEntity,
         ],
       }),
     }),
     AdminModule,
+    QnA_AnswerModule,
     ProductModule,
     CartModule,
     AddressModule,
     OrderModule,
     ReviewModule,
     QnAModoule,
+    OrderMngModule,
   ],
   controllers: [AppController],
   providers: [AppService],

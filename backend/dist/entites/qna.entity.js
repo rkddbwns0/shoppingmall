@@ -13,6 +13,7 @@ exports.QnAEntity = void 0;
 const typeorm_1 = require("typeorm");
 const product_entity_1 = require("./product.entity");
 const user_entity_1 = require("./user.entity");
+const qna_answer_entity_1 = require("./qna_answer.entity");
 let QnAEntity = class QnAEntity {
 };
 exports.QnAEntity = QnAEntity;
@@ -53,9 +54,19 @@ __decorate([
     __metadata("design:type", String)
 ], QnAEntity.prototype, "private_pwd", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'boolean' }),
+    __metadata("design:type", Boolean)
+], QnAEntity.prototype, "answer_yn", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
 ], QnAEntity.prototype, "write_at", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => qna_answer_entity_1.QnA_AnswerEntity, (qna_answer) => qna_answer.qna_no, {
+        cascade: true,
+    }),
+    __metadata("design:type", Array)
+], QnAEntity.prototype, "qna_answer", void 0);
 exports.QnAEntity = QnAEntity = __decorate([
     (0, typeorm_1.Entity)('qna')
 ], QnAEntity);

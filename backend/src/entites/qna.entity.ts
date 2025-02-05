@@ -3,10 +3,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProductEntity } from './product.entity';
 import { UserEntity } from './user.entity';
+import { QnA_AnswerEntity } from './qna_answer.entity';
 
 @Entity('qna')
 export class QnAEntity {
@@ -39,6 +41,14 @@ export class QnAEntity {
   @Column({ type: 'varchar', nullable: true, length: 20 })
   private_pwd: string;
 
+  @Column({ type: 'boolean' })
+  answer_yn: boolean;
+
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   write_at: Date;
+
+  @OneToMany(() => QnA_AnswerEntity, (qna_answer) => qna_answer.qna_no, {
+    cascade: true,
+  })
+  qna_answer: QnA_AnswerEntity[];
 }

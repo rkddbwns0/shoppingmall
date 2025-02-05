@@ -172,20 +172,3 @@ export class RefundOrderDto {
   @IsString()
   refund_reason: string;
 }
-
-export class SuccessRefundDto {
-  @ApiProperty({ description: '관리자 아이디' })
-  @IsNotEmpty()
-  @IsNumber()
-  admin_id: number;
-
-  @ApiProperty({ description: '고객 주문 번호' })
-  @IsNotEmpty()
-  @IsNumber()
-  order_no: number;
-
-  @ApiProperty({ description: '고객 주문 상태' })
-  @IsNotEmpty()
-  @IsString()
-  order_state: string;
-}

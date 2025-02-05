@@ -4,7 +4,6 @@ import {
   CartOrderDto,
   InsertOrderDto,
   RefundOrderDto,
-  SuccessRefundDto,
 } from 'src/dto/order.dto';
 import { AddressEntity } from 'src/entites/address.entity';
 import { AdminEntity } from 'src/entites/admin.entity';
@@ -244,43 +243,6 @@ export class OrderService {
     } catch (error) {
       console.error(error);
       throw error;
-    }
-  }
-
-  async successRefund(successRefundDto: SuccessRefundDto) {
-    try {
-      const findAdmin = await this.adminRepository.findOne({
-        where: { admin_id: successRefundDto.admin_id },
-      });
-      if (!findAdmin) {
-        throw new BadRequestException(
-          '존재하지 않는 관리자입니다. 다시 확인해 주세요.',
-        );
-      }
-
-      const findOrderState = await this.orderRepository.findOne({
-        where: {
-          order_no: successRefundDto.order_no,
-        },
-      });
-
-      if (findOrderState.order_state === '환불 완료') {
-        throw new BadRequestException(
-          '이미 환불 처리된 주문 내역입니다. 다시 확인해 주세요.',
-        );
-      } else if (findOrderState.order_state !== '환불 진행 중') {
-        throw new BadRequestException(
-          '환불 요청이 되지 않는 제품입니다. 다시 확인해 주세요.',
-        );
-      }
-
-      await this.orderRepository.update(successRefundDto.order_no, {
-        order_state: '환불 완료',
-      });
-      return { success: true };
-    } catch (error) {
-      console.error(error);
-      return { success: false, message: error.message };
     }
   }
 }
