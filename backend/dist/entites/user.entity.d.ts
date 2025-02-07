@@ -4,6 +4,8 @@ import { OrderItemEntity } from './orderItem.entity';
 import { OrderEntity } from './order.entity';
 import { ReviewEntity } from './review.entity';
 import { QnAEntity } from './qna.entity';
+import { Helpful_ReviewEntity } from './helpful_review.entity';
+import { Like_ProductEntity } from './like_product.entity';
 export declare class UserEntity {
     user_id: number;
     name: string;
@@ -19,4 +21,6 @@ export declare class UserEntity {
     orderItem: OrderItemEntity[];
     review: ReviewEntity;
     qna: QnAEntity;
+    like_product: Like_ProductEntity;
+    helpful_review: Helpful_ReviewEntity;
 }

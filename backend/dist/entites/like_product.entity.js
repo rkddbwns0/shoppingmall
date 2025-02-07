@@ -9,35 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.QnA_AnswerEntity = void 0;
+exports.Like_ProductEntity = void 0;
 const typeorm_1 = require("typeorm");
-const qna_entity_1 = require("./qna.entity");
-let QnA_AnswerEntity = class QnA_AnswerEntity {
+const user_entity_1 = require("./user.entity");
+const product_entity_1 = require("./product.entity");
+let Like_ProductEntity = class Like_ProductEntity {
 };
-exports.QnA_AnswerEntity = QnA_AnswerEntity;
+exports.Like_ProductEntity = Like_ProductEntity;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], QnA_AnswerEntity.prototype, "qna_answer_no", void 0);
+], Like_ProductEntity.prototype, "like_no", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => qna_entity_1.QnAEntity, (qna) => qna.qna_no, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (user) => user.user_id),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", Number)
-], QnA_AnswerEntity.prototype, "qna_no", void 0);
+], Like_ProductEntity.prototype, "user_id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({
-        type: 'varchar',
-        nullable: false,
-        length: 1000,
-        charset: 'utf8mb4',
-        collation: 'utf8mb4_unicode_ci',
-    }),
-    __metadata("design:type", String)
-], QnA_AnswerEntity.prototype, "content", void 0);
+    (0, typeorm_1.ManyToOne)(() => product_entity_1.ProductEntity, (product) => product.product_id),
+    (0, typeorm_1.JoinColumn)({ name: 'product_no' }),
+    __metadata("design:type", Number)
+], Like_ProductEntity.prototype, "product_no", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
-], QnA_AnswerEntity.prototype, "write_at", void 0);
-exports.QnA_AnswerEntity = QnA_AnswerEntity = __decorate([
-    (0, typeorm_1.Entity)('qna_answer')
-], QnA_AnswerEntity);
-//# sourceMappingURL=answer.entity.js.map
+], Like_ProductEntity.prototype, "create_at", void 0);
+exports.Like_ProductEntity = Like_ProductEntity = __decorate([
+    (0, typeorm_1.Entity)('like_product')
+], Like_ProductEntity);
+//# sourceMappingURL=like_product.entity.js.map

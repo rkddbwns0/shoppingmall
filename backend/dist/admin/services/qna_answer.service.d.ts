@@ -18,7 +18,7 @@ export declare class QnA_AnswerService {
         private: string;
         private_pwd: string;
         write_at: Date;
-        qna_answer: QnA_AnswerEntity[];
+        qna_answer: QnA_AnswerEntity;
     }[]>;
     select_qna(qna_no: number): Promise<{
         success: boolean;

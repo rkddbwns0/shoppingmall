@@ -26,7 +26,7 @@ export declare class QnAService {
             private: string;
             private_pwd: string;
             write_at: Date;
-            qna_answer: import("../entites/qna_answer.entity").QnA_AnswerEntity[];
+            qna_answer: import("../entites/qna_answer.entity").QnA_AnswerEntity;
         }[];
     }>;
 }

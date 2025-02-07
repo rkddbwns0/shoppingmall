@@ -50,5 +50,5 @@ export class QnAEntity {
   @OneToMany(() => QnA_AnswerEntity, (qna_answer) => qna_answer.qna_no, {
     cascade: true,
   })
-  qna_answer: QnA_AnswerEntity[];
+  qna_answer: QnA_AnswerEntity;
 }

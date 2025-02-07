@@ -46,6 +46,7 @@ let ProductService = class ProductService {
             .createQueryBuilder('product')
             .leftJoinAndSelect('product.product_category', 'category')
             .leftJoin('review', 'review', 'review.product_no = product.product_id')
+            .leftJoin('like_product', 'like_product', 'like_product.product_no = product.product_id')
             .where('product.product_category IN (:...categoryResult)', {
             categoryResult,
         })
@@ -53,6 +54,7 @@ let ProductService = class ProductService {
             'product',
             'IFNULL(COUNT(review.product_no), 0) AS review_count',
             'IFNULL(ROUND(AVG(review.scope), 1), 0) AS review_scope',
+            'IFNULL(COUNT(like_product.product_no), 0) as liked_count',
         ])
             .groupBy('product.product_id')
             .getRawMany();
@@ -63,18 +65,32 @@ let ProductService = class ProductService {
         try {
             const selectProduct = await this.productRepository
                 .createQueryBuilder('product')
-                .leftJoin('review', 'review', 'review.product_no = product.product_id')
-                .leftJoin('qna', 'qna', 'qna.product_no = product.product_id')
+                .leftJoin((qb) => qb
+                .select('review.product_no', 'product_no')
+                .addSelect('COUNT(review.product_no) AS review_count')
+                .addSelect('review.scope', 'scope')
+                .from('review', 'review')
+                .groupBy('review.product_no'), 'review', 'review.product_no = product.product_id')
+                .leftJoin((qd) => qd
+                .select('qna.product_no', 'product_no')
+                .addSelect('COUNT(qna.product_no) AS qna_count')
+                .from('qna', 'qna')
+                .groupBy('qna.product_no'), 'qna', 'qna.product_no = product.product_id')
+                .leftJoin((qb) => qb
+                .select('like_product.product_no', 'product_no')
+                .addSelect('COUNT(like_product.product_no) AS liked_count')
+                .from('like_product', 'like_product')
+                .groupBy('like_product.product_no'), 'like_product', 'like_product.product_no = product.product_id')
                 .where('product.product_id = :product_id', { product_id })
                 .select([
                 'product',
-                'IFNULL(COUNT(review.product_no), 0) AS review_count',
+                'IFNULL(review.review_count, 0) AS review_count',
                 'IFNULL(ROUND(AVG(review.scope), 1), 0) AS review_scope',
-                'IFNULL(COUNT(qna.product_no), 0) AS qna_count',
+                'IFNULL(qna.qna_count, 0) AS qna_count',
+                'IFNULL(like_product.liked_count, 0) as liked_count',
             ])
                 .groupBy('product.product_id')
                 .getRawOne();
-            console.log(selectProduct);
             return selectProduct;
         }
         catch (error) {

@@ -32,6 +32,10 @@ const qna_module_1 = require("./modules/qna.module");
 const qna_answer_entity_1 = require("./entites/qna_answer.entity");
 const qna_answer_module_1 = require("./admin/modules/qna_answer.module");
 const order_mng_module_1 = require("./admin/modules/order_mng.module");
+const like_product_entity_1 = require("./entites/like_product.entity");
+const like_product_module_1 = require("./modules/like_product.module");
+const helpful_review_entity_1 = require("./entites/helpful_review.entity");
+const helpful_review_module_1 = require("./modules/helpful_review.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -53,7 +57,7 @@ exports.AppModule = AppModule = __decorate([
                     password: configService.get('DB_PASSWORD'),
                     database: configService.get('DB_DATABASE'),
                     charset: 'utf8mb4',
-                    synchronize: true,
+                    synchronize: false,
                     retryAttempts: 1,
                     retryDelay: 3000,
                     entities: [
@@ -68,6 +72,8 @@ exports.AppModule = AppModule = __decorate([
                         review_entity_1.ReviewEntity,
                         qna_entity_1.QnAEntity,
                         qna_answer_entity_1.QnA_AnswerEntity,
+                        like_product_entity_1.Like_ProductEntity,
+                        helpful_review_entity_1.Helpful_ReviewEntity,
                     ],
                 }),
             }),
@@ -80,6 +86,8 @@ exports.AppModule = AppModule = __decorate([
             review_module_1.ReviewModule,
             qna_module_1.QnAModoule,
             order_mng_module_1.OrderMngModule,
+            like_product_module_1.Like_ProductModule,
+            helpful_review_module_1.Helpful_ReviewModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

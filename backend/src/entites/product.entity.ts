@@ -14,6 +14,8 @@ import { OrderItemEntity } from './orderItem.entity';
 import { OrderEntity } from './order.entity';
 import { ReviewEntity } from './review.entity';
 import { QnAEntity } from './qna.entity';
+import { Helpful_ReviewEntity } from './helpful_review.entity';
+import { Like_ProductEntity } from './like_product.entity';
 
 @Entity('product')
 export class ProductEntity {
@@ -82,4 +84,16 @@ export class ProductEntity {
 
   @OneToMany(() => QnAEntity, (qna) => qna.product_no)
   qna: QnAEntity[];
+
+  @OneToMany(
+    () => Like_ProductEntity,
+    (like_product) => like_product.product_no,
+  )
+  like_product: Like_ProductEntity;
+
+  @OneToMany(
+    () => Helpful_ReviewEntity,
+    (helpful_review) => helpful_review.product_no,
+  )
+  helpful_review: Helpful_ReviewEntity;
 }

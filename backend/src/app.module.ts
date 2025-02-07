@@ -23,6 +23,10 @@ import { QnAModoule } from './modules/qna.module';
 import { QnA_AnswerEntity } from './entites/qna_answer.entity';
 import { QnA_AnswerModule } from './admin/modules/qna_answer.module';
 import { OrderMngModule } from './admin/modules/order_mng.module';
+import { Like_ProductEntity } from './entites/like_product.entity';
+import { Like_ProductModule } from './modules/like_product.module';
+import { Helpful_ReviewEntity } from './entites/helpful_review.entity';
+import { Helpful_ReviewModule } from './modules/helpful_review.module';
 
 @Module({
   imports: [
@@ -41,7 +45,7 @@ import { OrderMngModule } from './admin/modules/order_mng.module';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         charset: 'utf8mb4',
-        synchronize: true,
+        synchronize: false,
         retryAttempts: 1,
         retryDelay: 3000,
         entities: [
@@ -56,6 +60,8 @@ import { OrderMngModule } from './admin/modules/order_mng.module';
           ReviewEntity,
           QnAEntity,
           QnA_AnswerEntity,
+          Like_ProductEntity,
+          Helpful_ReviewEntity,
         ],
       }),
     }),
@@ -68,6 +74,8 @@ import { OrderMngModule } from './admin/modules/order_mng.module';
     ReviewModule,
     QnAModoule,
     OrderMngModule,
+    Like_ProductModule,
+    Helpful_ReviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],

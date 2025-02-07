@@ -10,5 +10,5 @@ export declare class QnAEntity {
     private_pwd: string;
     answer_yn: boolean;
     write_at: Date;
-    qna_answer: QnA_AnswerEntity[];
+    qna_answer: QnA_AnswerEntity;
 }

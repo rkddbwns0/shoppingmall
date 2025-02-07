@@ -65,7 +65,7 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => qna_answer_entity_1.QnA_AnswerEntity, (qna_answer) => qna_answer.qna_no, {
         cascade: true,
     }),
-    __metadata("design:type", Array)
+    __metadata("design:type", qna_answer_entity_1.QnA_AnswerEntity)
 ], QnAEntity.prototype, "qna_answer", void 0);
 exports.QnAEntity = QnAEntity = __decorate([
     (0, typeorm_1.Entity)('qna')

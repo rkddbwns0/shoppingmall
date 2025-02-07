@@ -13,6 +13,7 @@ exports.ReviewEntity = void 0;
 const typeorm_1 = require("typeorm");
 const product_entity_1 = require("./product.entity");
 const user_entity_1 = require("./user.entity");
+const helpful_review_entity_1 = require("./helpful_review.entity");
 let ReviewEntity = class ReviewEntity {
 };
 exports.ReviewEntity = ReviewEntity;
@@ -48,6 +49,10 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
 ], ReviewEntity.prototype, "write_at", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => helpful_review_entity_1.Helpful_ReviewEntity, (helpful_review) => helpful_review.review_no),
+    __metadata("design:type", Array)
+], ReviewEntity.prototype, "helpful_review", void 0);
 exports.ReviewEntity = ReviewEntity = __decorate([
     (0, typeorm_1.Entity)('review')
 ], ReviewEntity);

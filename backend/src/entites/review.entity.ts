@@ -3,10 +3,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProductEntity } from './product.entity';
 import { UserEntity } from './user.entity';
+import { Helpful_ReviewEntity } from './helpful_review.entity';
 
 @Entity('review')
 export class ReviewEntity {
@@ -35,4 +37,10 @@ export class ReviewEntity {
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   write_at: Date;
+
+  @OneToMany(
+    () => Helpful_ReviewEntity,
+    (helpful_review) => helpful_review.review_no,
+  )
+  helpful_review: Helpful_ReviewEntity[];
 }

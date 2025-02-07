@@ -17,6 +17,8 @@ const orderItem_entity_1 = require("./orderItem.entity");
 const order_entity_1 = require("./order.entity");
 const review_entity_1 = require("./review.entity");
 const qna_entity_1 = require("./qna.entity");
+const helpful_review_entity_1 = require("./helpful_review.entity");
+const like_product_entity_1 = require("./like_product.entity");
 let UserEntity = class UserEntity {
 };
 exports.UserEntity = UserEntity;
@@ -76,6 +78,14 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => qna_entity_1.QnAEntity, (qna) => qna.user_id),
     __metadata("design:type", qna_entity_1.QnAEntity)
 ], UserEntity.prototype, "qna", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => like_product_entity_1.Like_ProductEntity, (like_product) => like_product.user_id),
+    __metadata("design:type", like_product_entity_1.Like_ProductEntity)
+], UserEntity.prototype, "like_product", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => helpful_review_entity_1.Helpful_ReviewEntity, (helpful_review) => helpful_review.user_id),
+    __metadata("design:type", helpful_review_entity_1.Helpful_ReviewEntity)
+], UserEntity.prototype, "helpful_review", void 0);
 exports.UserEntity = UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);
