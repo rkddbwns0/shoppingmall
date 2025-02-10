@@ -9,10 +9,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Helpful_ReviewModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const helpful_review_controller_1 = require("../controller/helpful_review.controller");
 const helpful_review_entity_1 = require("../entites/helpful_review.entity");
 const product_entity_1 = require("../entites/product.entity");
 const review_entity_1 = require("../entites/review.entity");
 const user_entity_1 = require("../entites/user.entity");
+const helpul_review_service_1 = require("../services/helpul_review.service");
 let Helpful_ReviewModule = class Helpful_ReviewModule {
 };
 exports.Helpful_ReviewModule = Helpful_ReviewModule;
@@ -26,8 +28,8 @@ exports.Helpful_ReviewModule = Helpful_ReviewModule = __decorate([
                 helpful_review_entity_1.Helpful_ReviewEntity,
             ]),
         ],
-        controllers: [],
-        providers: [],
+        controllers: [helpful_review_controller_1.Helpful_ReviewController],
+        providers: [helpul_review_service_1.Helpful_ReviewServiece],
     })
 ], Helpful_ReviewModule);
 //# sourceMappingURL=helpful_review.module.js.map
