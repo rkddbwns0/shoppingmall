@@ -41,6 +41,16 @@ let ReviewController = class ReviewController {
             console.error(error);
         }
     }
+    async selectReview(product_no, res) {
+        try {
+            const result = await this.reviewSerview.selectReview(product_no);
+            console.log(result);
+            res.status(200).json({ result });
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
 };
 exports.ReviewController = ReviewController;
 __decorate([
@@ -52,6 +62,15 @@ __decorate([
     __metadata("design:paramtypes", [review_dto_1.InsertReviewDto, Object]),
     __metadata("design:returntype", Promise)
 ], ReviewController.prototype, "insertReview", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: '리뷰 내역 라우터' }),
+    (0, common_1.Get)('/select_review/:product_no'),
+    __param(0, (0, common_1.Param)('product_no')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], ReviewController.prototype, "selectReview", null);
 exports.ReviewController = ReviewController = __decorate([
     (0, common_1.Controller)('review'),
     __metadata("design:paramtypes", [review_service_1.ReviewService])

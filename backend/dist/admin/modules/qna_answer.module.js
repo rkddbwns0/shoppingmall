@@ -12,7 +12,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const qna_answer_entity_1 = require("../../entites/qna_answer.entity");
 const qna_answer_service_1 = require("../services/qna_answer.service");
 const admin_entity_1 = require("../../entites/admin.entity");
-const qna_answer_controller_1 = require("../controllers/qna_answer.controller");
+const qna_answer_controller_1 = require("../controller/qna_answer.controller");
 const qna_entity_1 = require("../../entites/qna.entity");
 let QnA_AnswerModule = class QnA_AnswerModule {
 };

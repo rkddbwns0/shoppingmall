@@ -12,6 +12,7 @@ export declare class ReviewService {
     private readonly orderItemRepository;
     private readonly reviewRepository;
     constructor(userRepository: Repository<UserEntity>, productRepository: Repository<ProductEntity>, orderRepository: Repository<OrderEntity>, orderItemRepository: Repository<OrderItemEntity>, reviewRepository: Repository<ReviewEntity>);
+    selectReview(product_no: number): Promise<any[]>;
     checkOrder(user_id: number): Promise<{
         check: boolean;
         message?: undefined;

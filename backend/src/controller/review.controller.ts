@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
 import { InsertReviewDto } from 'src/dto/review.dto';
@@ -28,6 +28,21 @@ export class ReviewController {
       } else {
         res.status(403).json({ message: checkResult.message });
       }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  @ApiOperation({ summary: '리뷰 내역 라우터' })
+  @Get('/select_review/:product_no')
+  async selectReview(
+    @Param('product_no') product_no: number,
+    @Res() res: Response,
+  ) {
+    try {
+      const result = await this.reviewSerview.selectReview(product_no);
+      console.log(result);
+      res.status(200).json({ result });
     } catch (error) {
       console.error(error);
     }

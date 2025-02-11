@@ -27,6 +27,38 @@ export class ReviewService {
     private readonly reviewRepository: Repository<ReviewEntity>,
   ) {}
 
+  async selectReview(product_no: number) {
+    try {
+      const product_reviews = await this.reviewRepository
+        .createQueryBuilder('review')
+        .leftJoin(
+          (qb) =>
+            qb
+              .select('helpful_review.review_no', 'review_no')
+              .addSelect('COUNT(helpful_review.review_no)', 'helpful_count')
+              .from('helpful_review', 'helpful_review')
+              .groupBy('helpful_review.review_no'),
+          'helpful_count',
+          'review.review_no = helpful_count.review_no',
+        )
+        .where('review.product_no = :product_no', { product_no })
+        .select([
+          'review.*',
+          'IFNULL(helpful_count.helpful_count, 0) as helpful_count',
+        ])
+        .orderBy('review.write_at', 'DESC')
+        .getRawMany();
+
+      if (!product_reviews) {
+        return null;
+      }
+
+      return product_reviews;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async checkOrder(user_id: number) {
     try {
       const checkOrderState = await this.orderRepository.find({

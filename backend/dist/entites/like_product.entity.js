@@ -17,23 +17,23 @@ let Like_ProductEntity = class Like_ProductEntity {
 };
 exports.Like_ProductEntity = Like_ProductEntity;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryColumn)({ type: 'int', nullable: false }),
     __metadata("design:type", Number)
-], Like_ProductEntity.prototype, "like_no", void 0);
+], Like_ProductEntity.prototype, "product_no", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (user) => user.user_id),
     (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", Number)
 ], Like_ProductEntity.prototype, "user_id", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }),
+    __metadata("design:type", Date)
+], Like_ProductEntity.prototype, "like_at", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => product_entity_1.ProductEntity, (product) => product.product_id),
     (0, typeorm_1.JoinColumn)({ name: 'product_no' }),
     __metadata("design:type", Number)
-], Like_ProductEntity.prototype, "product_no", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }),
-    __metadata("design:type", Date)
-], Like_ProductEntity.prototype, "create_at", void 0);
+], Like_ProductEntity.prototype, "product", void 0);
 exports.Like_ProductEntity = Like_ProductEntity = __decorate([
     (0, typeorm_1.Entity)('like_product')
 ], Like_ProductEntity);

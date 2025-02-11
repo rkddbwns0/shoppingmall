@@ -18,9 +18,9 @@ let Helpful_ReviewEntity = class Helpful_ReviewEntity {
 };
 exports.Helpful_ReviewEntity = Helpful_ReviewEntity;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryColumn)({ type: 'int', nullable: false }),
     __metadata("design:type", Number)
-], Helpful_ReviewEntity.prototype, "no", void 0);
+], Helpful_ReviewEntity.prototype, "review_no", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => product_entity_1.ProductEntity, (product) => product.product_id),
     (0, typeorm_1.JoinColumn)({ name: 'product_no' }),
@@ -32,14 +32,14 @@ __decorate([
     __metadata("design:type", Number)
 ], Helpful_ReviewEntity.prototype, "user_id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => review_entity_1.ReviewEntity, (review) => review.review_no),
-    (0, typeorm_1.JoinColumn)({ name: 'review_no' }),
-    __metadata("design:type", Number)
-], Helpful_ReviewEntity.prototype, "review_no", void 0);
-__decorate([
     (0, typeorm_1.Column)({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
 ], Helpful_ReviewEntity.prototype, "press_at", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => review_entity_1.ReviewEntity, (review) => review.review_no),
+    (0, typeorm_1.JoinColumn)({ name: 'review_no' }),
+    __metadata("design:type", Number)
+], Helpful_ReviewEntity.prototype, "review", void 0);
 exports.Helpful_ReviewEntity = Helpful_ReviewEntity = __decorate([
     (0, typeorm_1.Entity)('helpful_review'),
     (0, typeorm_1.Unique)(['review_no', 'user_id', 'product_no'])
