@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class CreateUserDto {
+export class SignUpUserDto {
   @ApiProperty({
     example: '홍길동',
     description: '사용자 이름',
@@ -25,7 +25,8 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsPhoneNumber('KR')
-  phone: number;
+  @MaxLength(11)
+  phone: string;
 
   @ApiProperty({
     example: 'user@maver.com',
@@ -54,7 +55,6 @@ export class CreateUserDto {
     example: '닉네임입니다',
     description: '사용자 닉네임',
     required: true,
-    default: '유저 name',
   })
   @IsNotEmpty()
   @IsString()
