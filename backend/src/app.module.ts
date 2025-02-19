@@ -28,6 +28,7 @@ import { Like_ProductModule } from './modules/like_product.module';
 import { Helpful_ReviewEntity } from './entites/helpful_review.entity';
 import { Helpful_ReviewModule } from './modules/helpful_review.module';
 import { UserModule } from './modules/user.module';
+import { Product_optionEntity } from './entites/product_option.entity';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { UserModule } from './modules/user.module';
           AdminEntity,
           UserEntity,
           ProductEntity,
+          Product_optionEntity,
           ProductCateogryEntity,
           CartEntity,
           AddressEntity,

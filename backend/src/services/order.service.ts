@@ -11,6 +11,7 @@ import { CartEntity } from 'src/entites/cart.entity';
 import { OrderEntity } from 'src/entites/order.entity';
 import { OrderItemEntity } from 'src/entites/orderItem.entity';
 import { ProductEntity } from 'src/entites/product.entity';
+import { Product_optionEntity } from 'src/entites/product_option.entity';
 import { UserEntity } from 'src/entites/user.entity';
 import { In, Repository } from 'typeorm';
 
@@ -28,6 +29,9 @@ export class OrderService {
 
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
+
+    @InjectRepository(Product_optionEntity)
+    private readonly product_optionRespository: Repository<Product_optionEntity>,
 
     @InjectRepository(AddressEntity)
     private readonly addressRepository: Repository<AddressEntity>,
@@ -57,14 +61,14 @@ export class OrderService {
         );
       }
 
-      if (product.stock < insertOrderDto.quantity) {
-        throw new BadRequestException('재고가 부족합니다. 다시 확인해 주세요.');
-      }
+      // if (product.stock < insertOrderDto.quantity) {
+      //   throw new BadRequestException('재고가 부족합니다. 다시 확인해 주세요.');
+      // }
 
-      product.stock = product.stock - insertOrderDto.quantity;
-      await this.productRepository.update(product.product_id, {
-        stock: product.stock,
-      });
+      // product.stock = product.stock - insertOrderDto.quantity;
+      // await this.productRepository.update(product.product_id, {
+      //   stock: product.stock,
+      // });
 
       insertOrderDto.address_no = address.address_no;
       insertOrderDto.total_price = product.price * insertOrderDto.quantity;
@@ -165,26 +169,26 @@ export class OrderService {
       const saveItems = await this.orderItemsRepository.create(orderItems);
       await this.orderItemsRepository.save(saveItems);
 
-      await Promise.all(
-        cart_product.map(async (cartItem) => {
-          const product = product_data.find(
-            (product) => product.product_id === cartItem.product_id.product_id,
-          );
-          if (product) {
-            const updateStock = product.stock - cartItem.quantity;
-            if (updateStock < 0) {
-              throw new BadRequestException(
-                '현재 재고가 부족합니다. 다시 확인해 주세요.',
-              );
-            }
+      // await Promise.all(
+      //   cart_product.map(async (cartItem) => {
+      //     const product = product_data.find(
+      //       (product) => product.product_id === cartItem.product_id.product_id,
+      //     );
+      //     if (product) {
+      //       const updateStock = product.stock - cartItem.quantity;
+      //       if (updateStock < 0) {
+      //         throw new BadRequestException(
+      //           '현재 재고가 부족합니다. 다시 확인해 주세요.',
+      //         );
+      //       }
 
-            await this.productRepository.update(
-              { product_id: product.product_id },
-              { stock: updateStock },
-            );
-          }
-        }),
-      );
+      //       await this.productRepository.update(
+      //         { product_id: product.product_id },
+      //         { stock: updateStock },
+      //       );
+      //     }
+      //   }),
+      // );
 
       await this.cartRepository.delete({ user_id: user.user_id });
       return { success: true };
@@ -212,7 +216,7 @@ export class OrderService {
           const product = item.product_no;
           const order_quantity = item.quantity;
 
-          product.stock += order_quantity;
+          // product.stock += order_quantity;
 
           await this.productRepository.save(product);
         }),

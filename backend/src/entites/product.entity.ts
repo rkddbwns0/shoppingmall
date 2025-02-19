@@ -16,6 +16,7 @@ import { ReviewEntity } from './review.entity';
 import { QnAEntity } from './qna.entity';
 import { Helpful_ReviewEntity } from './helpful_review.entity';
 import { Like_ProductEntity } from './like_product.entity';
+import { Product_optionEntity } from './product_option.entity';
 
 @Entity('product')
 export class ProductEntity {
@@ -43,20 +44,8 @@ export class ProductEntity {
   @Column({ type: 'enum', enum: ['남성', '여성', '남녀공용'], nullable: false })
   gender: string;
 
-  @Column({ type: 'varchar', nullable: false })
-  size: string;
-
-  @Column({ type: 'varchar', nullable: false })
-  color: string;
-
   @Column({ type: 'int', nullable: false })
   price: number;
-
-  @Column({ type: 'int', nullable: true })
-  sale_price: number;
-
-  @Column({ type: 'int', nullable: false, default: 0 })
-  stock: number;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   reg_at: Date;
@@ -68,6 +57,12 @@ export class ProductEntity {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   update_at: Date;
+
+  @OneToMany(
+    () => Product_optionEntity,
+    (product_option) => product_option.product_id,
+  )
+  product_option: Product_optionEntity;
 
   @OneToMany(() => CartEntity, (cart) => cart.product_id)
   cart: CartEntity[];

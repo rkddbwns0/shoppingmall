@@ -4,6 +4,7 @@ import { ProductService } from 'src/services/product.service';
 export declare class ProductController {
     private readonly productService;
     constructor(productService: ProductService);
+    randomProduct(res: Response): Promise<void>;
     selectProductCategory(category_id: number): Promise<import("../entites/product_categories.entity").ProductCateogryEntity[]>;
     selectProduct(product_category: number): Promise<import("../entites/product.entity").ProductEntity[]>;
     selectOneProduct(product_id: number): Promise<any>;

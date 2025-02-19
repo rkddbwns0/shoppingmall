@@ -1,0 +1,11 @@
+.main_middle {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.main_random_products {
+    display: flex;
+    align-items: center;
+}

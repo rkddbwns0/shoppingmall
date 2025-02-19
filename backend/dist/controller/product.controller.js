@@ -21,6 +21,15 @@ let ProductController = class ProductController {
     constructor(productService) {
         this.productService = productService;
     }
+    async randomProduct(res) {
+        try {
+            const result = await this.productService.randomProduct();
+            res.status(200).json(result);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     async selectProductCategory(category_id) {
         if (!category_id) {
             throw new common_1.BadRequestException('카테고리 넘버가 없습니다.');
@@ -75,6 +84,14 @@ let ProductController = class ProductController {
     }
 };
 exports.ProductController = ProductController;
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: '10분마다 랜덤한 상품 데이터 5개를 가져옴' }),
+    (0, common_1.Get)('/random_product'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "randomProduct", null);
 __decorate([
     (0, swagger_1.ApiOperation)({
         summary: 'product_category 테이블에 해당 번호의 자식 데이터를 가져옴',

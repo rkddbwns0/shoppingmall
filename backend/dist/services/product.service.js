@@ -13,15 +13,40 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductService = void 0;
+const cache_manager_1 = require("@nestjs/cache-manager");
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const product_entity_1 = require("../entites/product.entity");
 const product_categories_entity_1 = require("../entites/product_categories.entity");
+const product_option_entity_1 = require("../entites/product_option.entity");
 const typeorm_2 = require("typeorm");
 let ProductService = class ProductService {
-    constructor(productRepository, productCategoryRepository) {
+    constructor(productRepository, productCategoryRepository, product_optionRepository, cacheManager) {
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
+        this.product_optionRepository = product_optionRepository;
+        this.cacheManager = cacheManager;
+    }
+    async randomProduct() {
+        try {
+            const cacheKey = process.env.CACHE_KEY;
+            const cacheData = await this.cacheManager.get(cacheKey);
+            if (cacheData) {
+                console.log(cacheData);
+                return cacheData;
+            }
+            const result = await this.productRepository
+                .createQueryBuilder('product')
+                .select(['product.product_id', 'product.product_name', 'product.price'])
+                .orderBy('RAND()')
+                .limit(5)
+                .getMany();
+            await this.cacheManager.set(cacheKey, result, 600);
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
     }
     async selectProductCategory(category_id) {
         const categoryResult = await this.productCategoryRepository.find({
@@ -83,7 +108,10 @@ let ProductService = class ProductService {
                 .groupBy('like_product.product_no'), 'like_product', 'like_product.product_no = product.product_id')
                 .where('product.product_id = :product_id', { product_id })
                 .select([
-                'product',
+                'product.product_name AS product_name',
+                'product.product_content AS product_content',
+                'product.gender AS gender',
+                'product.price AS price',
                 'IFNULL(review.review_count, 0) AS review_count',
                 'IFNULL(ROUND(AVG(review.scope), 1), 0) AS review_scope',
                 'IFNULL(qna.qna_count, 0) AS qna_count',
@@ -91,6 +119,9 @@ let ProductService = class ProductService {
             ])
                 .groupBy('product.product_id')
                 .getRawOne();
+            const product_option = await this.product_optionRepository.findOne({
+                where: { product_id: product_id },
+            });
             return selectProduct;
         }
         catch (error) {
@@ -140,7 +171,10 @@ exports.ProductService = ProductService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(product_entity_1.ProductEntity)),
     __param(1, (0, typeorm_1.InjectRepository)(product_categories_entity_1.ProductCateogryEntity)),
+    __param(2, (0, typeorm_1.InjectRepository)(product_option_entity_1.Product_optionEntity)),
+    __param(3, (0, common_1.Inject)(cache_manager_1.CACHE_MANAGER)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        typeorm_2.Repository])
+        typeorm_2.Repository,
+        typeorm_2.Repository, Object])
 ], ProductService);
 //# sourceMappingURL=product.service.js.map

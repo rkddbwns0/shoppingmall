@@ -37,6 +37,7 @@ const like_product_module_1 = require("./modules/like_product.module");
 const helpful_review_entity_1 = require("./entites/helpful_review.entity");
 const helpful_review_module_1 = require("./modules/helpful_review.module");
 const user_module_1 = require("./modules/user.module");
+const product_option_entity_1 = require("./entites/product_option.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -65,6 +66,7 @@ exports.AppModule = AppModule = __decorate([
                         admin_entity_1.AdminEntity,
                         user_entity_1.UserEntity,
                         product_entity_1.ProductEntity,
+                        product_option_entity_1.Product_optionEntity,
                         product_categories_entity_1.ProductCateogryEntity,
                         cart_entity_1.CartEntity,
                         address_entity_1.AddressEntity,

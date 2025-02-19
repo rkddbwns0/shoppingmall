@@ -1,8 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Cache } from 'cache-manager';
 import { RegProductDto, UpdateProductDto } from 'src/dto/product.dto';
 import { ProductEntity } from 'src/entites/product.entity';
 import { ProductCateogryEntity } from 'src/entites/product_categories.entity';
+import { Product_optionEntity } from 'src/entites/product_option.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -13,7 +16,38 @@ export class ProductService {
 
     @InjectRepository(ProductCateogryEntity)
     private readonly productCategoryRepository: Repository<ProductCateogryEntity>,
+
+    @InjectRepository(Product_optionEntity)
+    private readonly product_optionRepository: Repository<Product_optionEntity>,
+
+    @Inject(CACHE_MANAGER)
+    private cacheManager: Cache,
   ) {}
+
+  async randomProduct(): Promise<ProductEntity[]> {
+    try {
+      const cacheKey = process.env.CACHE_KEY;
+
+      const cacheData = await this.cacheManager.get<ProductEntity[]>(cacheKey);
+      if (cacheData) {
+        console.log(cacheData);
+        return cacheData;
+      }
+
+      const result = await this.productRepository
+        .createQueryBuilder('product')
+        .select(['product.product_id', 'product.product_name', 'product.price'])
+        .orderBy('RAND()')
+        .limit(5)
+        .getMany();
+
+      await this.cacheManager.set(cacheKey, result, 600);
+
+      return result;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async selectProductCategory(
     category_id: number,
@@ -106,7 +140,10 @@ export class ProductService {
         )
         .where('product.product_id = :product_id', { product_id })
         .select([
-          'product',
+          'product.product_name AS product_name',
+          'product.product_content AS product_content',
+          'product.gender AS gender',
+          'product.price AS price',
           'IFNULL(review.review_count, 0) AS review_count',
           'IFNULL(ROUND(AVG(review.scope), 1), 0) AS review_scope',
           'IFNULL(qna.qna_count, 0) AS qna_count',
@@ -114,6 +151,10 @@ export class ProductService {
         ])
         .groupBy('product.product_id')
         .getRawOne();
+
+      const product_option = await this.product_optionRepository.findOne({
+        where: { product_id: product_id },
+      });
 
       return selectProduct;
     } catch (error) {

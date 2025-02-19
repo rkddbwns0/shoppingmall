@@ -1,0 +1,26 @@
+.header {
+    display: flex;
+    width: 100%;
+    padding: 20px 0;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+h2 {
+    margin-left: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    display: flex;
+    align-items: center;
+}
+
+li {
+    padding: 0 20px;
+    list-style: none;
+}

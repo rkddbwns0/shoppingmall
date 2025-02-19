@@ -19,6 +19,7 @@ const review_entity_1 = require("./review.entity");
 const qna_entity_1 = require("./qna.entity");
 const helpful_review_entity_1 = require("./helpful_review.entity");
 const like_product_entity_1 = require("./like_product.entity");
+const product_option_entity_1 = require("./product_option.entity");
 let ProductEntity = class ProductEntity {
 };
 exports.ProductEntity = ProductEntity;
@@ -52,25 +53,9 @@ __decorate([
     __metadata("design:type", String)
 ], ProductEntity.prototype, "gender", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', nullable: false }),
-    __metadata("design:type", String)
-], ProductEntity.prototype, "size", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', nullable: false }),
-    __metadata("design:type", String)
-], ProductEntity.prototype, "color", void 0);
-__decorate([
     (0, typeorm_1.Column)({ type: 'int', nullable: false }),
     __metadata("design:type", Number)
 ], ProductEntity.prototype, "price", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'int', nullable: true }),
-    __metadata("design:type", Number)
-], ProductEntity.prototype, "sale_price", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'int', nullable: false, default: 0 }),
-    __metadata("design:type", Number)
-], ProductEntity.prototype, "stock", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
@@ -84,6 +69,10 @@ __decorate([
     }),
     __metadata("design:type", Date)
 ], ProductEntity.prototype, "update_at", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => product_option_entity_1.Product_optionEntity, (product_option) => product_option.product_id),
+    __metadata("design:type", product_option_entity_1.Product_optionEntity)
+], ProductEntity.prototype, "product_option", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => cart_entity_1.CartEntity, (cart) => cart.product_id),
     __metadata("design:type", Array)

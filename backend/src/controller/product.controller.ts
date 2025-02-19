@@ -18,6 +18,17 @@ import { ProductService } from 'src/services/product.service';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @ApiOperation({ summary: '10분마다 랜덤한 상품 데이터 5개를 가져옴' })
+  @Get('/random_product')
+  async randomProduct(@Res() res: Response) {
+    try {
+      const result = await this.productService.randomProduct();
+      res.status(200).json(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   @ApiOperation({
     summary: 'product_category 테이블에 해당 번호의 자식 데이터를 가져옴',
   })

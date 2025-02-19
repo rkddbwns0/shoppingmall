@@ -47,13 +47,6 @@ let OrderService = class OrderService {
             if (!user || !address || !product) {
                 throw new common_1.BadRequestException('정보가 존재하지 않습니다. 다시 확인해 주세요.');
             }
-            if (product.stock < insertOrderDto.quantity) {
-                throw new common_1.BadRequestException('재고가 부족합니다. 다시 확인해 주세요.');
-            }
-            product.stock = product.stock - insertOrderDto.quantity;
-            await this.productRepository.update(product.product_id, {
-                stock: product.stock,
-            });
             insertOrderDto.address_no = address.address_no;
             insertOrderDto.total_price = product.price * insertOrderDto.quantity;
             const orderData = {
@@ -131,16 +124,6 @@ let OrderService = class OrderService {
             console.log(orderItems);
             const saveItems = await this.orderItemsRepository.create(orderItems);
             await this.orderItemsRepository.save(saveItems);
-            await Promise.all(cart_product.map(async (cartItem) => {
-                const product = product_data.find((product) => product.product_id === cartItem.product_id.product_id);
-                if (product) {
-                    const updateStock = product.stock - cartItem.quantity;
-                    if (updateStock < 0) {
-                        throw new common_1.BadRequestException('현재 재고가 부족합니다. 다시 확인해 주세요.');
-                    }
-                    await this.productRepository.update({ product_id: product.product_id }, { stock: updateStock });
-                }
-            }));
             await this.cartRepository.delete({ user_id: user.user_id });
             return { success: true };
         }
@@ -163,7 +146,6 @@ let OrderService = class OrderService {
             Promise.all(findOrderItems.map(async (item) => {
                 const product = item.product_no;
                 const order_quantity = item.quantity;
-                product.stock += order_quantity;
                 await this.productRepository.save(product);
             }));
             return { success: true };
