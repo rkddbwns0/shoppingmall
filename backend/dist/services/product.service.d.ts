@@ -13,10 +13,11 @@ export declare class ProductService {
     randomProduct(): Promise<ProductEntity[]>;
     selectProductCategory(category_id: number): Promise<ProductCateogryEntity[]>;
     selectProduct(product_category: number): Promise<ProductEntity[]>;
-    selectOneProduct(product_id: number): Promise<any>;
+    selectOneProduct(product_id: number): Promise<any[]>;
     insertProduct(regProductDto: RegProductDto): Promise<{
         success: boolean;
     }>;
+    insertProductOption(): Promise<void>;
     updateProduct(updateProductDto: UpdateProductDto): Promise<{
         success: boolean;
     }>;

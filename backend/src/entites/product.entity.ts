@@ -60,7 +60,7 @@ export class ProductEntity {
 
   @OneToMany(
     () => Product_optionEntity,
-    (product_option) => product_option.product_id,
+    (product_option) => product_option.product_no,
   )
   product_option: Product_optionEntity;
 

@@ -1,0 +1,36 @@
+.product_detail_container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.middleView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.scopeView {
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.colorView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circleView {
+    display: flex;
+    padding: 10px;
+}
+
+.review {
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}

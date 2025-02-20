@@ -5,6 +5,7 @@ import { CartEntity } from 'src/entites/cart.entity';
 import { OrderEntity } from 'src/entites/order.entity';
 import { OrderItemEntity } from 'src/entites/orderItem.entity';
 import { ProductEntity } from 'src/entites/product.entity';
+import { Product_optionEntity } from 'src/entites/product_option.entity';
 import { UserEntity } from 'src/entites/user.entity';
 import { Repository } from 'typeorm';
 export declare class OrderService {
@@ -12,10 +13,11 @@ export declare class OrderService {
     private readonly userRepository;
     private readonly cartRepository;
     private readonly productRepository;
+    private readonly product_optionRespository;
     private readonly addressRepository;
     private readonly orderItemsRepository;
     private readonly adminRepository;
-    constructor(orderRepository: Repository<OrderEntity>, userRepository: Repository<UserEntity>, cartRepository: Repository<CartEntity>, productRepository: Repository<ProductEntity>, addressRepository: Repository<AddressEntity>, orderItemsRepository: Repository<OrderItemEntity>, adminRepository: Repository<AdminEntity>);
+    constructor(orderRepository: Repository<OrderEntity>, userRepository: Repository<UserEntity>, cartRepository: Repository<CartEntity>, productRepository: Repository<ProductEntity>, product_optionRespository: Repository<Product_optionEntity>, addressRepository: Repository<AddressEntity>, orderItemsRepository: Repository<OrderItemEntity>, adminRepository: Repository<AdminEntity>);
     insertOrder(insertOrderDto: InsertOrderDto): Promise<{
         success: boolean;
     }>;

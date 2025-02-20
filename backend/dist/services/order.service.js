@@ -21,14 +21,16 @@ const cart_entity_1 = require("../entites/cart.entity");
 const order_entity_1 = require("../entites/order.entity");
 const orderItem_entity_1 = require("../entites/orderItem.entity");
 const product_entity_1 = require("../entites/product.entity");
+const product_option_entity_1 = require("../entites/product_option.entity");
 const user_entity_1 = require("../entites/user.entity");
 const typeorm_2 = require("typeorm");
 let OrderService = class OrderService {
-    constructor(orderRepository, userRepository, cartRepository, productRepository, addressRepository, orderItemsRepository, adminRepository) {
+    constructor(orderRepository, userRepository, cartRepository, productRepository, product_optionRespository, addressRepository, orderItemsRepository, adminRepository) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
+        this.product_optionRespository = product_optionRespository;
         this.addressRepository = addressRepository;
         this.orderItemsRepository = orderItemsRepository;
         this.adminRepository = adminRepository;
@@ -182,10 +184,12 @@ exports.OrderService = OrderService = __decorate([
     __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
     __param(2, (0, typeorm_1.InjectRepository)(cart_entity_1.CartEntity)),
     __param(3, (0, typeorm_1.InjectRepository)(product_entity_1.ProductEntity)),
-    __param(4, (0, typeorm_1.InjectRepository)(address_entity_1.AddressEntity)),
-    __param(5, (0, typeorm_1.InjectRepository)(orderItem_entity_1.OrderItemEntity)),
-    __param(6, (0, typeorm_1.InjectRepository)(admin_entity_1.AdminEntity)),
+    __param(4, (0, typeorm_1.InjectRepository)(product_option_entity_1.Product_optionEntity)),
+    __param(5, (0, typeorm_1.InjectRepository)(address_entity_1.AddressEntity)),
+    __param(6, (0, typeorm_1.InjectRepository)(orderItem_entity_1.OrderItemEntity)),
+    __param(7, (0, typeorm_1.InjectRepository)(admin_entity_1.AdminEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,

@@ -108,11 +108,16 @@ export class ProductService {
       const selectProduct = await this.productRepository
         .createQueryBuilder('product')
         .leftJoin(
+          'product.product_option',
+          'product_option',
+          'product_option.product_no = product.product_id',
+        )
+        .leftJoin(
           (qb) =>
             qb
               .select('review.product_no', 'product_no')
               .addSelect('COUNT(review.product_no) AS review_count')
-              .addSelect('review.scope', 'scope')
+              .addSelect('AVG(review.scope) AS review_scope')
               .from('review', 'review')
               .groupBy('review.product_no'),
           'review',
@@ -140,22 +145,23 @@ export class ProductService {
         )
         .where('product.product_id = :product_id', { product_id })
         .select([
+          'product.brand AS brand',
           'product.product_name AS product_name',
           'product.product_content AS product_content',
           'product.gender AS gender',
           'product.price AS price',
+          'product.sale_price AS sale_price',
+          'IFNULL(product_option.color, "") AS color',
+          'IFNULL(product_option.size, "") AS size',
+          'IFNULL(product_option.stock, 0) AS stock',
           'IFNULL(review.review_count, 0) AS review_count',
-          'IFNULL(ROUND(AVG(review.scope), 1), 0) AS review_scope',
+          'IFNULL(ROUND(review.review_scope, 1), 0) AS review_scope',
           'IFNULL(qna.qna_count, 0) AS qna_count',
           'IFNULL(like_product.liked_count, 0) as liked_count',
         ])
-        .groupBy('product.product_id')
-        .getRawOne();
+        .getRawMany();
 
-      const product_option = await this.product_optionRepository.findOne({
-        where: { product_id: product_id },
-      });
-
+      console.log(selectProduct);
       return selectProduct;
     } catch (error) {
       console.error(error);
@@ -173,8 +179,6 @@ export class ProductService {
       product_category,
     };
 
-    console.log(productData);
-
     try {
       const result = await this.productRepository.create(productData);
       await this.productRepository.save(result);
@@ -184,6 +188,8 @@ export class ProductService {
       return { success: false };
     }
   }
+
+  async insertProductOption() {}
 
   async updateProduct(updateProductDto: UpdateProductDto) {
     const productId = await this.productRepository.findOne({

@@ -1,9 +1,62 @@
 .header {
     display: flex;
     width: 100%;
-    padding: 20px 0;
-    justify-content: space-between;
+    flex-direction: column;
     margin: 0 auto;
+}
+
+.top-area {
+    display: flex;
+    background-color: black;
+    justify-content: flex-end;
+}
+
+.inner {
+    display: flex;
+    padding: 7px;
+    justify-content: center;
+}
+
+.inner p {
+    color: white;
+    font-size: 12px;
+    margin: 5px;
+}
+
+.main-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main-column {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 0.5px solid rgb(219, 209, 209);
+    border-width: 1px;
+    padding: 10px;
+}
+
+.main-title {
+    display: flex;
+    flex: 1;
+}
+
+.main-icon-view {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.main-icon-column {
+    display: flex;
+    margin: 10px;
+}
+
+.icon {
+    font-size: 25px;
+    margin: 12px;
 }
 
 h2 {

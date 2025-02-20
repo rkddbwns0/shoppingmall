@@ -16,8 +16,8 @@ export class Product_optionEntity {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({ name: 'product_id' })
-  product_id: number;
+  @JoinColumn({ name: 'product_no' })
+  product_no: number;
 
   @Column({ type: 'varchar', nullable: false })
   color: string;

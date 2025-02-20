@@ -7,7 +7,7 @@ export declare class ProductController {
     randomProduct(res: Response): Promise<void>;
     selectProductCategory(category_id: number): Promise<import("../entites/product_categories.entity").ProductCateogryEntity[]>;
     selectProduct(product_category: number): Promise<import("../entites/product.entity").ProductEntity[]>;
-    selectOneProduct(product_id: number): Promise<any>;
+    selectOneProduct(product_id: number): Promise<any[]>;
     insertProduct(regProductDto: RegProductDto, res: Response): Promise<void>;
     updateProduct(updateProductDto: UpdateProductDto, res: Response): Promise<void>;
 }

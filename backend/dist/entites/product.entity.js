@@ -70,7 +70,7 @@ __decorate([
     __metadata("design:type", Date)
 ], ProductEntity.prototype, "update_at", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => product_option_entity_1.Product_optionEntity, (product_option) => product_option.product_id),
+    (0, typeorm_1.OneToMany)(() => product_option_entity_1.Product_optionEntity, (product_option) => product_option.product_no),
     __metadata("design:type", product_option_entity_1.Product_optionEntity)
 ], ProductEntity.prototype, "product_option", void 0);
 __decorate([

@@ -24,9 +24,9 @@ __decorate([
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'product_id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'product_no' }),
     __metadata("design:type", Number)
-], Product_optionEntity.prototype, "product_id", void 0);
+], Product_optionEntity.prototype, "product_no", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', nullable: false }),
     __metadata("design:type", String)

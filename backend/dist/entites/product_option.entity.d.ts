@@ -1,6 +1,6 @@
 export declare class Product_optionEntity {
     option_id: number;
-    product_id: number;
+    product_no: number;
     color: string;
     size: string;
     stock: number;
