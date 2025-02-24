@@ -35,15 +35,13 @@ let UserController = class UserController {
             const hashPassword = await this.userService.hashPassword(signupUserDto.password);
             signupUserDto.password = hashPassword;
             const result = await this.userService.signupUser(signupUserDto);
-            if (result.success === true) {
-                res.status(201).json({ message: result.message });
-            }
-            else {
-                return res.status(400).json({ message: result.message });
-            }
+            return res
+                .status(result.success ? 201 : 400)
+                .json({ message: result.message });
         }
         catch (error) {
-            throw new common_1.BadRequestException(error.message);
+            console.log(error);
+            res.status(500).json({ message: '서버에러입니다.' });
         }
     }
 };

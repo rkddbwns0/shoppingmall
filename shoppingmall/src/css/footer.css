@@ -1,20 +1,8 @@
 .footer {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-}
-
-.info {
-    display: flex;
-    text-align: center;
-    border-top: 2px solid rgb(194, 192, 192);
-    border-bottom: 2px solid rgb(194, 192, 192);
-    flex-direction: row;
-    justify-content: space-around;
-}
-
-.info p {
-    font-size: 15px;
+    display: block;
+    top: 0;
+    justify-content: space-between;
+    background-color: rgb(238, 233, 233);
 }
 
 .footer_menu {
@@ -26,4 +14,22 @@
 .footer_menu div {
     display: flex;
     gap: 20px;
+}
+
+.info {
+    display: flex;
+    flex: 1;
+    text-align: left;
+    border-top: 0.5px solid rgb(194, 192, 192);
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.info p {
+    font-size: 15px;
+}
+
+.footer_info {
+    display: flex;
+    flex-direction: column;
 }

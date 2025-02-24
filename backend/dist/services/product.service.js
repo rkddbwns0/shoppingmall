@@ -37,10 +37,18 @@ let ProductService = class ProductService {
             }
             const result = await this.productRepository
                 .createQueryBuilder('product')
-                .select(['product.product_id', 'product.product_name', 'product.price'])
+                .leftJoin('like_product', 'like_product', 'like_product.product_no = product.product_id')
+                .select([
+                'product.brand AS brand',
+                'product.product_id AS product_id',
+                'product.product_name AS product_name',
+                'product.price AS price',
+                'IFNULL(COUNT(like_product.product_no), 0) AS like_product',
+            ])
+                .groupBy('product.product_id')
                 .orderBy('RAND()')
                 .limit(5)
-                .getMany();
+                .getRawMany();
             await this.cacheManager.set(cacheKey, result, 600);
             return result;
         }

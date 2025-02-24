@@ -9,9 +9,9 @@ const Header = () => {
             <div className="top-area">
                 <div className="inner">
                     <div className="loginTab">
-                        <p>
-                            <a>로그인</a>
-                        </p>
+                        <Link to="/login">
+                            <p>로그인</p>
+                        </Link>
                     </div>
                     <div>
                         <p>마이페이지</p>

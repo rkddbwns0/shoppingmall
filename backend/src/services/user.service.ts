@@ -80,11 +80,21 @@ export class UserService {
   }
 
   async hashPassword(password: string) {
+    console.log(password);
     return await bcrypt.hash(password, 10);
   }
 
   async signupUser(signupUserDto: SignUpUserDto) {
     try {
+      console.log(signupUserDto);
+      const checkUser = await this.user.findOne({
+        where: { email: signupUserDto.email, phone: signupUserDto.phone },
+      });
+
+      if (checkUser) {
+        throw new BadRequestException('이미 가입된 유저입니다.');
+      }
+
       const signup = await this.user.create(signupUserDto);
       const saveSignup = await this.user.save(signup);
 
@@ -96,6 +106,7 @@ export class UserService {
 
       return { suceess: true, message: '회원가입에 성공하였습니다.' };
     } catch (error) {
+      console.error(error);
       return { success: false, message: error.message };
     }
   }

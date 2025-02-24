@@ -2,10 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import '../css/main.css';
 import { Link } from 'react-router-dom';
+import { IoMdHeart } from 'react-icons/io';
 
 const Main = () => {
     const [products, setProducts] = useState([]);
-    const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
     useEffect(() => {
         const product_data = async () => {
@@ -37,8 +37,15 @@ const Main = () => {
                     return (
                         <div key={index} className="main_random_products">
                             <Link to={`/product/${item.product_id}`}>
-                                <p>{item.product_name}</p>
-                                <p>{item.price}</p>
+                                <div>
+                                    <h4>{item.brand}</h4>
+                                    <p>{item.product_name}</p>
+                                    <h4>{item.price.toLocaleString()}</h4>
+                                </div>
+                                <div className="likeCount">
+                                    <IoMdHeart />
+                                    <p>{item.like_product}</p>
+                                </div>
                             </Link>
                         </div>
                     );
