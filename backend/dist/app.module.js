@@ -38,6 +38,8 @@ const helpful_review_entity_1 = require("./entites/helpful_review.entity");
 const helpful_review_module_1 = require("./modules/helpful_review.module");
 const user_module_1 = require("./modules/user.module");
 const product_option_entity_1 = require("./entites/product_option.entity");
+const jwt_module_1 = require("./auth/jwt/jwt.module");
+const user_token_entity_1 = require("./entites/user_token.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -65,6 +67,7 @@ exports.AppModule = AppModule = __decorate([
                     entities: [
                         admin_entity_1.AdminEntity,
                         user_entity_1.UserEntity,
+                        user_token_entity_1.UserTokenEntity,
                         product_entity_1.ProductEntity,
                         product_option_entity_1.Product_optionEntity,
                         product_categories_entity_1.ProductCateogryEntity,
@@ -92,6 +95,7 @@ exports.AppModule = AppModule = __decorate([
             order_mng_module_1.OrderMngModule,
             like_product_module_1.Like_ProductModule,
             helpful_review_module_1.Helpful_ReviewModule,
+            jwt_module_1.AuthModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

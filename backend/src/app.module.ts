@@ -29,6 +29,8 @@ import { Helpful_ReviewEntity } from './entites/helpful_review.entity';
 import { Helpful_ReviewModule } from './modules/helpful_review.module';
 import { UserModule } from './modules/user.module';
 import { Product_optionEntity } from './entites/product_option.entity';
+import { AuthModule } from './auth/jwt/jwt.module';
+import { UserTokenEntity } from './entites/user_token.entity';
 
 @Module({
   imports: [
@@ -53,6 +55,7 @@ import { Product_optionEntity } from './entites/product_option.entity';
         entities: [
           AdminEntity,
           UserEntity,
+          UserTokenEntity,
           ProductEntity,
           Product_optionEntity,
           ProductCateogryEntity,
@@ -80,6 +83,7 @@ import { Product_optionEntity } from './entites/product_option.entity';
     OrderMngModule,
     Like_ProductModule,
     Helpful_ReviewModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -7,6 +7,7 @@ import { ReviewEntity } from './review.entity';
 import { QnAEntity } from './qna.entity';
 import { Helpful_ReviewEntity } from './helpful_review.entity';
 import { Like_ProductEntity } from './like_product.entity';
+import { UserTokenEntity } from './user_token.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -33,6 +34,9 @@ export class UserEntity {
 
   @Column({ type: 'datetime', nullable: true })
   update_at: Date;
+
+  @OneToMany(() => UserTokenEntity, (user_token) => user_token.user_id)
+  user_token: UserTokenEntity;
 
   @OneToMany(() => CartEntity, (cart) => cart.user_id)
   cart: CartEntity[];

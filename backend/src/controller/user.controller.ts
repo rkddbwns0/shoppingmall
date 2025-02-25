@@ -2,18 +2,26 @@ import {
   BadRequestException,
   Body,
   Controller,
+  HttpStatus,
   Post,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
-import { error } from 'console';
-import { Response } from 'express';
+import { Request, Response } from 'express';
+import { JwtServiceAuthGuard } from 'src/auth/jwt/jwt-service.guard';
+import { LoginDto } from 'src/dto/auth.dto';
 import { SignUpUserDto } from 'src/dto/user.dto';
+import { AuthService } from 'src/services/auth.service';
 import { UserService } from 'src/services/user.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
   @ApiOperation({ summary: '회원가입 중복 검사 라우터' })
   @Post('/duplicate_user')
@@ -51,5 +59,43 @@ export class UserController {
       console.log(error);
       res.status(500).json({ message: '서버에러입니다.' });
     }
+  }
+
+  @ApiOperation({ summary: '로그인 라우터' })
+  @UseGuards(JwtServiceAuthGuard)
+  @Post('/login')
+  async login(@Req() req: Request, @Res() res: Response, loginDto: LoginDto) {
+    try {
+      const token = await this.authService.login(loginDto);
+
+      res.cookie('shop_access_token', token.accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+      });
+
+      res.cookie('shop_refresh_token', token.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+      });
+
+      res
+        .status(HttpStatus.OK)
+        .json({ message: '로그인 성공', data: token.user_info });
+
+      return;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  @ApiOperation({ summary: '로그아웃 라우터' })
+  @Post('/logout')
+  async logout(@Res() res: Response) {
+    res.clearCookie('shop_access_token');
+    res.clearCookie('shop_refresh_token');
+
+    return { message: '로그아웃' };
   }
 }

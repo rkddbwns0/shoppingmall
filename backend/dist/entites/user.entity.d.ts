@@ -6,6 +6,7 @@ import { ReviewEntity } from './review.entity';
 import { QnAEntity } from './qna.entity';
 import { Helpful_ReviewEntity } from './helpful_review.entity';
 import { Like_ProductEntity } from './like_product.entity';
+import { UserTokenEntity } from './user_token.entity';
 export declare class UserEntity {
     user_id: number;
     name: string;
@@ -15,6 +16,7 @@ export declare class UserEntity {
     nickname: string;
     create_at: Date;
     update_at: Date;
+    user_token: UserTokenEntity;
     cart: CartEntity[];
     address: AddressEntity[];
     order: OrderEntity[];

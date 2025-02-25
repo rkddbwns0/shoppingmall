@@ -12,22 +12,27 @@ const config_1 = require("@nestjs/config");
 const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../../entites/user.entity");
+const auth_service_1 = require("../../services/auth.service");
+const user_service_1 = require("../../services/user.service");
+const jwt_service_strategy_1 = require("./jwt-service.strategy");
+const user_token_entity_1 = require("../../entites/user_token.entity");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, user_token_entity_1.UserTokenEntity]),
             jwt_1.JwtModule.registerAsync({
-                imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity])],
+                global: true,
                 useFactory: async (configService) => ({
                     secret: configService.get('JWT_SECRET_KEY'),
                 }),
                 inject: [config_1.ConfigService],
             }),
         ],
-        controllers: [],
-        providers: [],
+        providers: [auth_service_1.AuthService, user_service_1.UserService, jwt_service_strategy_1.JwtServiceStrategy],
+        exports: [auth_service_1.AuthService],
     })
 ], AuthModule);
 //# sourceMappingURL=jwt.module.js.map

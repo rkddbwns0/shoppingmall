@@ -19,6 +19,7 @@ const review_entity_1 = require("./review.entity");
 const qna_entity_1 = require("./qna.entity");
 const helpful_review_entity_1 = require("./helpful_review.entity");
 const like_product_entity_1 = require("./like_product.entity");
+const user_token_entity_1 = require("./user_token.entity");
 let UserEntity = class UserEntity {
 };
 exports.UserEntity = UserEntity;
@@ -54,6 +55,10 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'datetime', nullable: true }),
     __metadata("design:type", Date)
 ], UserEntity.prototype, "update_at", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => user_token_entity_1.UserTokenEntity, (user_token) => user_token.user_id),
+    __metadata("design:type", user_token_entity_1.UserTokenEntity)
+], UserEntity.prototype, "user_token", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => cart_entity_1.CartEntity, (cart) => cart.user_id),
     __metadata("design:type", Array)
