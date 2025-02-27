@@ -13,7 +13,6 @@ export declare class UserEntity {
     phone: string;
     email: string;
     password: string;
-    nickname: string;
     create_at: Date;
     update_at: Date;
     user_token: UserTokenEntity;

@@ -11,20 +11,20 @@ export class JwtServiceStrategy extends PassportStrategy(
   constructor(private readonly configService: ConfigService) {
     super({
       secretOrKey: configService.get<string>('JWT_SECRET_KEY'),
-      ignoreExpiration: true,
+      ignoreExpiration: false,
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request) => {
-          return request?.cookies?.token;
+          return request?.cookies?.shop_access_token;
         },
       ]),
     });
   }
 
-  async vaildate(payload: any) {
+  async validate(payload: any) {
     return {
+      user_id: payload.user_id,
       email: payload.email,
       name: payload.name,
-      nickname: payload.nickname,
     };
   }
 }

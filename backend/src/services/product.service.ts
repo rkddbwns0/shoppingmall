@@ -30,7 +30,6 @@ export class ProductService {
 
       const cacheData = await this.cacheManager.get<ProductEntity[]>(cacheKey);
       if (cacheData) {
-        console.log(cacheData);
         return cacheData;
       }
 
@@ -111,7 +110,6 @@ export class ProductService {
       .groupBy('product.product_id')
       .getRawMany();
 
-    console.log(ProductResult);
     return ProductResult;
   }
 
@@ -173,7 +171,6 @@ export class ProductService {
         ])
         .getRawMany();
 
-      console.log(selectProduct);
       return selectProduct;
     } catch (error) {
       console.error(error);

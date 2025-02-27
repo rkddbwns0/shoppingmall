@@ -22,7 +22,7 @@ let UserService = class UserService {
     constructor(user) {
         this.user = user;
     }
-    async checkDuplicate(email, phone, nickname) {
+    async checkDuplicate(email, phone) {
         try {
             const result = {};
             if (email) {
@@ -32,10 +32,6 @@ let UserService = class UserService {
             if (phone) {
                 const phoneResult = await this.checkPhone(phone);
                 result.phone = phoneResult.message || phoneResult.ErrorMessage;
-            }
-            if (nickname) {
-                const nicknameResult = await this.checkNickname(nickname);
-                result.nickname = nicknameResult.message || nicknameResult.ErrorMessage;
             }
             return result;
         }
@@ -67,22 +63,7 @@ let UserService = class UserService {
             return { ErrorMessage: error.message };
         }
     }
-    async checkNickname(nickname) {
-        try {
-            const dupNickname = await this.user.findOne({
-                where: { nickname: nickname },
-            });
-            if (dupNickname) {
-                throw new common_1.BadRequestException('이미 사용 중인 닉네임입니다.');
-            }
-            return { message: '사용 가능한 닉네임입니다.' };
-        }
-        catch (error) {
-            return { ErrorMessage: error.message };
-        }
-    }
     async hashPassword(password) {
-        console.log(password);
         return await bcrypt.hash(password, 10);
     }
     async signupUser(signupUserDto) {

@@ -29,13 +29,17 @@ let AuthService = class AuthService {
         this.configService = configService;
     }
     async login(loginDto) {
+        const caluateExpriryDate = () => {
+            const now = new Date();
+            now.setDate(now.getDate() + 7);
+            return now;
+        };
         const user = await this.vaildateServiceUser(loginDto);
         const accessToken = await this.accessTokenService(user);
         const refreshToken = await this.refreshTokenService(user);
         const user_info = {
             email: user.email,
             name: user.name,
-            nickname: user.nickname,
         };
         const findToken = await this.user_token.findOne({
             where: { user_id: user.user_id, token: refreshToken },
@@ -44,6 +48,8 @@ let AuthService = class AuthService {
             const newToken = await this.user_token.create({
                 user_id: user.user_id,
                 token: refreshToken,
+                device_id: loginDto.device_id,
+                expires_at: caluateExpriryDate(),
             });
             await this.user_token.save(newToken);
         }
@@ -68,9 +74,9 @@ let AuthService = class AuthService {
     }
     async accessTokenService(user) {
         const payload = {
+            user_id: user.user_id,
             email: user.email,
             name: user.name,
-            nickname: user.nickname,
         };
         const accessToken = await this.jwtService.sign(payload, {
             expiresIn: '1h',
@@ -79,14 +85,29 @@ let AuthService = class AuthService {
     }
     async refreshTokenService(user) {
         const payload = {
+            user_id: user.user_id,
             email: user.email,
             name: user.name,
-            nickname: user.nickname,
         };
         const refreshToken = await this.jwtService.sign(payload, {
             expiresIn: '7d',
         });
         return refreshToken;
+    }
+    async logout(logoutDto) {
+        try {
+            const user = await this.user.findOne({
+                where: { email: logoutDto.email },
+                select: ['user_id'],
+            });
+            await this.user_token.delete({
+                user_id: user.user_id,
+                device_id: logoutDto.device_id,
+            });
+        }
+        catch (error) {
+            console.error(error);
+        }
     }
 };
 exports.AuthService = AuthService;

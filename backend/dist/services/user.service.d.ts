@@ -4,16 +4,14 @@ import { Repository } from 'typeorm';
 export declare class UserService {
     private readonly user;
     constructor(user: Repository<UserEntity>);
-    checkDuplicate(email?: string, phone?: string, nickname?: string): Promise<{
+    checkDuplicate(email?: string, phone?: string): Promise<{
         email?: string;
         phone?: string;
-        nickname?: string;
     } | {
         message: any;
     }>;
     private checkEmail;
     private checkPhone;
-    private checkNickname;
     hashPassword(password: string): Promise<string>;
     signupUser(signupUserDto: SignUpUserDto): Promise<{
         suceess: boolean;

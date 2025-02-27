@@ -32,7 +32,6 @@ let ProductService = class ProductService {
             const cacheKey = process.env.CACHE_KEY;
             const cacheData = await this.cacheManager.get(cacheKey);
             if (cacheData) {
-                console.log(cacheData);
                 return cacheData;
             }
             const result = await this.productRepository
@@ -91,7 +90,6 @@ let ProductService = class ProductService {
         ])
             .groupBy('product.product_id')
             .getRawMany();
-        console.log(ProductResult);
         return ProductResult;
     }
     async selectOneProduct(product_id) {
@@ -132,7 +130,6 @@ let ProductService = class ProductService {
                 'IFNULL(like_product.liked_count, 0) as liked_count',
             ])
                 .getRawMany();
-            console.log(selectProduct);
             return selectProduct;
         }
         catch (error) {

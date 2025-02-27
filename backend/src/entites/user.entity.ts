@@ -26,9 +26,6 @@ export class UserEntity {
   @Column({ type: 'varchar', nullable: false })
   password: string;
 
-  @Column({ type: 'varchar', nullable: false })
-  nickname: string;
-
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   create_at: Date;
 

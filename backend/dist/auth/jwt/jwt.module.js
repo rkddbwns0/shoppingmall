@@ -16,6 +16,8 @@ const auth_service_1 = require("../../services/auth.service");
 const user_service_1 = require("../../services/user.service");
 const jwt_service_strategy_1 = require("./jwt-service.strategy");
 const user_token_entity_1 = require("../../entites/user_token.entity");
+const core_1 = require("@nestjs/core");
+const jwt_service_guard_1 = require("./jwt-service.guard");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -27,12 +29,18 @@ exports.AuthModule = AuthModule = __decorate([
                 global: true,
                 useFactory: async (configService) => ({
                     secret: configService.get('JWT_SECRET_KEY'),
+                    signOptions: { expiresIn: '60s' },
                 }),
                 inject: [config_1.ConfigService],
             }),
         ],
-        providers: [auth_service_1.AuthService, user_service_1.UserService, jwt_service_strategy_1.JwtServiceStrategy],
-        exports: [auth_service_1.AuthService],
+        providers: [
+            auth_service_1.AuthService,
+            user_service_1.UserService,
+            jwt_service_strategy_1.JwtServiceStrategy,
+            { provide: core_1.APP_GUARD, useClass: jwt_service_guard_1.JwtServiceAuthGuard },
+        ],
+        exports: [auth_service_1.AuthService, jwt_1.JwtModule],
     })
 ], AuthModule);
 //# sourceMappingURL=jwt.module.js.map

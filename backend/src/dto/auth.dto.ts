@@ -9,4 +9,19 @@ export class LoginDto {
   @IsNotEmpty()
   @IsNumber()
   password: string;
+
+  @IsNotEmpty()
+  @IsString()
+  device_id: string;
+}
+
+export class LogoutDto {
+  @IsNotEmpty()
+  @IsEmail()
+  @IsString()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  device_id: string;
 }

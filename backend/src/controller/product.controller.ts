@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
+import { Public } from 'src/auth/decorator/public.decorator';
 import { RegProductDto, UpdateProductDto } from 'src/dto/product.dto';
 
 import { ProductService } from 'src/services/product.service';
@@ -19,6 +20,7 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @ApiOperation({ summary: '10분마다 랜덤한 상품 데이터 5개를 가져옴' })
+  @Public()
   @Get('/random_product')
   async randomProduct(@Res() res: Response) {
     try {
@@ -32,7 +34,8 @@ export class ProductController {
   @ApiOperation({
     summary: 'product_category 테이블에 해당 번호의 자식 데이터를 가져옴',
   })
-  @Get('select_category/:category_id')
+  @Public()
+  @Get('/select_category/:category_id')
   async selectProductCategory(@Param('category_id') category_id: number) {
     if (!category_id) {
       throw new BadRequestException('카테고리 넘버가 없습니다.');
@@ -41,7 +44,8 @@ export class ProductController {
   }
 
   @ApiOperation({ summary: '입력 받은 값에 대한 product 데이터 정보를 가져옴' })
-  @Get('select_products/:product_category')
+  @Public()
+  @Get('/select_products/:product_category')
   async selectProduct(@Param('product_category') product_category: number) {
     if (!product_category) {
       throw new BadRequestException('카테고리 넘버가 없습니다.');
@@ -50,7 +54,8 @@ export class ProductController {
   }
 
   @ApiOperation({ summary: '특정 제품 정보 라우터' })
-  @Get('select_product/:product_id')
+  @Public()
+  @Get('/select_product/:product_id')
   async selectOneProduct(@Param('product_id') product_id: number) {
     if (!product_id) {
       throw new BadRequestException(
@@ -62,7 +67,7 @@ export class ProductController {
   }
 
   @ApiOperation({ summary: '제품 등록 라우터' })
-  @Post('insert')
+  @Post('/insert')
   async insertProduct(
     @Body() regProductDto: RegProductDto,
     @Res() res: Response,
@@ -85,7 +90,7 @@ export class ProductController {
   }
 
   @ApiOperation({ summary: '제품 정보 수정 라우터' })
-  @Put('update')
+  @Put('/update')
   async updateProduct(
     @Body() updateProductDto: UpdateProductDto,
     @Res() res: Response,

@@ -4,7 +4,6 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Timestamp,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 
@@ -20,6 +19,15 @@ export class UserTokenEntity {
   @Column({ type: 'varchar', length: 255, nullable: false })
   token: string;
 
-  @Column({ type: 'timestamp', nullable: false })
-  expires_at: Timestamp;
+  @Column({ type: 'varchar', length: 20, nullable: false })
+  device_id: string;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  create_at: Date;
+
+  @Column({ type: 'datetime', nullable: false })
+  expires_at: Date;
 }

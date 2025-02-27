@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReviewController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const public_decorator_1 = require("../auth/decorator/public.decorator");
 const review_dto_1 = require("../dto/review.dto");
 const review_service_1 = require("../services/review.service");
 let ReviewController = class ReviewController {
@@ -64,6 +65,7 @@ __decorate([
 ], ReviewController.prototype, "insertReview", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '리뷰 내역 라우터' }),
+    (0, public_decorator_1.Public)(),
     (0, common_1.Get)('/select_review/:product_no'),
     __param(0, (0, common_1.Param)('product_no')),
     __param(1, (0, common_1.Res)()),

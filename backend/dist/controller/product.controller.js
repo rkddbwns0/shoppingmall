@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const public_decorator_1 = require("../auth/decorator/public.decorator");
 const product_dto_1 = require("../dto/product.dto");
 const product_service_1 = require("../services/product.service");
 let ProductController = class ProductController {
@@ -86,6 +87,7 @@ let ProductController = class ProductController {
 exports.ProductController = ProductController;
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '10분마다 랜덤한 상품 데이터 5개를 가져옴' }),
+    (0, public_decorator_1.Public)(),
     (0, common_1.Get)('/random_product'),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -96,7 +98,8 @@ __decorate([
     (0, swagger_1.ApiOperation)({
         summary: 'product_category 테이블에 해당 번호의 자식 데이터를 가져옴',
     }),
-    (0, common_1.Get)('select_category/:category_id'),
+    (0, public_decorator_1.Public)(),
+    (0, common_1.Get)('/select_category/:category_id'),
     __param(0, (0, common_1.Param)('category_id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -104,7 +107,8 @@ __decorate([
 ], ProductController.prototype, "selectProductCategory", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '입력 받은 값에 대한 product 데이터 정보를 가져옴' }),
-    (0, common_1.Get)('select_products/:product_category'),
+    (0, public_decorator_1.Public)(),
+    (0, common_1.Get)('/select_products/:product_category'),
     __param(0, (0, common_1.Param)('product_category')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -112,7 +116,8 @@ __decorate([
 ], ProductController.prototype, "selectProduct", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '특정 제품 정보 라우터' }),
-    (0, common_1.Get)('select_product/:product_id'),
+    (0, public_decorator_1.Public)(),
+    (0, common_1.Get)('/select_product/:product_id'),
     __param(0, (0, common_1.Param)('product_id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -120,7 +125,7 @@ __decorate([
 ], ProductController.prototype, "selectOneProduct", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '제품 등록 라우터' }),
-    (0, common_1.Post)('insert'),
+    (0, common_1.Post)('/insert'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -129,7 +134,7 @@ __decorate([
 ], ProductController.prototype, "insertProduct", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '제품 정보 수정 라우터' }),
-    (0, common_1.Put)('update'),
+    (0, common_1.Put)('/update'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

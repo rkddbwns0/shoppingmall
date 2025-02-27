@@ -29,8 +29,19 @@ __decorate([
     __metadata("design:type", String)
 ], UserTokenEntity.prototype, "token", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'timestamp', nullable: false }),
-    __metadata("design:type", typeorm_1.Timestamp)
+    (0, typeorm_1.Column)({ type: 'varchar', length: 20, nullable: false }),
+    __metadata("design:type", String)
+], UserTokenEntity.prototype, "device_id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP',
+    }),
+    __metadata("design:type", Date)
+], UserTokenEntity.prototype, "create_at", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'datetime', nullable: false }),
+    __metadata("design:type", Date)
 ], UserTokenEntity.prototype, "expires_at", void 0);
 exports.UserTokenEntity = UserTokenEntity = __decorate([
     (0, typeorm_1.Entity)('user_token')

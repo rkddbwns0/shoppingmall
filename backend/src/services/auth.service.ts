@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LoginDto } from 'src/dto/auth.dto';
+import { LoginDto, LogoutDto } from 'src/dto/auth.dto';
 import { UserEntity } from 'src/entites/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -22,6 +22,12 @@ export class AuthService {
   ) {}
 
   async login(loginDto: LoginDto) {
+    const caluateExpriryDate = () => {
+      const now = new Date();
+      now.setDate(now.getDate() + 7);
+      return now;
+    };
+
     const user = await this.vaildateServiceUser(loginDto);
     const accessToken = await this.accessTokenService(user);
     const refreshToken = await this.refreshTokenService(user);
@@ -29,7 +35,6 @@ export class AuthService {
     const user_info = {
       email: user.email,
       name: user.name,
-      nickname: user.nickname,
     };
 
     const findToken = await this.user_token.findOne({
@@ -40,6 +45,8 @@ export class AuthService {
       const newToken = await this.user_token.create({
         user_id: user.user_id,
         token: refreshToken,
+        device_id: loginDto.device_id,
+        expires_at: caluateExpriryDate(),
       });
       await this.user_token.save(newToken);
     }
@@ -69,9 +76,9 @@ export class AuthService {
 
   async accessTokenService(user: UserEntity) {
     const payload = {
+      user_id: user.user_id,
       email: user.email,
       name: user.name,
-      nickname: user.nickname,
     };
 
     const accessToken = await this.jwtService.sign(payload, {
@@ -83,9 +90,9 @@ export class AuthService {
 
   async refreshTokenService(user: UserEntity) {
     const payload = {
+      user_id: user.user_id,
       email: user.email,
       name: user.name,
-      nickname: user.nickname,
     };
 
     const refreshToken = await this.jwtService.sign(payload, {
@@ -93,5 +100,21 @@ export class AuthService {
     });
 
     return refreshToken;
+  }
+
+  async logout(logoutDto: LogoutDto) {
+    try {
+      const user = await this.user.findOne({
+        where: { email: logoutDto.email },
+        select: ['user_id'],
+      });
+
+      await this.user_token.delete({
+        user_id: user.user_id,
+        device_id: logoutDto.device_id,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

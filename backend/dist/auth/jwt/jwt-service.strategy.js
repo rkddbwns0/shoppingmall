@@ -18,20 +18,20 @@ let JwtServiceStrategy = class JwtServiceStrategy extends (0, passport_1.Passpor
     constructor(configService) {
         super({
             secretOrKey: configService.get('JWT_SECRET_KEY'),
-            ignoreExpiration: true,
+            ignoreExpiration: false,
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromExtractors([
                 (request) => {
-                    return request?.cookies?.token;
+                    return request?.cookies?.shop_access_token;
                 },
             ]),
         });
         this.configService = configService;
     }
-    async vaildate(payload) {
+    async validate(payload) {
         return {
+            user_id: payload.user_id,
             email: payload.email,
             name: payload.name,
-            nickname: payload.nickname,
         };
     }
 };

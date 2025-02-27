@@ -7,23 +7,26 @@ import Footer from './components/footer/footer';
 import Product from './pages/product';
 import Login from './pages/login';
 import Signup from './pages/signup';
+import { DeviceIdProvider } from './components/auth/deviceContext';
 
 function App() {
     return (
-        <BrowserRouter>
-            <div className="App">
-                <Header />
-                <div className="content">
-                    <Routes>
-                        <Route path="/" element={<Main />} />
-                        <Route path="/product/:product_id" element={<Product />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<Signup />} />
-                    </Routes>
+        <DeviceIdProvider>
+            <BrowserRouter>
+                <div className="App">
+                    <Header />
+                    <div className="content">
+                        <Routes>
+                            <Route path="/" element={<Main />} />
+                            <Route path="/product/:product_id" element={<Product />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/signup" element={<Signup />} />
+                        </Routes>
+                    </div>
+                    <Footer />
                 </div>
-                <Footer />
-            </div>
-        </BrowserRouter>
+            </BrowserRouter>
+        </DeviceIdProvider>
     );
 }
 

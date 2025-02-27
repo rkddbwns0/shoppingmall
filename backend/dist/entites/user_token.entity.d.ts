@@ -1,7 +1,8 @@
-import { Timestamp } from 'typeorm';
 export declare class UserTokenEntity {
     token_id: number;
     user_id: number;
     token: string;
-    expires_at: Timestamp;
+    device_id: string;
+    create_at: Date;
+    expires_at: Date;
 }

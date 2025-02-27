@@ -12,9 +12,9 @@ export class UserService {
     private readonly user: Repository<UserEntity>,
   ) {}
 
-  async checkDuplicate(email?: string, phone?: string, nickname?: string) {
+  async checkDuplicate(email?: string, phone?: string) {
     try {
-      const result: { email?: string; phone?: string; nickname?: string } = {};
+      const result: { email?: string; phone?: string } = {};
 
       if (email) {
         const emailResult = await this.checkEmail(email);
@@ -24,11 +24,6 @@ export class UserService {
       if (phone) {
         const phoneResult = await this.checkPhone(phone);
         result.phone = phoneResult.message || phoneResult.ErrorMessage;
-      }
-
-      if (nickname) {
-        const nicknameResult = await this.checkNickname(nickname);
-        result.nickname = nicknameResult.message || nicknameResult.ErrorMessage;
       }
 
       return result;
@@ -63,24 +58,7 @@ export class UserService {
     }
   }
 
-  private async checkNickname(nickname: string) {
-    try {
-      const dupNickname = await this.user.findOne({
-        where: { nickname: nickname },
-      });
-
-      if (dupNickname) {
-        throw new BadRequestException('이미 사용 중인 닉네임입니다.');
-      }
-
-      return { message: '사용 가능한 닉네임입니다.' };
-    } catch (error) {
-      return { ErrorMessage: error.message };
-    }
-  }
-
   async hashPassword(password: string) {
-    console.log(password);
     return await bcrypt.hash(password, 10);
   }
 

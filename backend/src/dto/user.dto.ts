@@ -50,15 +50,4 @@ export class SignUpUserDto {
   @MinLength(8)
   @MaxLength(30)
   password: string;
-
-  @ApiProperty({
-    example: '닉네임입니다',
-    description: '사용자 닉네임',
-    required: true,
-  })
-  @IsNotEmpty()
-  @IsString()
-  @MinLength(3)
-  @MaxLength(20)
-  nickname: string;
 }

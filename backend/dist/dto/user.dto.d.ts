@@ -3,5 +3,4 @@ export declare class SignUpUserDto {
     phone: string;
     email: string;
     password: string;
-    nickname: string;
 }

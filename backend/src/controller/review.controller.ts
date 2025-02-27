@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
+import { Public } from 'src/auth/decorator/public.decorator';
 import { InsertReviewDto } from 'src/dto/review.dto';
 import { ReviewService } from 'src/services/review.service';
 
@@ -34,6 +35,7 @@ export class ReviewController {
   }
 
   @ApiOperation({ summary: '리뷰 내역 라우터' })
+  @Public()
   @Get('/select_review/:product_no')
   async selectReview(
     @Param('product_no') product_no: number,

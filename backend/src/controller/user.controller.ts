@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   HttpStatus,
   Post,
   Req,
@@ -10,8 +11,9 @@ import {
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Request, Response } from 'express';
+import { Public } from 'src/auth/decorator/public.decorator';
 import { JwtServiceAuthGuard } from 'src/auth/jwt/jwt-service.guard';
-import { LoginDto } from 'src/dto/auth.dto';
+import { LoginDto, LogoutDto } from 'src/dto/auth.dto';
 import { SignUpUserDto } from 'src/dto/user.dto';
 import { AuthService } from 'src/services/auth.service';
 import { UserService } from 'src/services/user.service';
@@ -26,14 +28,13 @@ export class UserController {
   @ApiOperation({ summary: '회원가입 중복 검사 라우터' })
   @Post('/duplicate_user')
   async duplicateUser(
-    @Body() body: { email?: string; phone?: string; nickname?: string },
+    @Body() body: { email?: string; phone?: string },
     @Res() res: Response,
   ) {
     try {
       const result = await this.userService.checkDuplicate(
         body?.email,
         body?.phone,
-        body?.nickname,
       );
       res.status(200).json(result);
     } catch (error) {
@@ -62,21 +63,34 @@ export class UserController {
   }
 
   @ApiOperation({ summary: '로그인 라우터' })
+  @Public()
   @UseGuards(JwtServiceAuthGuard)
   @Post('/login')
-  async login(@Req() req: Request, @Res() res: Response, loginDto: LoginDto) {
+  async login(
+    @Body() loginDto: LoginDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     try {
+      const deviceId = req.headers['device-id'];
+
+      if (Array.isArray(deviceId)) {
+        loginDto.device_id = deviceId[0];
+      } else {
+        loginDto.device_id = deviceId;
+      }
+
       const token = await this.authService.login(loginDto);
 
       res.cookie('shop_access_token', token.accessToken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: 'strict',
       });
 
       res.cookie('shop_refresh_token', token.refreshToken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: 'strict',
       });
 
@@ -90,12 +104,40 @@ export class UserController {
     }
   }
 
+  @ApiOperation({ summary: '로그인 상태 유지를 위한 인증 라우터' })
+  @UseGuards(JwtServiceAuthGuard)
+  @Get('/me')
+  async getProfile(@Req() req) {
+    try {
+      return {
+        email: req.user.email,
+        name: req.user.name,
+      };
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   @ApiOperation({ summary: '로그아웃 라우터' })
+  @Public()
   @Post('/logout')
-  async logout(@Res() res: Response) {
+  async logout(
+    @Res() res: Response,
+    @Body() logoutDto: LogoutDto,
+    @Req() req: Request,
+  ) {
+    const deviceId = req.headers['device-id'];
+
+    if (Array.isArray(deviceId)) {
+      logoutDto.device_id = deviceId[0];
+    } else {
+      logoutDto.device_id = deviceId;
+    }
+
+    await this.authService.logout(logoutDto);
     res.clearCookie('shop_access_token');
     res.clearCookie('shop_refresh_token');
-
+    res.status(200).send();
     return { message: '로그아웃' };
   }
 }

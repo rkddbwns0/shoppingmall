@@ -61,16 +61,4 @@ __decorate([
     (0, class_validator_1.MaxLength)(30),
     __metadata("design:type", String)
 ], SignUpUserDto.prototype, "password", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({
-        example: '닉네임입니다',
-        description: '사용자 닉네임',
-        required: true,
-    }),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(3),
-    (0, class_validator_1.MaxLength)(20),
-    __metadata("design:type", String)
-], SignUpUserDto.prototype, "nickname", void 0);
 //# sourceMappingURL=user.dto.js.map

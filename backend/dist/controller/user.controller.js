@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const public_decorator_1 = require("../auth/decorator/public.decorator");
 const jwt_service_guard_1 = require("../auth/jwt/jwt-service.guard");
 const auth_dto_1 = require("../dto/auth.dto");
 const user_dto_1 = require("../dto/user.dto");
@@ -27,7 +28,7 @@ let UserController = class UserController {
     }
     async duplicateUser(body, res) {
         try {
-            const result = await this.userService.checkDuplicate(body?.email, body?.phone, body?.nickname);
+            const result = await this.userService.checkDuplicate(body?.email, body?.phone);
             res.status(200).json(result);
         }
         catch (error) {
@@ -48,17 +49,24 @@ let UserController = class UserController {
             res.status(500).json({ message: '서버에러입니다.' });
         }
     }
-    async login(req, res, loginDto) {
+    async login(loginDto, req, res) {
         try {
+            const deviceId = req.headers['device-id'];
+            if (Array.isArray(deviceId)) {
+                loginDto.device_id = deviceId[0];
+            }
+            else {
+                loginDto.device_id = deviceId;
+            }
             const token = await this.authService.login(loginDto);
             res.cookie('shop_access_token', token.accessToken, {
                 httpOnly: true,
-                secure: true,
+                secure: false,
                 sameSite: 'strict',
             });
             res.cookie('shop_refresh_token', token.refreshToken, {
                 httpOnly: true,
-                secure: true,
+                secure: false,
                 sameSite: 'strict',
             });
             res
@@ -70,9 +78,29 @@ let UserController = class UserController {
             console.error(error);
         }
     }
-    async logout(res) {
+    async getProfile(req) {
+        try {
+            return {
+                email: req.user.email,
+                name: req.user.name,
+            };
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async logout(res, logoutDto, req) {
+        const deviceId = req.headers['device-id'];
+        if (Array.isArray(deviceId)) {
+            logoutDto.device_id = deviceId[0];
+        }
+        else {
+            logoutDto.device_id = deviceId;
+        }
+        await this.authService.logout(logoutDto);
         res.clearCookie('shop_access_token');
         res.clearCookie('shop_refresh_token');
+        res.status(200).send();
         return { message: '로그아웃' };
     }
 };
@@ -97,20 +125,34 @@ __decorate([
 ], UserController.prototype, "signup", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '로그인 라우터' }),
+    (0, public_decorator_1.Public)(),
     (0, common_1.UseGuards)(jwt_service_guard_1.JwtServiceAuthGuard),
     (0, common_1.Post)('/login'),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Res)()),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, auth_dto_1.LoginDto]),
+    __metadata("design:paramtypes", [auth_dto_1.LoginDto, Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "login", null);
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: '로그아웃 라우터' }),
-    (0, common_1.Post)('/logout'),
-    __param(0, (0, common_1.Res)()),
+    (0, swagger_1.ApiOperation)({ summary: '로그인 상태 유지를 위한 인증 라우터' }),
+    (0, common_1.UseGuards)(jwt_service_guard_1.JwtServiceAuthGuard),
+    (0, common_1.Get)('/me'),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getProfile", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: '로그아웃 라우터' }),
+    (0, public_decorator_1.Public)(),
+    (0, common_1.Post)('/logout'),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, auth_dto_1.LogoutDto, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "logout", null);
 exports.UserController = UserController = __decorate([
