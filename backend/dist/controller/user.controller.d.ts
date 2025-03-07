@@ -14,6 +14,7 @@ export declare class UserController {
     signup(signupUserDto: SignUpUserDto, res: Response): Promise<Response<any, Record<string, any>>>;
     login(loginDto: LoginDto, req: Request, res: Response): Promise<void>;
     getProfile(req: any): Promise<{
+        user_id: any;
         email: any;
         name: any;
     }>;

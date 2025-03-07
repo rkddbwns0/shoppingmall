@@ -2,7 +2,7 @@ import React from 'react';
 import '../../css/header.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { CiHeart, CiSearch, CiShoppingCart } from 'react-icons/ci';
-import useAuth from '../auth/useAuth';
+import { useAuth } from '../auth/useAuth';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -11,6 +11,8 @@ const Header = () => {
     const handleMyPage = () => {
         if (!user) {
             navigate('/login');
+        } else {
+            navigate('/mypage');
         }
     };
 

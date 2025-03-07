@@ -1,8 +1,14 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useDeviceId } from './deviceContext';
 
-const useAuth = () => {
+const UserContext = createContext();
+
+export const useAuth = () => {
+    return useContext(UserContext);
+};
+
+export const UserProvider = ({ children }) => {
     const deviceId = useDeviceId();
     const [user, setUser] = useState(null);
 
@@ -35,7 +41,5 @@ const useAuth = () => {
         }
     };
 
-    return { user, logout };
+    return <UserContext.Provider value={{ user, logout }}>{children}</UserContext.Provider>;
 };
-
-export default useAuth;

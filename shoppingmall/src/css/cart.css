@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.cartListView {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+}
+
+.chkbox_name_view {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+    font-size: 17px;
+    align-items: center;
+}
+
+.price {
+    font-size: 18px;
+}
+
+.qtt_buy_view {
+    display: flex;
+    flex: 1;
+}

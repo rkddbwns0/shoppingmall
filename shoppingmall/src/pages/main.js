@@ -3,10 +3,8 @@ import React, { useEffect, useState } from 'react';
 import '../css/main.css';
 import { Link } from 'react-router-dom';
 import { IoMdHeart } from 'react-icons/io';
-import useAuth from '../components/auth/useAuth';
 
 const Main = () => {
-    const user = useAuth();
     const [products, setProducts] = useState([]);
 
     useEffect(() => {

@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Post, Put, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
 import { DeleteCartDto, InsertCartDto, UpdateCartDto } from 'src/dto/cart.dto';
@@ -10,7 +19,7 @@ export class CartController {
 
   @ApiOperation({ summary: '장바구니 내역' })
   @Get('select')
-  async selectCart(@Body() user_id: number, @Res() res: Response) {
+  async selectCart(@Param('user_id') user_id: number, @Res() res: Response) {
     try {
       const result = await this.cartService.selectCart(user_id);
       if (result.success === true) {
@@ -25,6 +34,7 @@ export class CartController {
   @Post('insert')
   async insertCart(@Body() insertCartDto: InsertCartDto, @Res() res: Response) {
     try {
+      console.log(insertCartDto);
       const result = await this.cartService.insertCart(insertCartDto);
       if (result.success === true) {
         res.status(200).json({ message: '장바구니에 저장되었습니다.' });

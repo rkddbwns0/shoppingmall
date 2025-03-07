@@ -35,6 +35,18 @@ let OrderService = class OrderService {
         this.orderItemsRepository = orderItemsRepository;
         this.adminRepository = adminRepository;
     }
+    async orderList(user_id) {
+        try {
+            const order = await this.orderRepository.find({
+                where: { user_id: user_id },
+                order: { order_at: 'DESC' },
+            });
+            return order;
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException();
+        }
+    }
     async insertOrder(insertOrderDto) {
         try {
             const user = await this.userRepository.findOne({

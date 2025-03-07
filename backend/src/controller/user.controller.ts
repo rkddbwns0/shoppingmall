@@ -110,6 +110,7 @@ export class UserController {
   async getProfile(@Req() req) {
     try {
       return {
+        user_id: req.user.user_id,
         email: req.user.email,
         name: req.user.name,
       };

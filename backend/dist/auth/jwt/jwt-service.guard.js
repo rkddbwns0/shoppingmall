@@ -63,7 +63,6 @@ let JwtServiceAuthGuard = class JwtServiceAuthGuard {
                 token: refreshToken,
             },
         });
-        console.log(storeToken);
         try {
             const payloadRefreshToken = await this.jwtSerivce.verifyAsync(refreshToken, { secret: this.configService.get('JWT_SECRET_KEY') });
             const newAccessToken = await this.jwtSerivce.sign({

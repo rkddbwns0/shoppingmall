@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Res } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
 import {
@@ -11,6 +11,17 @@ import { OrderService } from 'src/services/order.service';
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
+
+  @ApiOperation({ summary: '주문 내역 확인 라우터' })
+  @Get('/select')
+  async orderList(@Param('user_id') user_id: number, @Res() res: Response) {
+    try {
+      const result = await this.orderService.orderList(user_id);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).json({ message: '에러' });
+    }
+  }
 
   @ApiOperation({
     summary: '제품 주문 라우터',

@@ -21,6 +21,15 @@ let OrderController = class OrderController {
     constructor(orderService) {
         this.orderService = orderService;
     }
+    async orderList(user_id, res) {
+        try {
+            const result = await this.orderService.orderList(user_id);
+            res.status(200).json(result);
+        }
+        catch (error) {
+            res.status(400).json({ message: '에러' });
+        }
+    }
     async insertOrder(insertOrderDto, res) {
         try {
             if (!insertOrderDto) {
@@ -82,6 +91,15 @@ let OrderController = class OrderController {
     }
 };
 exports.OrderController = OrderController;
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: '주문 내역 확인 라우터' }),
+    (0, common_1.Get)('/select'),
+    __param(0, (0, common_1.Param)('user_id')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "orderList", null);
 __decorate([
     (0, swagger_1.ApiOperation)({
         summary: '제품 주문 라우터',

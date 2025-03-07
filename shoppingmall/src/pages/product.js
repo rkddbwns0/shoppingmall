@@ -1,15 +1,40 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TiStarFullOutline } from 'react-icons/ti';
 import '../css/product.css';
 import QuantityButton from '../components/button/quantityButton';
+import { useAuth } from '../components/auth/useAuth';
 
 const Product = () => {
+    const navigate = useNavigate();
     const { product_id } = useParams();
+    const { user } = useAuth();
     const [product, setProduct] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [selectedStock, setSelectedStock] = useState(null);
+
+    const handleInsertCart = async () => {
+        if (user) {
+            try {
+                const response = await axios.post(
+                    `http://localhost:8080/cart/insert`,
+                    {
+                        user_id: user?.user_id,
+                        product_id: product_id,
+                        quantity: quantity,
+                    },
+                    { withCredentials: true }
+                );
+                alert('장바구니에 등록되었습니다.');
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            alert('로그인을 해 주세요.');
+            navigate('/login');
+        }
+    };
 
     useEffect(() => {
         const product_detail = async () => {
@@ -43,7 +68,7 @@ const Product = () => {
     return (
         <div className="product_detail_container">
             <div>
-                <p>d</p>
+                <p></p>
             </div>
             <div className="product_info">
                 <div className="imgView">
@@ -105,7 +130,9 @@ const Product = () => {
                         </div>
                     </div>
                     <div className="productBtnView">
-                        <button className="productBtn_cart">장바구니</button>
+                        <button className="productBtn_cart" onClick={handleInsertCart}>
+                            장바구니
+                        </button>
                         <button className="productBtn_order">구매하기</button>
                     </div>
                 </div>

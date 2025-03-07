@@ -34,6 +34,7 @@ let CartController = class CartController {
     }
     async insertCart(insertCartDto, res) {
         try {
+            console.log(insertCartDto);
             const result = await this.cartService.insertCart(insertCartDto);
             if (result.success === true) {
                 res.status(200).json({ message: '장바구니에 저장되었습니다.' });
@@ -83,7 +84,7 @@ exports.CartController = CartController;
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '장바구니 내역' }),
     (0, common_1.Get)('select'),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Param)('user_id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Object]),

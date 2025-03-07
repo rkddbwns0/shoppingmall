@@ -63,8 +63,6 @@ export class JwtServiceAuthGuard implements CanActivate {
       },
     });
 
-    console.log(storeToken);
-
     try {
       const payloadRefreshToken = await this.jwtSerivce.verifyAsync(
         refreshToken,

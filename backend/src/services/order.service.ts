@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   CartOrderDto,
@@ -42,6 +46,18 @@ export class OrderService {
     @InjectRepository(AdminEntity)
     private readonly adminRepository: Repository<AdminEntity>,
   ) {}
+
+  async orderList(user_id: number) {
+    try {
+      const order = await this.orderRepository.find({
+        where: { user_id: user_id },
+        order: { order_at: 'DESC' },
+      });
+      return order;
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
+  }
 
   async insertOrder(insertOrderDto: InsertOrderDto) {
     try {
