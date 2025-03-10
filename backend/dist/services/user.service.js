@@ -75,7 +75,7 @@ let UserService = class UserService {
             if (checkUser) {
                 throw new common_1.BadRequestException('이미 가입된 유저입니다.');
             }
-            const signup = await this.user.create(signupUserDto);
+            const signup = this.user.create(signupUserDto);
             const saveSignup = await this.user.save(signup);
             if (!saveSignup) {
                 throw new common_1.BadRequestException('회원가입에 실패하였습니다. 입력한 정보를 다시 확인해 주세요.');

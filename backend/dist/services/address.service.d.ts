@@ -6,6 +6,7 @@ export declare class AddressService {
     private readonly addressRepository;
     private readonly userRepository;
     constructor(addressRepository: Repository<AddressEntity>, userRepository: Repository<UserEntity>);
+    selectAddress(user_id: number): Promise<AddressEntity[]>;
     insertAddress(insertAddressDto: InsertAddressDto): Promise<{
         success: boolean;
         message: string;

@@ -31,7 +31,7 @@ export class CartController {
   }
 
   @ApiOperation({ summary: '장바구니 저장 라우터' })
-  @Post('insert')
+  @Post('/insert')
   async insertCart(@Body() insertCartDto: InsertCartDto, @Res() res: Response) {
     try {
       console.log(insertCartDto);
@@ -47,7 +47,7 @@ export class CartController {
   }
 
   @ApiOperation({ summary: '장바구니 삭제 라우터' })
-  @Delete('delete')
+  @Delete('/delete')
   async deleteCart(@Body() deleteCartDto: DeleteCartDto, @Res() res: Response) {
     try {
       const result = await this.cartService.DeleteCart(deleteCartDto);
@@ -66,7 +66,7 @@ export class CartController {
   }
 
   @ApiOperation({ summary: '장바구니 수량 업데이트 라우터' })
-  @Put('update')
+  @Put('/update')
   async updateCart(@Body() updateCartDto: UpdateCartDto, @Res() res: Response) {
     try {
       const result = await this.cartService.UdpateCart(updateCartDto);

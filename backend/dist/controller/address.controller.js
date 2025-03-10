@@ -21,6 +21,15 @@ let AddressController = class AddressController {
     constructor(addressService) {
         this.addressService = addressService;
     }
+    async selectAddress(user_id, res) {
+        try {
+            const result = await this.addressService.selectAddress(user_id);
+            res.status(200).json(result);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     async insertAddress(insertAddressDto, res) {
         try {
             const result = await this.addressService.insertAddress(insertAddressDto);
@@ -64,8 +73,17 @@ let AddressController = class AddressController {
 };
 exports.AddressController = AddressController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: '사용자 주문지 확인 라우터' }),
+    (0, common_1.Get)('/select'),
+    __param(0, (0, common_1.Param)('user_id')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], AddressController.prototype, "selectAddress", null);
+__decorate([
     (0, swagger_1.ApiOperation)({ summary: '주문 배송지 저장 라우터' }),
-    (0, common_1.Post)('insert'),
+    (0, common_1.Post)('/nsert'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -74,7 +92,7 @@ __decorate([
 ], AddressController.prototype, "insertAddress", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '기본 배송지 변경 라우터' }),
-    (0, common_1.Put)('update'),
+    (0, common_1.Put)('/update'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -83,7 +101,7 @@ __decorate([
 ], AddressController.prototype, "updateAddress", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '주문 배송지 삭제 라우터' }),
-    (0, common_1.Delete)('delete'),
+    (0, common_1.Delete)('/delete'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

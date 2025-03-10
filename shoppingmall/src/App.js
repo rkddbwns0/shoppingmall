@@ -12,6 +12,7 @@ import MyPage from './pages/mypage';
 import Cart from './pages/cart';
 import { UserProvider } from './components/auth/useAuth';
 import OrderList from './pages/orderList';
+import AddressList from './pages/addressList';
 
 function App() {
     return (
@@ -29,6 +30,7 @@ function App() {
                                 <Route path="/mypage" element={<MyPage />} />
                                 <Route path="/cart" element={<Cart />} />
                                 <Route path="/orderList" element={<OrderList />} />
+                                <Route path="/addressList" element={<AddressList />} />
                             </Routes>
                         </div>
                         <Footer />

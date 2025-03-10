@@ -44,7 +44,7 @@ const MyPage = () => {
                         <Link>위시리스트</Link>
                     </li>
                     <li>
-                        <Link>배송지 관리</Link>
+                        <Link to="/addressList">배송지 관리</Link>
                     </li>
                     <li>
                         <Link>문의 내역</Link>

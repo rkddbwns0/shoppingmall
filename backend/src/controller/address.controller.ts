@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Post, Put, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
 import {
@@ -12,8 +21,19 @@ import { AddressService } from 'src/services/address.service';
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}
 
+  @ApiOperation({ summary: '사용자 주문지 확인 라우터' })
+  @Get('/select')
+  async selectAddress(@Param('user_id') user_id: number, @Res() res: Response) {
+    try {
+      const result = await this.addressService.selectAddress(user_id);
+      res.status(200).json(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   @ApiOperation({ summary: '주문 배송지 저장 라우터' })
-  @Post('insert')
+  @Post('/nsert')
   async insertAddress(
     @Body() insertAddressDto: InsertAddressDto,
     @Res() res: Response,
@@ -31,7 +51,7 @@ export class AddressController {
   }
 
   @ApiOperation({ summary: '기본 배송지 변경 라우터' })
-  @Put('update')
+  @Put('/update')
   async updateAddress(
     @Body() updateAddressDto: UpdateAddressDto,
     @Res() res: Response,
@@ -50,7 +70,7 @@ export class AddressController {
   }
 
   @ApiOperation({ summary: '주문 배송지 삭제 라우터' })
-  @Delete('delete')
+  @Delete('/delete')
   async DeleteAddressDto(
     @Body() deleteAddressDto: DeleteAddressDto,
     @Res() res: Response,

@@ -73,7 +73,7 @@ export class UserService {
         throw new BadRequestException('이미 가입된 유저입니다.');
       }
 
-      const signup = await this.user.create(signupUserDto);
+      const signup = this.user.create(signupUserDto);
       const saveSignup = await this.user.save(signup);
 
       if (!saveSignup) {

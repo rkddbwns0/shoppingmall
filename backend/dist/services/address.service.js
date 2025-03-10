@@ -23,6 +23,17 @@ let AddressService = class AddressService {
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
     }
+    async selectAddress(user_id) {
+        try {
+            const addressList = await this.addressRepository.find({
+                where: { user_id: user_id },
+            });
+            return addressList;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     async insertAddress(insertAddressDto) {
         const findUser = await this.userRepository.findOne({
             where: { user_id: insertAddressDto.user_id },
@@ -71,7 +82,7 @@ let AddressService = class AddressService {
         }
     }
     async saveDefaultAddress(insertAddressDto) {
-        const result = await this.addressRepository.create(insertAddressDto);
+        const result = this.addressRepository.create(insertAddressDto);
         await this.addressRepository.save(result);
     }
     async updateDefaultAddress(updateAddressDto) {
