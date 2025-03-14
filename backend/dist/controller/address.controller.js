@@ -24,6 +24,7 @@ let AddressController = class AddressController {
     async selectAddress(user_id, res) {
         try {
             const result = await this.addressService.selectAddress(user_id);
+            console.log(result);
             res.status(200).json(result);
         }
         catch (error) {
@@ -83,7 +84,7 @@ __decorate([
 ], AddressController.prototype, "selectAddress", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '주문 배송지 저장 라우터' }),
-    (0, common_1.Post)('/nsert'),
+    (0, common_1.Post)('/insert'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

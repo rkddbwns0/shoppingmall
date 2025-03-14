@@ -26,6 +26,7 @@ export class AddressController {
   async selectAddress(@Param('user_id') user_id: number, @Res() res: Response) {
     try {
       const result = await this.addressService.selectAddress(user_id);
+      console.log(result)
       res.status(200).json(result);
     } catch (error) {
       console.error(error);
@@ -33,7 +34,7 @@ export class AddressController {
   }
 
   @ApiOperation({ summary: '주문 배송지 저장 라우터' })
-  @Post('/nsert')
+  @Post('/insert')
   async insertAddress(
     @Body() insertAddressDto: InsertAddressDto,
     @Res() res: Response,

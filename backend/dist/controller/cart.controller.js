@@ -92,7 +92,7 @@ __decorate([
 ], CartController.prototype, "selectCart", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '장바구니 저장 라우터' }),
-    (0, common_1.Post)('insert'),
+    (0, common_1.Post)('/insert'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -101,7 +101,7 @@ __decorate([
 ], CartController.prototype, "insertCart", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '장바구니 삭제 라우터' }),
-    (0, common_1.Delete)('delete'),
+    (0, common_1.Delete)('/delete'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -110,7 +110,7 @@ __decorate([
 ], CartController.prototype, "deleteCart", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '장바구니 수량 업데이트 라우터' }),
-    (0, common_1.Put)('update'),
+    (0, common_1.Put)('/update'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

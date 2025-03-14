@@ -50,7 +50,7 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], InsertAddressDto.prototype, "addr", void 0);
+], InsertAddressDto.prototype, "address", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: '배송지 상세 주소',
@@ -62,21 +62,22 @@ __decorate([
 ], InsertAddressDto.prototype, "detail_addr", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: '요청 시 주문 사항',
-        default: '조심히 안전하게 배송해주세요.',
-        required: false,
-    }),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], InsertAddressDto.prototype, "req", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({
         description: '기본 배송지 지정 여부',
         default: ['Y', 'N'],
     }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], InsertAddressDto.prototype, "default_addr", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: '요청 시 주문 사항',
+        default: '조심히 안전하게 배송해주세요.',
+        required: false,
+        maxLength: 300
+    }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], InsertAddressDto.prototype, "deliveryMsg", void 0);
 class UpdateAddressDto {
 }
 exports.UpdateAddressDto = UpdateAddressDto;

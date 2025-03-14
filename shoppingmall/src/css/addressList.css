@@ -1,0 +1,69 @@
+.container {
+    display: flex;
+    flex: 1;
+}
+
+.mainContainer {
+    border : 1px solid rgb(194, 192, 192);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.topView {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(194, 192, 192);
+}
+
+.title {
+    font-weight: bold;
+    font-size: 20px;
+    padding: 8px;
+    margin-left: 10px;
+}
+
+.addBtnView {
+    margin-right: 10px;
+}
+
+.addBtnView button {
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.adressContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.addressView {
+    display: flex;
+    flex: 1;
+    border: 0.5px solid rgb(194, 192, 192);
+    border-radius: 20px;
+    width: 100%;
+    align-items: center;
+    gap: 100px
+}
+
+.user_info {
+    font-size: 15px;
+    margin-left: 20px;
+}
+
+.address_info {
+    font-size: 15px;
+    margin-left: 20px;
+    text-align: left;
+    line-height: 15px;
+}

@@ -2,10 +2,10 @@ export declare class InsertAddressDto {
     user_id: number;
     name: string;
     zip_code: string;
-    addr: string;
+    address: string;
     detail_addr: string;
-    req: string;
     default_addr: string;
+    deliveryMsg: string;
 }
 export declare class UpdateAddressDto {
     address_no: number;

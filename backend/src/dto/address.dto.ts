@@ -32,7 +32,7 @@ export class InsertAddressDto {
   })
   @IsNotEmpty()
   @IsString()
-  addr: string;
+  address: string;
 
   @ApiProperty({
     description: '배송지 상세 주소',
@@ -43,19 +43,20 @@ export class InsertAddressDto {
   detail_addr: string;
 
   @ApiProperty({
-    description: '요청 시 주문 사항',
-    default: '조심히 안전하게 배송해주세요.',
-    required: false,
-  })
-  @IsString()
-  req: string;
-
-  @ApiProperty({
     description: '기본 배송지 지정 여부',
     default: ['Y', 'N'],
   })
   @IsString()
   default_addr: string;
+
+  @ApiProperty({
+    description: '요청 시 주문 사항',
+    default: '조심히 안전하게 배송해주세요.',
+    required: false,
+    maxLength: 300
+  })
+  @IsString()
+  deliveryMsg: string;
 }
 
 export class UpdateAddressDto {

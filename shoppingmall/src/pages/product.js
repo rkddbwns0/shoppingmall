@@ -61,6 +61,11 @@ const Product = () => {
         setQuantity(1);
     };
 
+    const total_price = () => {
+        return (product[0]?.price * quantity).toLocaleString()
+
+    }
+
     if (!product) {
         return <div>Loding...</div>;
     }
@@ -125,15 +130,19 @@ const Product = () => {
                         />
 
                         <div className="totalPrice">
-                            <h3 style={{ fontSize: '18px' }}>{(product[0]?.price * quantity).toLocaleString()}</h3>
-                            <h3 style={{ fontSize: '18px' }}>원</h3>
+                            <h3 style={{ fontSize: '18px' }}>{total_price()}원</h3>
+                           
                         </div>
                     </div>
                     <div className="productBtnView">
                         <button className="productBtn_cart" onClick={handleInsertCart}>
                             장바구니
                         </button>
-                        <button className="productBtn_order">구매하기</button>
+                        <button
+                            className="productBtn_order"
+                            onClick={() => {navigate(`/order/:${product_id}`, {state: {quantity: quantity, price: total_price()}})}}>
+                            구매하기
+                        </button>
                     </div>
                 </div>
             </div>

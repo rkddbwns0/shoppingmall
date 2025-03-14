@@ -41,17 +41,17 @@ __decorate([
     __metadata("design:type", String)
 ], AddressEntity.prototype, "detail_addr", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'enum', enum: ['Y', 'N'], default: 'N' }),
+    __metadata("design:type", String)
+], AddressEntity.prototype, "default_addr", void 0);
+__decorate([
     (0, typeorm_1.Column)({
         type: 'varchar',
         nullable: true,
         default: '조심히 안전하게 배송해주세요.',
     }),
     __metadata("design:type", String)
-], AddressEntity.prototype, "req", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: ['Y', 'N'], default: 'N' }),
-    __metadata("design:type", String)
-], AddressEntity.prototype, "default_addr", void 0);
+], AddressEntity.prototype, "deliveryMsg", void 0);
 exports.AddressEntity = AddressEntity = __decorate([
     (0, typeorm_1.Entity)('address')
 ], AddressEntity);

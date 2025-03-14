@@ -5,6 +5,6 @@ export declare class AddressEntity {
     zip_code: string;
     address: string;
     detail_addr: string;
-    req: string;
     default_addr: string;
+    deliveryMsg: string;
 }

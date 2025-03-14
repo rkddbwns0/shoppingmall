@@ -13,6 +13,8 @@ import Cart from './pages/cart';
 import { UserProvider } from './components/auth/useAuth';
 import OrderList from './pages/orderList';
 import AddressList from './pages/addressList';
+import RegAddress from "./pages/regAddress";
+import Order from "./pages/order";
 
 function App() {
     return (
@@ -31,6 +33,8 @@ function App() {
                                 <Route path="/cart" element={<Cart />} />
                                 <Route path="/orderList" element={<OrderList />} />
                                 <Route path="/addressList" element={<AddressList />} />
+                                <Route path="/regAddress" element={<RegAddress />} />
+                                <Route path={'/order/:product_id'} element={<Order />} />
                             </Routes>
                         </div>
                         <Footer />

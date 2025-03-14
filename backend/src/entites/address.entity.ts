@@ -30,15 +30,15 @@ export class AddressEntity {
   @Column({ type: 'varchar', nullable: false })
   detail_addr: string;
 
+  @Column({ type: 'enum', enum: ['Y', 'N'], default: 'N' })
+  default_addr: string;
+
   @Column({
     type: 'varchar',
     nullable: true,
     default: '조심히 안전하게 배송해주세요.',
   })
-  req: string;
-
-  @Column({ type: 'enum', enum: ['Y', 'N'], default: 'N' })
-  default_addr: string;
+  deliveryMsg: string;
 
   // @OneToMany(() => OrderEntity, (order) => order.address_no)
   // order: OrderEntity[];
