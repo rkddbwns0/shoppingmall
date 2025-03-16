@@ -1,5 +1,6 @@
 export declare class InsertOrderDto {
     user_id: number;
+    option_id: number;
     product_no: number;
     quantity: number;
     order_state: string;

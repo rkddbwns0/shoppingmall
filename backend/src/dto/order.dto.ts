@@ -11,6 +11,14 @@ export class InsertOrderDto {
   user_id: number;
 
   @ApiProperty({
+    description: '제품 옵션 넘버',
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsNumber()
+  option_id: number;
+
+  @ApiProperty({
     description: '제품 고유 넘버',
     required: true,
   })

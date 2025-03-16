@@ -67,24 +67,25 @@ export class OrderService {
       const address = await this.addressRepository.findOne({
         where: { user_id: user.user_id, default_addr: 'Y' },
       });
-      const product = await this.productRepository.findOne({
-        where: { product_id: insertOrderDto.product_no },
+      const product = await  this.productRepository.findOne({where: {product_id: insertOrderDto.product_no}, select: ['price']})
+      const product_option = await this.product_optionRespository.findOne({
+        where: { option_id: insertOrderDto.option_id, product_no: insertOrderDto.product_no },
       });
 
-      if (!user || !address || !product) {
+      if (!user || !address || !product_option) {
         throw new BadRequestException(
           '정보가 존재하지 않습니다. 다시 확인해 주세요.',
         );
       }
 
-      // if (product.stock < insertOrderDto.quantity) {
-      //   throw new BadRequestException('재고가 부족합니다. 다시 확인해 주세요.');
-      // }
+      if (product_option.stock < insertOrderDto.quantity) {
+        throw new BadRequestException('재고가 부족합니다. 다시 확인해 주세요.');
+      }
 
-      // product.stock = product.stock - insertOrderDto.quantity;
-      // await this.productRepository.update(product.product_id, {
-      //   stock: product.stock,
-      // });
+      product_option.stock = product_option.stock - insertOrderDto.quantity;
+      await this.product_optionRespository.update(product_option, {
+        stock: product_option.stock,
+      });
 
       insertOrderDto.address_no = address.address_no;
       insertOrderDto.total_price = product.price * insertOrderDto.quantity;
