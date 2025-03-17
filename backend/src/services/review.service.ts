@@ -80,11 +80,12 @@ export class ReviewService {
       const result = await this.findItemReview(
         insertReviewDto.order_no,
         insertReviewDto.product_no,
+        insertReviewDto.option_id,
         insertReviewDto.user_id,
       );
 
       if (result.check === true) {
-        const writeReview = await this.reviewRepository.create(insertReviewDto);
+        const writeReview = this.reviewRepository.create(insertReviewDto);
         const saveReview = await this.reviewRepository.save(writeReview);
         await this.orderItemRepository.update(result.result, {
           review_status: 'O',
@@ -108,13 +109,14 @@ export class ReviewService {
   private async findItemReview(
     order_no: number,
     product_no: number,
+    option_id: number,
     user_id: number,
   ) {
     try {
       const findItem = await this.orderItemRepository.findOne({
         where: {
           order_no,
-          product_no: { product_id: product_no },
+          option_id: { option_id: option_id },
           user_id,
         },
         relations: ['product_no'],

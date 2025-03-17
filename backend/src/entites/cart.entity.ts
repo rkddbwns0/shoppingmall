@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { ProductEntity } from './product.entity';
+import { Product_optionEntity } from './product_option.entity';
 
 @Entity('cart')
 export class CartEntity {
@@ -17,9 +18,9 @@ export class CartEntity {
   @JoinColumn({ name: 'user_id' })
   user_id: number;
 
-  @ManyToOne(() => ProductEntity, (product) => product.product_id)
-  @JoinColumn({ name: 'product_id' })
-  product_id: ProductEntity;
+  @ManyToOne(() => Product_optionEntity, (product_option) => product_option.option_id)
+  @JoinColumn({ name: 'option_id' })
+  option_id: Product_optionEntity;
 
   @Column({ type: 'int', default: 1, nullable: false })
   quantity: number;

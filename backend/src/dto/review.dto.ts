@@ -23,6 +23,13 @@ export class InsertReviewDto {
   product_no: number;
 
   @ApiProperty({
+    description: '제품 세부 넘버',
+  })
+  @IsNotEmpty()
+  @IsNumber()
+  option_id: number;
+
+  @ApiProperty({
     description: '유저 고유 넘버',
   })
   @IsNotEmpty()

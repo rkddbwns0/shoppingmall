@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderItemEntity = void 0;
 const typeorm_1 = require("typeorm");
 const order_entity_1 = require("./order.entity");
-const product_entity_1 = require("./product.entity");
 const user_entity_1 = require("./user.entity");
+const product_option_entity_1 = require("./product_option.entity");
 let OrderItemEntity = class OrderItemEntity {
 };
 exports.OrderItemEntity = OrderItemEntity;
@@ -35,10 +35,10 @@ __decorate([
     __metadata("design:type", Number)
 ], OrderItemEntity.prototype, "user_id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => product_entity_1.ProductEntity, (product) => product.product_id),
-    (0, typeorm_1.JoinColumn)({ name: 'product_no' }),
-    __metadata("design:type", product_entity_1.ProductEntity)
-], OrderItemEntity.prototype, "product_no", void 0);
+    (0, typeorm_1.ManyToOne)(() => product_option_entity_1.Product_optionEntity, (product_option) => product_option.option_id),
+    (0, typeorm_1.JoinColumn)({ name: 'option_id' }),
+    __metadata("design:type", Array)
+], OrderItemEntity.prototype, "option_id", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'int', nullable: false }),
     __metadata("design:type", Number)

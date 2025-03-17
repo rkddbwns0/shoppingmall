@@ -12,8 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductEntity = void 0;
 const typeorm_1 = require("typeorm");
 const product_categories_entity_1 = require("./product_categories.entity");
-const cart_entity_1 = require("./cart.entity");
-const orderItem_entity_1 = require("./orderItem.entity");
 const order_entity_1 = require("./order.entity");
 const review_entity_1 = require("./review.entity");
 const qna_entity_1 = require("./qna.entity");
@@ -74,18 +72,10 @@ __decorate([
     __metadata("design:type", product_option_entity_1.Product_optionEntity)
 ], ProductEntity.prototype, "product_option", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => cart_entity_1.CartEntity, (cart) => cart.product_id),
-    __metadata("design:type", Array)
-], ProductEntity.prototype, "cart", void 0);
-__decorate([
     (0, typeorm_1.ManyToMany)(() => order_entity_1.OrderEntity, (order) => order.product_no),
     (0, typeorm_1.JoinColumn)({ name: 'order_no' }),
     __metadata("design:type", Array)
 ], ProductEntity.prototype, "order", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => orderItem_entity_1.OrderItemEntity, (orderItem) => orderItem.product_no),
-    __metadata("design:type", Array)
-], ProductEntity.prototype, "orderItem", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => review_entity_1.ReviewEntity, (review) => review.product_no),
     __metadata("design:type", review_entity_1.ReviewEntity)

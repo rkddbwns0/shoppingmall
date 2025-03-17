@@ -70,9 +70,9 @@ let ReviewService = class ReviewService {
     }
     async insertReview(insertReviewDto) {
         try {
-            const result = await this.findItemReview(insertReviewDto.order_no, insertReviewDto.product_no, insertReviewDto.user_id);
+            const result = await this.findItemReview(insertReviewDto.order_no, insertReviewDto.product_no, insertReviewDto.option_id, insertReviewDto.user_id);
             if (result.check === true) {
-                const writeReview = await this.reviewRepository.create(insertReviewDto);
+                const writeReview = this.reviewRepository.create(insertReviewDto);
                 const saveReview = await this.reviewRepository.save(writeReview);
                 await this.orderItemRepository.update(result.result, {
                     review_status: 'O',
@@ -91,12 +91,12 @@ let ReviewService = class ReviewService {
             return { success: false, message: error.message };
         }
     }
-    async findItemReview(order_no, product_no, user_id) {
+    async findItemReview(order_no, product_no, option_id, user_id) {
         try {
             const findItem = await this.orderItemRepository.findOne({
                 where: {
                     order_no,
-                    product_no: { product_id: product_no },
+                    option_id: { option_id: option_id },
                     user_id,
                 },
                 relations: ['product_no'],

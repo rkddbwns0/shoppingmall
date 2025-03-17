@@ -12,6 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Product_optionEntity = void 0;
 const typeorm_1 = require("typeorm");
 const product_entity_1 = require("./product.entity");
+const orderItem_entity_1 = require("./orderItem.entity");
+const cart_entity_1 = require("./cart.entity");
+const review_entity_1 = require("./review.entity");
 let Product_optionEntity = class Product_optionEntity {
 };
 exports.Product_optionEntity = Product_optionEntity;
@@ -58,6 +61,18 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'int', onUpdate: 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
 ], Product_optionEntity.prototype, "update_at", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => orderItem_entity_1.OrderItemEntity, (orderItem) => orderItem.option_id),
+    __metadata("design:type", Array)
+], Product_optionEntity.prototype, "orderItem", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => cart_entity_1.CartEntity, (cart) => cart.option_id),
+    __metadata("design:type", Array)
+], Product_optionEntity.prototype, "cart", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => review_entity_1.ReviewEntity, (review) => review.option_id),
+    __metadata("design:type", review_entity_1.ReviewEntity)
+], Product_optionEntity.prototype, "review", void 0);
 exports.Product_optionEntity = Product_optionEntity = __decorate([
     (0, typeorm_1.Entity)('product_option')
 ], Product_optionEntity);

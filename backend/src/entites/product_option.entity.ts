@@ -2,10 +2,13 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
+  ManyToOne, OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProductEntity } from './product.entity';
+import { OrderItemEntity } from './orderItem.entity';
+import { CartEntity } from './cart.entity';
+import { ReviewEntity } from './review.entity';
 
 @Entity('product_option')
 export class Product_optionEntity {
@@ -42,4 +45,13 @@ export class Product_optionEntity {
 
   @Column({ type: 'int', onUpdate: 'CURRENT_TIMESTAMP' })
   update_at: Date;
+
+  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.option_id)
+  orderItem: OrderItemEntity[];
+
+  @OneToMany(() => CartEntity, (cart) => cart.option_id)
+  cart: CartEntity[];
+
+  @OneToMany(() => ReviewEntity, (review) => review.option_id)
+  review: ReviewEntity;
 }

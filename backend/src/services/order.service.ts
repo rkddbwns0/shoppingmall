@@ -35,7 +35,7 @@ export class OrderService {
     private readonly productRepository: Repository<ProductEntity>,
 
     @InjectRepository(Product_optionEntity)
-    private readonly product_optionRespository: Repository<Product_optionEntity>,
+    private readonly product_optionRepository: Repository<Product_optionEntity>,
 
     @InjectRepository(AddressEntity)
     private readonly addressRepository: Repository<AddressEntity>,
@@ -68,7 +68,7 @@ export class OrderService {
         where: { user_id: user.user_id, default_addr: 'Y' },
       });
       const product = await  this.productRepository.findOne({where: {product_id: insertOrderDto.product_no}, select: ['price']})
-      const product_option = await this.product_optionRespository.findOne({
+      const product_option = await this.product_optionRepository.findOne({
         where: { option_id: insertOrderDto.option_id, product_no: insertOrderDto.product_no },
       });
 
@@ -83,7 +83,7 @@ export class OrderService {
       }
 
       product_option.stock = product_option.stock - insertOrderDto.quantity;
-      await this.product_optionRespository.update(product_option, {
+      await this.product_optionRepository.update(product_option, {
         stock: product_option.stock,
       });
 
@@ -95,18 +95,18 @@ export class OrderService {
         product_no: [product],
       };
 
-      const result = await this.orderRepository.create(orderData);
+      const result = this.orderRepository.create(orderData);
       const saveResult = await this.orderRepository.save(result);
       const orderItems = {
         user_id: user.user_id,
         order_no: saveResult.order_no,
-        product_no: product,
+        option_id: [product_option],
         quantity: insertOrderDto.quantity,
         unit_price: product.price,
         total_price: insertOrderDto.total_price,
       };
 
-      const saveItems = await this.orderItemsRepository.create(orderItems);
+      const saveItems = this.orderItemsRepository.create(orderItems)
       await this.orderItemsRepository.save(saveItems);
 
       return { success: true };
@@ -128,15 +128,15 @@ export class OrderService {
 
       const cart_product = await this.cartRepository.find({
         where: { user_id: user.user_id },
-        relations: ['product_id'],
+        relations: ['option_id'],
       });
 
       const product_nos = cart_product.map(
-        (cartItem) => cartItem.product_id.product_id,
+        (cartItem) => cartItem.option_id.option_id,
       );
 
-      const product_data = await this.productRepository.find({
-        where: { product_id: In(product_nos) },
+      const product_data = await this.product_optionRepository.find({
+        where: { option_id: In(product_nos) },
       });
 
       if (!user || !cart_product || !product_data) {
@@ -149,15 +149,15 @@ export class OrderService {
       const product_items = [];
 
       cart_product.forEach((cartItem) => {
-        const product = product_data.find(
-          (product) => product.product_id === cartItem.product_id.product_id,
+        const product_option = product_data.find(
+          (product_option) => product_option.option_id === cartItem.option_id.option_id,
         );
-        if (product) {
-          total_price += product.price * cartItem.quantity;
+        if (product_option) {
+          total_price += product_option.price * cartItem.quantity;
           total_quantity += cartItem.quantity;
           product_items.push({
-            product_no: product.product_id,
-            unit_price: product.price * cartItem.quantity,
+            option_id: product_option.option_id,
+            unit_price: product_option.price * cartItem.quantity,
             quantity: cartItem.quantity,
           });
         }
@@ -172,7 +172,7 @@ export class OrderService {
         total_price: total_price,
       };
 
-      const result = await this.orderRepository.create(cartOrder_data);
+      const result = this.orderRepository.create(cartOrder_data);
       const saveResult = await this.orderRepository.save(result);
 
       const orderItems = product_items.map((item) => ({
@@ -183,29 +183,29 @@ export class OrderService {
       }));
       console.log(orderItems);
 
-      const saveItems = await this.orderItemsRepository.create(orderItems);
+      const saveItems = this.orderItemsRepository.create(orderItems);
       await this.orderItemsRepository.save(saveItems);
 
-      // await Promise.all(
-      //   cart_product.map(async (cartItem) => {
-      //     const product = product_data.find(
-      //       (product) => product.product_id === cartItem.product_id.product_id,
-      //     );
-      //     if (product) {
-      //       const updateStock = product.stock - cartItem.quantity;
-      //       if (updateStock < 0) {
-      //         throw new BadRequestException(
-      //           '현재 재고가 부족합니다. 다시 확인해 주세요.',
-      //         );
-      //       }
+      await Promise.all(
+        cart_product.map(async (cartItem) => {
+          const product_option = product_data.find(
+            (product_option) => product_option.option_id === cartItem.option_id.option_id,
+          );
+          if (product_option) {
+            const updateStock = product_option.stock - cartItem.quantity;
+            if (updateStock < 0) {
+              throw new BadRequestException(
+                '현재 재고가 부족합니다. 다시 확인해 주세요.',
+              );
+            }
 
-      //       await this.productRepository.update(
-      //         { product_id: product.product_id },
-      //         { stock: updateStock },
-      //       );
-      //     }
-      //   }),
-      // );
+            await this.product_optionRepository.update(
+              { option_id: product_option.option_id },
+              { stock: updateStock },
+            );
+          }
+        }),
+      );
 
       await this.cartRepository.delete({ user_id: user.user_id });
       return { success: true };
@@ -230,7 +230,7 @@ export class OrderService {
       const result = await this.orderRepository.save(refundOrderDto);
       Promise.all(
         findOrderItems.map(async (item) => {
-          const product = item.product_no;
+          const product = item.option_id;
           const order_quantity = item.quantity;
 
           // product.stock += order_quantity;

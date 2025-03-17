@@ -1,6 +1,4 @@
 import { ProductCateogryEntity } from './product_categories.entity';
-import { CartEntity } from './cart.entity';
-import { OrderItemEntity } from './orderItem.entity';
 import { OrderEntity } from './order.entity';
 import { ReviewEntity } from './review.entity';
 import { QnAEntity } from './qna.entity';
@@ -17,9 +15,7 @@ export declare class ProductEntity {
     reg_at: Date;
     update_at: Date;
     product_option: Product_optionEntity;
-    cart: CartEntity[];
     order: OrderEntity[];
-    orderItem: OrderItemEntity[];
     review: ReviewEntity;
     qna: QnAEntity[];
     like_product: Like_ProductEntity;

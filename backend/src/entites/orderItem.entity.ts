@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { OrderEntity } from './order.entity';
-import { ProductEntity } from './product.entity';
 import { UserEntity } from './user.entity';
+import { Product_optionEntity } from './product_option.entity';
 
 @Entity('order_items')
 export class OrderItemEntity {
@@ -26,9 +26,9 @@ export class OrderItemEntity {
   @JoinColumn({ name: 'user_id' })
   user_id: number;
 
-  @ManyToOne(() => ProductEntity, (product) => product.product_id)
-  @JoinColumn({ name: 'product_no' })
-  product_no: ProductEntity;
+  @ManyToOne(() => Product_optionEntity, (product_option) => product_option.option_id)
+  @JoinColumn({ name: 'option_id' })
+  option_id: Product_optionEntity[];
 
   @Column({ type: 'int', nullable: false })
   quantity: number;

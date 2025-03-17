@@ -31,6 +31,14 @@ __decorate([
 ], InsertReviewDto.prototype, "product_no", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
+        description: '제품 세부 넘버',
+    }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], InsertReviewDto.prototype, "option_id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
         description: '유저 고유 넘버',
     }),
     (0, class_validator_1.IsNotEmpty)(),

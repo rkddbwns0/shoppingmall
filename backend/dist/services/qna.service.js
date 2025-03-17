@@ -30,7 +30,7 @@ let QnAService = class QnAService {
             if (insertQnADto.private === 'O' && !insertQnADto.private_pwd) {
                 throw new common_1.BadRequestException('비밀글을 작성하기 위해서는 비밀번호를 등록해야 합니다.');
             }
-            const writeQnA = await this.qnaRepository.create(insertQnADto);
+            const writeQnA = this.qnaRepository.create(insertQnADto);
             await this.qnaRepository.save(writeQnA);
             return { success: true };
         }

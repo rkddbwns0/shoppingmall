@@ -64,15 +64,9 @@ export class ProductEntity {
   )
   product_option: Product_optionEntity;
 
-  @OneToMany(() => CartEntity, (cart) => cart.product_id)
-  cart: CartEntity[];
-
   @ManyToMany(() => OrderEntity, (order) => order.product_no)
   @JoinColumn({ name: 'order_no' })
   order: OrderEntity[];
-
-  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product_no)
-  orderItem: OrderItemEntity[];
 
   @OneToMany(() => ReviewEntity, (review) => review.product_no)
   review: ReviewEntity;

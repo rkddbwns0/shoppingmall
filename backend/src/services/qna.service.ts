@@ -27,7 +27,7 @@ export class QnAService {
         );
       }
 
-      const writeQnA = await this.qnaRepository.create(insertQnADto);
+      const writeQnA = this.qnaRepository.create(insertQnADto);
       await this.qnaRepository.save(writeQnA);
 
       return { success: true };

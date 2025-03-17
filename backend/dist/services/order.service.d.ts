@@ -13,11 +13,11 @@ export declare class OrderService {
     private readonly userRepository;
     private readonly cartRepository;
     private readonly productRepository;
-    private readonly product_optionRespository;
+    private readonly product_optionRepository;
     private readonly addressRepository;
     private readonly orderItemsRepository;
     private readonly adminRepository;
-    constructor(orderRepository: Repository<OrderEntity>, userRepository: Repository<UserEntity>, cartRepository: Repository<CartEntity>, productRepository: Repository<ProductEntity>, product_optionRespository: Repository<Product_optionEntity>, addressRepository: Repository<AddressEntity>, orderItemsRepository: Repository<OrderItemEntity>, adminRepository: Repository<AdminEntity>);
+    constructor(orderRepository: Repository<OrderEntity>, userRepository: Repository<UserEntity>, cartRepository: Repository<CartEntity>, productRepository: Repository<ProductEntity>, product_optionRepository: Repository<Product_optionEntity>, addressRepository: Repository<AddressEntity>, orderItemsRepository: Repository<OrderItemEntity>, adminRepository: Repository<AdminEntity>);
     orderList(user_id: number): Promise<OrderEntity[]>;
     insertOrder(insertOrderDto: InsertOrderDto): Promise<{
         success: boolean;
