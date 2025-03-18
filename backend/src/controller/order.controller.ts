@@ -7,12 +7,14 @@ import {
   RefundOrderDto,
 } from 'src/dto/order.dto';
 import { OrderService } from 'src/services/order.service';
+import { Public } from '../auth/decorator/public.decorator';
 
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @ApiOperation({ summary: '주문 내역 확인 라우터' })
+  @Public()
   @Get('/select')
   async orderList(@Param('user_id') user_id: number, @Res() res: Response) {
     try {
@@ -26,6 +28,7 @@ export class OrderController {
   @ApiOperation({
     summary: '제품 주문 라우터',
   })
+  @Public()
   @Post('/insert')
   async insertOrder(
     @Body() insertOrderDto: InsertOrderDto,
@@ -54,6 +57,7 @@ export class OrderController {
   @ApiOperation({
     summary: '장바구니 제품 구매 라우터',
   })
+  @Public()
   @Post('/cart_order')
   async cartOrder(@Body() cartOrderDto: CartOrderDto, @Res() res: Response) {
     try {
@@ -76,6 +80,7 @@ export class OrderController {
   }
 
   @ApiOperation({ summary: '고객 환불 요청 라우터' })
+  @Public()
   @Put('/refund')
   async refundOrder(
     @Body() refundOrderDto: RefundOrderDto,

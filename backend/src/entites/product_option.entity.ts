@@ -34,12 +34,6 @@ export class Product_optionEntity {
   @Column({ type: 'int', nullable: false, default: 0 })
   stock: number;
 
-  @Column({ type: 'int', nullable: true })
-  price: number;
-
-  @Column({ type: 'int', nullable: true })
-  sale_price: number;
-
   @Column({ type: 'datetime', default: 'CURRENT_TIMESTAMP' })
   reg_at: Date;
 

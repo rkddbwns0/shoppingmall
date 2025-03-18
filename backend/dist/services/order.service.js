@@ -66,7 +66,7 @@ let OrderService = class OrderService {
                 throw new common_1.BadRequestException('재고가 부족합니다. 다시 확인해 주세요.');
             }
             product_option.stock = product_option.stock - insertOrderDto.quantity;
-            await this.product_optionRepository.update(product_option, {
+            await this.product_optionRepository.update(product_option.option_id, {
                 stock: product_option.stock,
             });
             insertOrderDto.address_no = address.address_no;
@@ -80,11 +80,12 @@ let OrderService = class OrderService {
             const orderItems = {
                 user_id: user.user_id,
                 order_no: saveResult.order_no,
-                option_id: [product_option],
+                option_id: product_option,
                 quantity: insertOrderDto.quantity,
                 unit_price: product.price,
                 total_price: insertOrderDto.total_price,
             };
+            console.log(orderItems);
             const saveItems = this.orderItemsRepository.create(orderItems);
             await this.orderItemsRepository.save(saveItems);
             return { success: true };
@@ -116,18 +117,6 @@ let OrderService = class OrderService {
             let total_price = 0;
             let total_quantity = 0;
             const product_items = [];
-            cart_product.forEach((cartItem) => {
-                const product_option = product_data.find((product_option) => product_option.option_id === cartItem.option_id.option_id);
-                if (product_option) {
-                    total_price += product_option.price * cartItem.quantity;
-                    total_quantity += cartItem.quantity;
-                    product_items.push({
-                        option_id: product_option.option_id,
-                        unit_price: product_option.price * cartItem.quantity,
-                        quantity: cartItem.quantity,
-                    });
-                }
-            });
             cartOrderDto.address_no = address.address_no;
             const cartOrder_data = {
                 ...cartOrderDto,

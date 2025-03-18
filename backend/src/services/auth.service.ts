@@ -42,7 +42,7 @@ export class AuthService {
     });
 
     if (!findToken) {
-      const newToken = await this.user_token.create({
+      const newToken = this.user_token.create({
         user_id: user.user_id,
         token: refreshToken,
         device_id: loginDto.device_id,
@@ -81,7 +81,7 @@ export class AuthService {
       name: user.name,
     };
 
-    const accessToken = await this.jwtService.sign(payload, {
+    const accessToken = this.jwtService.sign(payload, {
       expiresIn: '1h',
     });
 
@@ -95,7 +95,7 @@ export class AuthService {
       name: user.name,
     };
 
-    const refreshToken = await this.jwtService.sign(payload, {
+    const refreshToken = this.jwtService.sign(payload, {
       expiresIn: '7d',
     });
 

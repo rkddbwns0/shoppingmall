@@ -46,14 +46,6 @@ __decorate([
     __metadata("design:type", Number)
 ], Product_optionEntity.prototype, "stock", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int', nullable: true }),
-    __metadata("design:type", Number)
-], Product_optionEntity.prototype, "price", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'int', nullable: true }),
-    __metadata("design:type", Number)
-], Product_optionEntity.prototype, "sale_price", void 0);
-__decorate([
     (0, typeorm_1.Column)({ type: 'datetime', default: 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
 ], Product_optionEntity.prototype, "reg_at", void 0);

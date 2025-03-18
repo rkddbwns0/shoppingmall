@@ -28,7 +28,7 @@ export class OrderItemEntity {
 
   @ManyToOne(() => Product_optionEntity, (product_option) => product_option.option_id)
   @JoinColumn({ name: 'option_id' })
-  option_id: Product_optionEntity[];
+  option_id: Product_optionEntity;
 
   @Column({ type: 'int', nullable: false })
   quantity: number;

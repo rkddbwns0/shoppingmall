@@ -37,7 +37,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.ManyToOne)(() => product_option_entity_1.Product_optionEntity, (product_option) => product_option.option_id),
     (0, typeorm_1.JoinColumn)({ name: 'option_id' }),
-    __metadata("design:type", Array)
+    __metadata("design:type", product_option_entity_1.Product_optionEntity)
 ], OrderItemEntity.prototype, "option_id", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'int', nullable: false }),
