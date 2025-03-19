@@ -15,6 +15,7 @@ const product_entity_1 = require("./product.entity");
 const orderItem_entity_1 = require("./orderItem.entity");
 const cart_entity_1 = require("./cart.entity");
 const review_entity_1 = require("./review.entity");
+const qna_entity_1 = require("./qna.entity");
 let Product_optionEntity = class Product_optionEntity {
 };
 exports.Product_optionEntity = Product_optionEntity;
@@ -28,7 +29,7 @@ __decorate([
         onUpdate: 'CASCADE',
     }),
     (0, typeorm_1.JoinColumn)({ name: 'product_no' }),
-    __metadata("design:type", Number)
+    __metadata("design:type", product_entity_1.ProductEntity)
 ], Product_optionEntity.prototype, "product_no", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', nullable: false }),
@@ -61,6 +62,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => cart_entity_1.CartEntity, (cart) => cart.option_id),
     __metadata("design:type", Array)
 ], Product_optionEntity.prototype, "cart", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => qna_entity_1.QnAEntity, (qna) => qna.option_id),
+    __metadata("design:type", Array)
+], Product_optionEntity.prototype, "qna", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => review_entity_1.ReviewEntity, (review) => review.option_id),
     __metadata("design:type", review_entity_1.ReviewEntity)

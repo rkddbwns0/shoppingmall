@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const product_entity_1 = require("./product.entity");
 const user_entity_1 = require("./user.entity");
 const qna_answer_entity_1 = require("./qna_answer.entity");
+const product_option_entity_1 = require("./product_option.entity");
 let QnAEntity = class QnAEntity {
 };
 exports.QnAEntity = QnAEntity;
@@ -26,6 +27,11 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'product_no' }),
     __metadata("design:type", product_entity_1.ProductEntity)
 ], QnAEntity.prototype, "product_no", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => product_option_entity_1.Product_optionEntity, (product_option) => product_option.option_id),
+    (0, typeorm_1.JoinColumn)({ name: 'option_id' }),
+    __metadata("design:type", product_option_entity_1.Product_optionEntity)
+], QnAEntity.prototype, "option_id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (user) => user.user_id),
     (0, typeorm_1.JoinColumn)({ name: 'user_id' }),

@@ -41,6 +41,7 @@ export class JwtServiceAuthGuard implements CanActivate {
     }
 
     try {
+      // access_token 검증
       const payload = await this.jwtSerivce.verifyAsync(accessToken, {
         secret: this.configService.get<string>('JWT_SECRET_KEY'),
       });
@@ -52,9 +53,10 @@ export class JwtServiceAuthGuard implements CanActivate {
     }
 
     if (!refreshToken) {
-      throw new UnauthorizedException('refresh_token이 존재하지 않습니다.');
+      throw new UnauthorizedException('refresh_token이 존재하지 않습니다. 로그인을 해 주세요.');
     }
-
+    
+    // refresh_token이 db에 저장되어 있는 토큰과 일치하는지 확인
     const storeToken = await this.user_token.findOne({
       where: {
         user_id: request?.user?.user_id,
@@ -63,44 +65,51 @@ export class JwtServiceAuthGuard implements CanActivate {
       },
     });
 
-    try {
-      const payloadRefreshToken = await this.jwtSerivce.verifyAsync(
-        refreshToken,
-        { secret: this.configService.get<string>('JWT_SECRET_KEY') },
-      );
+    if(!storeToken) {
+        throw new UnauthorizedException();
+    } else {
+      try {
+        // refresh_toekn 검증
+        const payloadRefreshToken = await this.jwtSerivce.verifyAsync(
+          refreshToken,
+          { secret: this.configService.get<string>('JWT_SECRET_KEY') },
+        );
 
-      const newAccessToken = await this.jwtSerivce.sign(
-        {
-          user_id: payloadRefreshToken.user_id,
-          email: payloadRefreshToken.email,
-          name: payloadRefreshToken.name,
-        },
-        {
-          secret: this.configService.get<string>('JWT_SECRET_KEY'),
-          expiresIn: '1h',
-        },
-      );
+        // access_token이 만료되었을 경우 refresh_token을 통해 새 토큰을 발급
+        const newAccessToken = this.jwtSerivce.sign(
+          {
+            user_id: payloadRefreshToken.user_id,
+            email: payloadRefreshToken.email,
+            name: payloadRefreshToken.name,
+          },
+          {
+            secret: this.configService.get<string>('JWT_SECRET_KEY'),
+            expiresIn: '1h',
+          },
+        );
 
-      response.cookie('shop_access_token', newAccessToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'strict',
-      });
+        response.cookie('shop_access_token', newAccessToken, {
+          httpOnly: true,
+          secure: false,
+          sameSite: 'strict',
+        });
 
-      request.user = payloadRefreshToken;
-      return true;
-    } catch (error) {
-      await this.user_token.delete({
-        user_id: request?.user.user_id,
-        device_id: device_id,
-      });
+        request.user = payloadRefreshToken;
+        return true;
+      } catch (error) {
+        // 만약 이 과정에서 refresh_token이 만료되었을 경우 db에서 토큰을 삭제
+        await this.user_token.delete({
+          user_id: request?.user.user_id,
+          device_id: device_id,
+        });
 
-      response.clearCookie('shop_access_token');
-      response.clearCookie('shop_refresh_token');
+        response.clearCookie('shop_access_token');
+        response.clearCookie('shop_refresh_token');
 
-      throw new UnauthorizedException(
-        '토큰이 만료되었습니다. 다시 로그인해 주세요.',
-      );
+        throw new UnauthorizedException(
+          '토큰이 만료되었습니다. 다시 로그인해 주세요.',
+        );
+      }
     }
   }
 }

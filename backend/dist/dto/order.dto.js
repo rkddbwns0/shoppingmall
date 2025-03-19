@@ -113,13 +113,22 @@ __decorate([
 ], CartOrderDto.prototype, "user_id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: '제품 고유 넘버',
+        description: '제품 넘버',
         required: true,
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Array)
 ], CartOrderDto.prototype, "product_no", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: '제품 상세 넘버',
+        required: true,
+    }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], CartOrderDto.prototype, "option_id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: '구매 제품 수량',

@@ -88,12 +88,20 @@ export class CartOrderDto {
   user_id: number;
 
   @ApiProperty({
-    description: '제품 고유 넘버',
+    description: '제품 넘버',
     required: true,
   })
   @IsNotEmpty()
   @IsNumber()
   product_no: number[];
+
+  @ApiProperty({
+    description: '제품 상세 넘버',
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsNumber()
+  option_id: number;
 
   @ApiProperty({
     description: '구매 제품 수량',

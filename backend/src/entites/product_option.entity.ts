@@ -9,6 +9,7 @@ import { ProductEntity } from './product.entity';
 import { OrderItemEntity } from './orderItem.entity';
 import { CartEntity } from './cart.entity';
 import { ReviewEntity } from './review.entity';
+import { QnAEntity } from './qna.entity';
 
 @Entity('product_option')
 export class Product_optionEntity {
@@ -20,7 +21,7 @@ export class Product_optionEntity {
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'product_no' })
-  product_no: number;
+  product_no: ProductEntity;
 
   @Column({ type: 'varchar', nullable: false })
   color: string;
@@ -45,6 +46,9 @@ export class Product_optionEntity {
 
   @OneToMany(() => CartEntity, (cart) => cart.option_id)
   cart: CartEntity[];
+
+  @OneToMany(() => QnAEntity, (qna) => qna.option_id)
+  qna: QnAEntity[];
 
   @OneToMany(() => ReviewEntity, (review) => review.option_id)
   review: ReviewEntity;

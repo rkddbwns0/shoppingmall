@@ -14,7 +14,7 @@ export declare class ProductEntity {
     price: number;
     reg_at: Date;
     update_at: Date;
-    product_option: Product_optionEntity;
+    product_option: Product_optionEntity[];
     order: OrderEntity[];
     review: ReviewEntity;
     qna: QnAEntity[];

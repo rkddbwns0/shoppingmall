@@ -13,6 +13,7 @@ exports.InsertQnADto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const product_entity_1 = require("../entites/product.entity");
+const product_option_entity_1 = require("../entites/product_option.entity");
 class InsertQnADto {
 }
 exports.InsertQnADto = InsertQnADto;
@@ -25,6 +26,15 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", product_entity_1.ProductEntity)
 ], InsertQnADto.prototype, "product_no", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: '제품 상세 넘버',
+        type: 'number',
+    }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", product_option_entity_1.Product_optionEntity)
+], InsertQnADto.prototype, "option_id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: '유저 고유 넘버',

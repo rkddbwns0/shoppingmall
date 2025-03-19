@@ -7,6 +7,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { ProductEntity } from 'src/entites/product.entity';
+import { Product_optionEntity } from '../entites/product_option.entity';
 
 export class InsertQnADto {
   @ApiProperty({
@@ -16,6 +17,14 @@ export class InsertQnADto {
   @IsNotEmpty()
   @IsNumber()
   product_no: ProductEntity;
+
+  @ApiProperty({
+    description: '제품 상세 넘버',
+    type: 'number',
+  })
+  @IsNotEmpty()
+  @IsNumber()
+  option_id: Product_optionEntity;
 
   @ApiProperty({
     description: '유저 고유 넘버',

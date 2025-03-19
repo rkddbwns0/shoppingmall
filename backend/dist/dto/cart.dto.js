@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateCartDto = exports.DeleteCartDto = exports.InsertCartDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-const product_entity_1 = require("../entites/product.entity");
+const product_option_entity_1 = require("../entites/product_option.entity");
 class InsertCartDto {
 }
 exports.InsertCartDto = InsertCartDto;
@@ -32,8 +32,8 @@ __decorate([
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", product_entity_1.ProductEntity)
-], InsertCartDto.prototype, "product_id", void 0);
+    __metadata("design:type", product_option_entity_1.Product_optionEntity)
+], InsertCartDto.prototype, "option_id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: '수량',

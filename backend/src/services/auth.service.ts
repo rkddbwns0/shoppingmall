@@ -96,7 +96,7 @@ export class AuthService {
     };
 
     const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: '7d',
+      expiresIn: '7h',
     });
 
     return refreshToken;

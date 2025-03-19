@@ -19,6 +19,7 @@ const product_entity_1 = require("../entites/product.entity");
 const qna_entity_1 = require("../entites/qna.entity");
 const user_entity_1 = require("../entites/user.entity");
 const typeorm_2 = require("typeorm");
+const bcrypt = require("bcrypt");
 let QnAService = class QnAService {
     constructor(userRepository, productRepository, qnaRepository) {
         this.userRepository = userRepository;
@@ -30,12 +31,25 @@ let QnAService = class QnAService {
             if (insertQnADto.private === 'O' && !insertQnADto.private_pwd) {
                 throw new common_1.BadRequestException('비밀글을 작성하기 위해서는 비밀번호를 등록해야 합니다.');
             }
+            if (insertQnADto.private === 'O') {
+                const hashPassword = await this.hashPrivatePwd(insertQnADto.private_pwd);
+                insertQnADto.private_pwd = hashPassword;
+            }
             const writeQnA = this.qnaRepository.create(insertQnADto);
             await this.qnaRepository.save(writeQnA);
             return { success: true };
         }
         catch (error) {
             return { success: false, message: error.message };
+        }
+    }
+    async hashPrivatePwd(private_pwd) {
+        try {
+            const hashPwd = await bcrypt.hash(private_pwd, 10);
+            return hashPwd;
+        }
+        catch (error) {
+            throw new common_1.BadRequestException(error.message);
         }
     }
     async selectAllQnATitle(product_no) {
@@ -45,7 +59,6 @@ let QnAService = class QnAService {
                 select: ['qna_no', 'title', 'private', 'answer_yn'],
                 relations: ['product_no'],
             });
-            console.log(allQna);
             const qnaData = allQna.map((item) => ({
                 ...item,
                 title: item.private === 'O' ? (item.title = '비밀글 입니다.') : item.title,

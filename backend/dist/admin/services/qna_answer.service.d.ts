@@ -12,6 +12,7 @@ export declare class QnA_AnswerService {
         answer_yn: string;
         qna_no: number;
         product_no: import("../../entites/product.entity").ProductEntity;
+        option_id: import("../../entites/product_option.entity").Product_optionEntity;
         user_id: number;
         title: string;
         content: string;

@@ -62,7 +62,7 @@ export class ProductEntity {
     () => Product_optionEntity,
     (product_option) => product_option.product_no,
   )
-  product_option: Product_optionEntity;
+  product_option: Product_optionEntity[];
 
   @ManyToMany(() => OrderEntity, (order) => order.product_no)
   @JoinColumn({ name: 'order_no' })

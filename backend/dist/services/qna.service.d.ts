@@ -15,12 +15,14 @@ export declare class QnAService {
         success: boolean;
         message: any;
     }>;
+    private hashPrivatePwd;
     selectAllQnATitle(product_no: number): Promise<{
         data: {
             title: string;
             answer_yn: string;
             qna_no: number;
             product_no: ProductEntity;
+            option_id: import("../entites/product_option.entity").Product_optionEntity;
             user_id: number;
             content: string;
             private: string;

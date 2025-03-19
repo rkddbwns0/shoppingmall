@@ -12,6 +12,7 @@ export declare class InsertOrderDto {
 export declare class CartOrderDto {
     user_id: number;
     product_no: number[];
+    option_id: number;
     quantity: number;
     order_state: string;
     refund_reason?: string;

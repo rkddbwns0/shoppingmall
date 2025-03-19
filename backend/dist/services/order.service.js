@@ -57,7 +57,7 @@ let OrderService = class OrderService {
             });
             const product = await this.productRepository.findOne({ where: { product_id: insertOrderDto.product_no }, select: ['price'] });
             const product_option = await this.product_optionRepository.findOne({
-                where: { option_id: insertOrderDto.option_id, product_no: insertOrderDto.product_no },
+                where: { option_id: insertOrderDto.option_id, product_no: { product_id: insertOrderDto.product_no } },
             });
             if (!user || !address || !product_option) {
                 throw new common_1.BadRequestException('정보가 존재하지 않습니다. 다시 확인해 주세요.');
@@ -103,11 +103,19 @@ let OrderService = class OrderService {
             const address = await this.addressRepository.findOne({
                 where: { user_id: user.user_id, default_addr: 'Y' },
             });
-            const cart_product = await this.cartRepository.find({
-                where: { user_id: user.user_id },
-                relations: ['option_id'],
-            });
-            const product_nos = cart_product.map((cartItem) => cartItem.option_id.option_id);
+            const cart_product = await this.cartRepository
+                .createQueryBuilder('cart')
+                .leftJoin('product_option', 'product_option', 'product_option.option_id = cart.option_id')
+                .leftJoin('product', 'product', 'product.product_id = product_option.product_no')
+                .where('cart.user_id = :user_id', { user_id: cartOrderDto.user_id })
+                .select([
+                'cart',
+                'product_option',
+                'product.price'
+            ])
+                .groupBy('cart.option_id')
+                .getRawMany();
+            const product_nos = cart_product.map((cartItem) => cartItem.cart_option_id);
             const product_data = await this.product_optionRepository.find({
                 where: { option_id: (0, typeorm_2.In)(product_nos) },
             });
@@ -117,6 +125,19 @@ let OrderService = class OrderService {
             let total_price = 0;
             let total_quantity = 0;
             const product_items = [];
+            cart_product.forEach((cartItem) => {
+                const product_option = product_data.find((product_option) => product_option.option_id === cartItem.cart_option_id);
+                if (product_option) {
+                    total_price += cartItem.product_price * cartItem.cart_quantity;
+                    total_quantity += cartItem.cart_quantity;
+                    product_items.push({
+                        option_id: product_option.option_id,
+                        unit_price: cartItem.cart_quantity * cartItem.product_price,
+                        quantity: cartItem.cart_quantity,
+                    });
+                }
+                console.log(cartItem);
+            });
             cartOrderDto.address_no = address.address_no;
             const cartOrder_data = {
                 ...cartOrderDto,
@@ -136,9 +157,9 @@ let OrderService = class OrderService {
             const saveItems = this.orderItemsRepository.create(orderItems);
             await this.orderItemsRepository.save(saveItems);
             await Promise.all(cart_product.map(async (cartItem) => {
-                const product_option = product_data.find((product_option) => product_option.option_id === cartItem.option_id.option_id);
+                const product_option = product_data.find((product_option) => product_option.option_id === cartItem.cart_option_id);
                 if (product_option) {
-                    const updateStock = product_option.stock - cartItem.quantity;
+                    const updateStock = product_option.stock - cartItem.cart_quantity;
                     if (updateStock < 0) {
                         throw new common_1.BadRequestException('현재 재고가 부족합니다. 다시 확인해 주세요.');
                     }

@@ -5,6 +5,7 @@ import { ProductEntity } from 'src/entites/product.entity';
 import { QnAEntity } from 'src/entites/qna.entity';
 import { UserEntity } from 'src/entites/user.entity';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class QnAService {
@@ -27,12 +28,26 @@ export class QnAService {
         );
       }
 
+      if (insertQnADto.private === 'O') {
+        const hashPassword = await  this.hashPrivatePwd(insertQnADto.private_pwd);
+        insertQnADto.private_pwd = hashPassword;
+      }
+
       const writeQnA = this.qnaRepository.create(insertQnADto);
       await this.qnaRepository.save(writeQnA);
 
       return { success: true };
     } catch (error) {
       return { success: false, message: error.message };
+    }
+  }
+
+  private async hashPrivatePwd(private_pwd: string) {
+    try {
+        const hashPwd = await bcrypt.hash(private_pwd, 10);
+        return hashPwd;
+    } catch (error) {
+      throw new BadRequestException(error.message)
     }
   }
 
@@ -43,8 +58,6 @@ export class QnAService {
         select: ['qna_no', 'title', 'private', 'answer_yn'],
         relations: ['product_no'],
       });
-
-      console.log(allQna);
 
       const qnaData = allQna.map((item) => ({
         ...item,

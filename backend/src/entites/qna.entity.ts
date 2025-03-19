@@ -9,6 +9,7 @@ import {
 import { ProductEntity } from './product.entity';
 import { UserEntity } from './user.entity';
 import { QnA_AnswerEntity } from './qna_answer.entity';
+import { Product_optionEntity } from './product_option.entity';
 
 @Entity('qna')
 export class QnAEntity {
@@ -18,6 +19,10 @@ export class QnAEntity {
   @ManyToOne(() => ProductEntity, (product) => product.product_id)
   @JoinColumn({ name: 'product_no' })
   product_no: ProductEntity;
+
+  @ManyToOne(() => Product_optionEntity, (product_option) => product_option.option_id)
+  @JoinColumn({ name: 'option_id' })
+  option_id: Product_optionEntity;
 
   @ManyToOne(() => UserEntity, (user) => user.user_id)
   @JoinColumn({ name: 'user_id' })

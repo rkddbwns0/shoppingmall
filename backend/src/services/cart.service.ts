@@ -15,7 +15,7 @@ export class CartService {
     try {
       const result = await this.cartRepository.find({
         where: { user_id: user_id },
-        relations: ['product_id'],
+        relations: ['option_id'],
       });
       return { success: true, result: result };
     } catch (error) {
@@ -37,7 +37,7 @@ export class CartService {
         });
         return { success: true };
       } else {
-        const result = await this.cartRepository.create(insertCartDto);
+        const result = this.cartRepository.create(insertCartDto);
         await this.cartRepository.save(result);
         return { success: true };
       }
