@@ -15,7 +15,7 @@ import { Repository } from 'typeorm';
 export class JwtServiceAuthGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private jwtSerivce: JwtService,
+    private jwtService: JwtService,
     private configService: ConfigService,
     @InjectRepository(UserTokenEntity)
     private user_token: Repository<UserTokenEntity>,
@@ -42,41 +42,43 @@ export class JwtServiceAuthGuard implements CanActivate {
 
     try {
       // access_token 검증
-      const payload = await this.jwtSerivce.verifyAsync(accessToken, {
+      const payload = await this.jwtService.verifyAsync(accessToken, {
         secret: this.configService.get<string>('JWT_SECRET_KEY'),
       });
-
-      request.user = payload;
-      return true;
+      request.user = payload.user_id
+      return true
     } catch (error) {
-      console.error('토큰이 존재하지 않습니다.');
+      console.error(error);
     }
 
     if (!refreshToken) {
       throw new UnauthorizedException('refresh_token이 존재하지 않습니다. 로그인을 해 주세요.');
     }
-    
+
+    console.log(request.user)
+
     // refresh_token이 db에 저장되어 있는 토큰과 일치하는지 확인
     const storeToken = await this.user_token.findOne({
       where: {
-        user_id: request?.user?.user_id,
+        user_id: request.user,
         device_id: device_id,
         token: refreshToken,
       },
     });
+    console.log(storeToken)
 
     if(!storeToken) {
         throw new UnauthorizedException();
     } else {
       try {
         // refresh_toekn 검증
-        const payloadRefreshToken = await this.jwtSerivce.verifyAsync(
+        const payloadRefreshToken = await this.jwtService.verifyAsync(
           refreshToken,
           { secret: this.configService.get<string>('JWT_SECRET_KEY') },
         );
 
         // access_token이 만료되었을 경우 refresh_token을 통해 새 토큰을 발급
-        const newAccessToken = this.jwtSerivce.sign(
+        const newAccessToken = this.jwtService.sign(
           {
             user_id: payloadRefreshToken.user_id,
             email: payloadRefreshToken.email,

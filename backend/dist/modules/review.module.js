@@ -16,6 +16,7 @@ const product_entity_1 = require("../entites/product.entity");
 const review_entity_1 = require("../entites/review.entity");
 const user_entity_1 = require("../entites/user.entity");
 const review_service_1 = require("../services/review.service");
+const user_token_entity_1 = require("../entites/user_token.entity");
 let ReviewModule = class ReviewModule {
 };
 exports.ReviewModule = ReviewModule;
@@ -28,6 +29,7 @@ exports.ReviewModule = ReviewModule = __decorate([
                 user_entity_1.UserEntity,
                 order_entity_1.OrderEntity,
                 orderItem_entity_1.OrderItemEntity,
+                user_token_entity_1.UserTokenEntity
             ]),
         ],
         controllers: [review_controller_1.ReviewController],

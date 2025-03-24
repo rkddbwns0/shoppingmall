@@ -18,6 +18,7 @@ import { SignUpUserDto } from 'src/dto/user.dto';
 import { AuthService } from 'src/services/auth.service';
 import { UserService } from 'src/services/user.service';
 
+@UseGuards(JwtServiceAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(
@@ -66,7 +67,6 @@ export class UserController {
 
   @ApiOperation({ summary: '로그인 라우터' })
   @Public()
-  @UseGuards(JwtServiceAuthGuard)
   @Post('/login')
   async login(
     @Body() loginDto: LoginDto,

@@ -1,8 +1,10 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { Press_likedDto } from 'src/dto/like_product.dto';
 import { Like_ProductService } from 'src/services/like_product.service';
+import { JwtServiceAuthGuard } from '../auth/jwt/jwt-service.guard';
 
+@UseGuards(JwtServiceAuthGuard)
 @Controller('like_product')
 export class Like_ProductController {
   constructor(private readonly like_productService: Like_ProductService) {}

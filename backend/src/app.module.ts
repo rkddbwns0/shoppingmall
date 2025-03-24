@@ -31,6 +31,7 @@ import { UserModule } from './modules/user.module';
 import { Product_optionEntity } from './entites/product_option.entity';
 import { AuthModule } from './auth/jwt/jwt.module';
 import { UserTokenEntity } from './entites/user_token.entity';
+import { JwtServiceStrategy } from './auth/jwt/jwt-service.strategy';
 
 @Module({
   imports: [

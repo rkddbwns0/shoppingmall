@@ -10,6 +10,7 @@ import { ProductEntity } from 'src/entites/product.entity';
 import { Product_optionEntity } from 'src/entites/product_option.entity';
 import { UserEntity } from 'src/entites/user.entity';
 import { OrderService } from 'src/services/order.service';
+import { UserTokenEntity } from '../entites/user_token.entity';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { OrderService } from 'src/services/order.service';
       OrderItemEntity,
       AdminEntity,
       Product_optionEntity,
+      UserTokenEntity
     ]),
   ],
   controllers: [OrderController],

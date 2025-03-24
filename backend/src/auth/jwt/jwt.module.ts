@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,6 +10,7 @@ import { UserTokenEntity } from 'src/entites/user_token.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtServiceAuthGuard } from './jwt-service.guard';
 
+@Global()
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity, UserTokenEntity]),

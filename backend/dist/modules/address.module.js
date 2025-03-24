@@ -13,12 +13,13 @@ const address_controller_1 = require("../controller/address.controller");
 const address_entity_1 = require("../entites/address.entity");
 const user_entity_1 = require("../entites/user.entity");
 const address_service_1 = require("../services/address.service");
+const user_token_entity_1 = require("../entites/user_token.entity");
 let AddressModule = class AddressModule {
 };
 exports.AddressModule = AddressModule;
 exports.AddressModule = AddressModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([address_entity_1.AddressEntity, user_entity_1.UserEntity])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([address_entity_1.AddressEntity, user_entity_1.UserEntity, user_token_entity_1.UserTokenEntity])],
         controllers: [address_controller_1.AddressController],
         providers: [address_service_1.AddressService],
     })

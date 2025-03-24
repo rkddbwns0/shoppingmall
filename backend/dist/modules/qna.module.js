@@ -14,12 +14,13 @@ const product_entity_1 = require("../entites/product.entity");
 const qna_entity_1 = require("../entites/qna.entity");
 const user_entity_1 = require("../entites/user.entity");
 const qna_service_1 = require("../services/qna.service");
+const user_token_entity_1 = require("../entites/user_token.entity");
 let QnAModoule = class QnAModoule {
 };
 exports.QnAModoule = QnAModoule;
 exports.QnAModoule = QnAModoule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, product_entity_1.ProductEntity, qna_entity_1.QnAEntity])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, product_entity_1.ProductEntity, qna_entity_1.QnAEntity, user_token_entity_1.UserTokenEntity])],
         controllers: [qna_controller_1.QnAController],
         providers: [qna_service_1.QnAService],
     })

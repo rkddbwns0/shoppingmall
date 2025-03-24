@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const cart_dto_1 = require("../dto/cart.dto");
 const cart_service_1 = require("../services/cart.service");
+const jwt_service_guard_1 = require("../auth/jwt/jwt-service.guard");
 let CartController = class CartController {
     constructor(cartService) {
         this.cartService = cartService;
@@ -119,6 +120,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CartController.prototype, "updateCart", null);
 exports.CartController = CartController = __decorate([
+    (0, common_1.UseGuards)(jwt_service_guard_1.JwtServiceAuthGuard),
     (0, common_1.Controller)('cart'),
     __metadata("design:paramtypes", [cart_service_1.CartService])
 ], CartController);

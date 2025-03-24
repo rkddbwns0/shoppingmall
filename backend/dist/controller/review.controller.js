@@ -18,6 +18,7 @@ const swagger_1 = require("@nestjs/swagger");
 const public_decorator_1 = require("../auth/decorator/public.decorator");
 const review_dto_1 = require("../dto/review.dto");
 const review_service_1 = require("../services/review.service");
+const jwt_service_guard_1 = require("../auth/jwt/jwt-service.guard");
 let ReviewController = class ReviewController {
     constructor(reviewSerview) {
         this.reviewSerview = reviewSerview;
@@ -74,6 +75,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ReviewController.prototype, "selectReview", null);
 exports.ReviewController = ReviewController = __decorate([
+    (0, common_1.UseGuards)(jwt_service_guard_1.JwtServiceAuthGuard),
     (0, common_1.Controller)('review'),
     __metadata("design:paramtypes", [review_service_1.ReviewService])
 ], ReviewController);

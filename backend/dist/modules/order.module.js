@@ -19,6 +19,7 @@ const product_entity_1 = require("../entites/product.entity");
 const product_option_entity_1 = require("../entites/product_option.entity");
 const user_entity_1 = require("../entites/user.entity");
 const order_service_1 = require("../services/order.service");
+const user_token_entity_1 = require("../entites/user_token.entity");
 let OrderModule = class OrderModule {
 };
 exports.OrderModule = OrderModule;
@@ -34,6 +35,7 @@ exports.OrderModule = OrderModule = __decorate([
                 orderItem_entity_1.OrderItemEntity,
                 admin_entity_1.AdminEntity,
                 product_option_entity_1.Product_optionEntity,
+                user_token_entity_1.UserTokenEntity
             ]),
         ],
         controllers: [order_controller_1.OrderController],

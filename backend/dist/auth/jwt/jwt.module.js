@@ -22,6 +22,7 @@ let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
+    (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, user_token_entity_1.UserTokenEntity]),

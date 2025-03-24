@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Res, UseGuards } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
 import { InsertQnADto } from 'src/dto/qna.dto';
 import { QnAService } from 'src/services/qna.service';
+import { JwtServiceAuthGuard } from '../auth/jwt/jwt-service.guard';
 
+@UseGuards(JwtServiceAuthGuard)
 @Controller('QnA')
 export class QnAController {
   constructor(private readonly qnaService: QnAService) {}

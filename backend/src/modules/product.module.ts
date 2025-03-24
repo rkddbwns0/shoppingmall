@@ -7,6 +7,7 @@ import { ProductEntity } from 'src/entites/product.entity';
 import { ProductCateogryEntity } from 'src/entites/product_categories.entity';
 import { Product_optionEntity } from 'src/entites/product_option.entity';
 import { ProductService } from 'src/services/product.service';
+import { UserTokenEntity } from '../entites/user_token.entity';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ProductService } from 'src/services/product.service';
       ProductEntity,
       ProductCateogryEntity,
       Product_optionEntity,
+      UserTokenEntity
     ]),
     CacheModule.register({
       store: redisStore,

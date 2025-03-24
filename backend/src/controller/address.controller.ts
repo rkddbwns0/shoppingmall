@@ -6,7 +6,7 @@ import {
   Param,
   Post,
   Put,
-  Res,
+  Res, UseGuards,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -16,7 +16,9 @@ import {
   UpdateAddressDto,
 } from 'src/dto/address.dto';
 import { AddressService } from 'src/services/address.service';
+import { JwtServiceAuthGuard } from '../auth/jwt/jwt-service.guard';
 
+@UseGuards(JwtServiceAuthGuard)
 @Controller('address')
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}

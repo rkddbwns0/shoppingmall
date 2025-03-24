@@ -6,13 +6,15 @@ import {
   Param,
   Post,
   Put,
-  Res,
+  Res, UseGuards,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
 import { DeleteCartDto, InsertCartDto, UpdateCartDto } from 'src/dto/cart.dto';
 import { CartService } from 'src/services/cart.service';
+import { JwtServiceAuthGuard } from '../auth/jwt/jwt-service.guard';
 
+@UseGuards(JwtServiceAuthGuard)
 @Controller('cart')
 export class CartController {
   constructor(private readonly cartService: CartService) {}

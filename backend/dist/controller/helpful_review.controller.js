@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const helpful_review_dto_1 = require("../dto/helpful_review.dto");
 const helpul_review_service_1 = require("../services/helpul_review.service");
+const jwt_service_guard_1 = require("../auth/jwt/jwt-service.guard");
 let Helpful_ReviewController = class Helpful_ReviewController {
     constructor(helpful_reviewSerview) {
         this.helpful_reviewSerview = helpful_reviewSerview;
@@ -53,6 +54,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], Helpful_ReviewController.prototype, "press_review", null);
 exports.Helpful_ReviewController = Helpful_ReviewController = __decorate([
+    (0, common_1.UseGuards)(jwt_service_guard_1.JwtServiceAuthGuard),
     (0, common_1.Controller)('helpful_review'),
     __metadata("design:paramtypes", [helpul_review_service_1.Helpful_ReviewServiece])
 ], Helpful_ReviewController);

@@ -16,6 +16,7 @@ const product_entity_1 = require("../entites/product.entity");
 const product_categories_entity_1 = require("../entites/product_categories.entity");
 const product_option_entity_1 = require("../entites/product_option.entity");
 const product_service_1 = require("../services/product.service");
+const user_token_entity_1 = require("../entites/user_token.entity");
 let ProductModule = class ProductModule {
 };
 exports.ProductModule = ProductModule;
@@ -26,6 +27,7 @@ exports.ProductModule = ProductModule = __decorate([
                 product_entity_1.ProductEntity,
                 product_categories_entity_1.ProductCateogryEntity,
                 product_option_entity_1.Product_optionEntity,
+                user_token_entity_1.UserTokenEntity
             ]),
             cache_manager_1.CacheModule.register({
                 store: cache_manager_redis_store_1.redisStore,

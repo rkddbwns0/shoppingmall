@@ -129,7 +129,6 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '로그인 라우터' }),
     (0, public_decorator_1.Public)(),
-    (0, common_1.UseGuards)(jwt_service_guard_1.JwtServiceAuthGuard),
     (0, common_1.Post)('/login'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
@@ -159,6 +158,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "logout", null);
 exports.UserController = UserController = __decorate([
+    (0, common_1.UseGuards)(jwt_service_guard_1.JwtServiceAuthGuard),
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService,
         auth_service_1.AuthService])

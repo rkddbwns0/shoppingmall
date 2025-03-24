@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const address_dto_1 = require("../dto/address.dto");
 const address_service_1 = require("../services/address.service");
+const jwt_service_guard_1 = require("../auth/jwt/jwt-service.guard");
 let AddressController = class AddressController {
     constructor(addressService) {
         this.addressService = addressService;
@@ -111,6 +112,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AddressController.prototype, "DeleteAddressDto", null);
 exports.AddressController = AddressController = __decorate([
+    (0, common_1.UseGuards)(jwt_service_guard_1.JwtServiceAuthGuard),
     (0, common_1.Controller)('address'),
     __metadata("design:paramtypes", [address_service_1.AddressService])
 ], AddressController);

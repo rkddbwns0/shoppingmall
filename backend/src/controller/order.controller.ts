@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
 import {
@@ -8,7 +8,9 @@ import {
 } from 'src/dto/order.dto';
 import { OrderService } from 'src/services/order.service';
 import { Public } from '../auth/decorator/public.decorator';
+import { JwtServiceAuthGuard } from '../auth/jwt/jwt-service.guard';
 
+@UseGuards(JwtServiceAuthGuard)
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -42,7 +44,6 @@ export class OrderController {
   @ApiOperation({
     summary: '제품 주문 라우터',
   })
-  @Public()
   @Post('/insert')
   async insertOrder(
     @Body() insertOrderDto: InsertOrderDto,
@@ -71,7 +72,6 @@ export class OrderController {
   @ApiOperation({
     summary: '장바구니 제품 구매 라우터',
   })
-  @Public()
   @Post('/cart_order')
   async cartOrder(@Body() cartOrderDto: CartOrderDto, @Res() res: Response) {
     try {
@@ -94,7 +94,6 @@ export class OrderController {
   }
 
   @ApiOperation({ summary: '고객 환불 요청 라우터' })
-  @Public()
   @Put('/refund')
   async refundOrder(
     @Body() refundOrderDto: RefundOrderDto,

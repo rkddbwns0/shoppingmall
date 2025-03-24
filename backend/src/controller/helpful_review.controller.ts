@@ -1,9 +1,11 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Press_helpful_reviewDto } from 'src/dto/helpful_review.dto';
 import { Helpful_ReviewServiece } from 'src/services/helpul_review.service';
+import { JwtServiceAuthGuard } from '../auth/jwt/jwt-service.guard';
 
+@UseGuards(JwtServiceAuthGuard)
 @Controller('helpful_review')
 export class Helpful_ReviewController {
   constructor(private readonly helpful_reviewSerview: Helpful_ReviewServiece) {}

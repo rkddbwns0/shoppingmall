@@ -21,9 +21,9 @@ const typeorm_1 = require("@nestjs/typeorm");
 const user_token_entity_1 = require("../../entites/user_token.entity");
 const typeorm_2 = require("typeorm");
 let JwtServiceAuthGuard = class JwtServiceAuthGuard {
-    constructor(reflector, jwtSerivce, configService, user_token) {
+    constructor(reflector, jwtService, configService, user_token) {
         this.reflector = reflector;
-        this.jwtSerivce = jwtSerivce;
+        this.jwtService = jwtService;
         this.configService = configService;
         this.user_token = user_token;
     }
@@ -44,32 +44,34 @@ let JwtServiceAuthGuard = class JwtServiceAuthGuard {
             throw new common_1.UnauthorizedException();
         }
         try {
-            const payload = await this.jwtSerivce.verifyAsync(accessToken, {
+            const payload = await this.jwtService.verifyAsync(accessToken, {
                 secret: this.configService.get('JWT_SECRET_KEY'),
             });
-            request.user = payload;
+            request.user = payload.user_id;
             return true;
         }
         catch (error) {
-            console.error('토큰이 존재하지 않습니다.');
+            console.error(error);
         }
         if (!refreshToken) {
             throw new common_1.UnauthorizedException('refresh_token이 존재하지 않습니다. 로그인을 해 주세요.');
         }
+        console.log(request.user);
         const storeToken = await this.user_token.findOne({
             where: {
-                user_id: request?.user?.user_id,
+                user_id: request.user,
                 device_id: device_id,
                 token: refreshToken,
             },
         });
+        console.log(storeToken);
         if (!storeToken) {
             throw new common_1.UnauthorizedException();
         }
         else {
             try {
-                const payloadRefreshToken = await this.jwtSerivce.verifyAsync(refreshToken, { secret: this.configService.get('JWT_SECRET_KEY') });
-                const newAccessToken = this.jwtSerivce.sign({
+                const payloadRefreshToken = await this.jwtService.verifyAsync(refreshToken, { secret: this.configService.get('JWT_SECRET_KEY') });
+                const newAccessToken = this.jwtService.sign({
                     user_id: payloadRefreshToken.user_id,
                     email: payloadRefreshToken.email,
                     name: payloadRefreshToken.name,

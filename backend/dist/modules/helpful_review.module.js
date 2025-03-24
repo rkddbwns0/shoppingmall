@@ -15,6 +15,7 @@ const product_entity_1 = require("../entites/product.entity");
 const review_entity_1 = require("../entites/review.entity");
 const user_entity_1 = require("../entites/user.entity");
 const helpul_review_service_1 = require("../services/helpul_review.service");
+const user_token_entity_1 = require("../entites/user_token.entity");
 let Helpful_ReviewModule = class Helpful_ReviewModule {
 };
 exports.Helpful_ReviewModule = Helpful_ReviewModule;
@@ -26,6 +27,7 @@ exports.Helpful_ReviewModule = Helpful_ReviewModule = __decorate([
                 product_entity_1.ProductEntity,
                 review_entity_1.ReviewEntity,
                 helpful_review_entity_1.Helpful_ReviewEntity,
+                user_token_entity_1.UserTokenEntity
             ]),
         ],
         controllers: [helpful_review_controller_1.Helpful_ReviewController],

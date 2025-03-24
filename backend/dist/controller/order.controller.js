@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const order_dto_1 = require("../dto/order.dto");
 const order_service_1 = require("../services/order.service");
-const public_decorator_1 = require("../auth/decorator/public.decorator");
+const jwt_service_guard_1 = require("../auth/jwt/jwt-service.guard");
 let OrderController = class OrderController {
     constructor(orderService) {
         this.orderService = orderService;
@@ -124,7 +124,6 @@ __decorate([
     (0, swagger_1.ApiOperation)({
         summary: '제품 주문 라우터',
     }),
-    (0, public_decorator_1.Public)(),
     (0, common_1.Post)('/insert'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
@@ -136,7 +135,6 @@ __decorate([
     (0, swagger_1.ApiOperation)({
         summary: '장바구니 제품 구매 라우터',
     }),
-    (0, public_decorator_1.Public)(),
     (0, common_1.Post)('/cart_order'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
@@ -146,7 +144,6 @@ __decorate([
 ], OrderController.prototype, "cartOrder", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '고객 환불 요청 라우터' }),
-    (0, public_decorator_1.Public)(),
     (0, common_1.Put)('/refund'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
@@ -155,6 +152,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "refundOrder", null);
 exports.OrderController = OrderController = __decorate([
+    (0, common_1.UseGuards)(jwt_service_guard_1.JwtServiceAuthGuard),
     (0, common_1.Controller)('order'),
     __metadata("design:paramtypes", [order_service_1.OrderService])
 ], OrderController);

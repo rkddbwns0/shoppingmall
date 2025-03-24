@@ -6,6 +6,7 @@ import { ProductEntity } from 'src/entites/product.entity';
 import { ReviewEntity } from 'src/entites/review.entity';
 import { UserEntity } from 'src/entites/user.entity';
 import { Helpful_ReviewServiece } from 'src/services/helpul_review.service';
+import { UserTokenEntity } from '../entites/user_token.entity';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { Helpful_ReviewServiece } from 'src/services/helpul_review.service';
       ProductEntity,
       ReviewEntity,
       Helpful_ReviewEntity,
+      UserTokenEntity
     ]),
   ],
   controllers: [Helpful_ReviewController],

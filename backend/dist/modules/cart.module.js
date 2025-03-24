@@ -13,12 +13,13 @@ const cart_controller_1 = require("../controller/cart.controller");
 const cart_entity_1 = require("../entites/cart.entity");
 const cart_service_1 = require("../services/cart.service");
 const product_option_entity_1 = require("../entites/product_option.entity");
+const user_token_entity_1 = require("../entites/user_token.entity");
 let CartModule = class CartModule {
 };
 exports.CartModule = CartModule;
 exports.CartModule = CartModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([cart_entity_1.CartEntity, product_option_entity_1.Product_optionEntity])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([cart_entity_1.CartEntity, product_option_entity_1.Product_optionEntity, user_token_entity_1.UserTokenEntity])],
         controllers: [cart_controller_1.CartController],
         providers: [cart_service_1.CartService],
     })
