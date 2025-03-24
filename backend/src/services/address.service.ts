@@ -24,7 +24,6 @@ export class AddressService {
       const addressList = await this.addressRepository.find({
         where: { user_id: user_id },
       });
-
       return addressList;
     } catch (error) {
       console.error(error);

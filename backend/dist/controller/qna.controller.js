@@ -58,7 +58,7 @@ __decorate([
 ], QnAController.prototype, "insertQnA", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Q&A 목록 라우터 (없을 경우에는 null)' }),
-    (0, common_1.Get)('/select_qna'),
+    (0, common_1.Get)('/select_qna/:product_no'),
     __param(0, (0, common_1.Query)('product_no')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

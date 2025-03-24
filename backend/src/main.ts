@@ -1,8 +1,7 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
-import { JwtServiceAuthGuard } from './auth/jwt/jwt-service.guard';
 
 declare const module: any;
 

@@ -22,6 +22,7 @@ let AddressController = class AddressController {
         this.addressService = addressService;
     }
     async selectAddress(user_id, res) {
+        console.log(user_id);
         try {
             const result = await this.addressService.selectAddress(user_id);
             console.log(result);
@@ -75,7 +76,7 @@ let AddressController = class AddressController {
 exports.AddressController = AddressController;
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '사용자 주문지 확인 라우터' }),
-    (0, common_1.Get)('/select'),
+    (0, common_1.Get)('/select/:user_id'),
     __param(0, (0, common_1.Param)('user_id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

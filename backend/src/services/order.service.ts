@@ -49,13 +49,51 @@ export class OrderService {
 
   async orderList(user_id: number) {
     try {
-      const order = await this.orderRepository.find({
-        where: { user_id: user_id },
-        order: { order_at: 'DESC' },
-      });
+      const order = await this.orderRepository
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.address_no', 'address')
+        .leftJoinAndSelect('order.orderItem', 'order_items')
+        .leftJoinAndSelect('order_items.option_id', 'product_option')
+        .leftJoinAndSelect('product_option.product_no', 'product')
+        .select([
+          'order.order_no AS order_no',
+          'order.quantity AS order_quantity',
+          'order.payment_method AS payment_method',
+          'order.total_price AS total_price',
+          'order.order_state AS order_state',
+          'order.order_at AS order_at',
+          'order_items.quantity AS items_qauntity',
+          'order_items.unit_price AS unit_price',
+          'product_option.color AS color',
+          'product_option.size AS size',
+          'product.product_name AS product_name',
+          'product.price AS price',
+          'address.name AS name',
+          'address.zip_code AS zip_code',
+          'address.address AS address',
+        ])
+        .where('order.user_id = :user_id', { user_id })
+        .getRawMany();
+
+      console.log(order);
+
       return order;
     } catch (error) {
       throw new UnauthorizedException();
+    }
+  }
+
+  async orderDetail(user_id: number, cart_id: number): Promise<CartEntity> {
+    try {
+      const detail_info = await this.cartRepository.findOne({
+        where: { user_id: user_id, cart_id: cart_id },
+      });
+      if (!detail_info) {
+        throw new UnauthorizedException();
+      }
+      return detail_info;
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -67,10 +105,16 @@ export class OrderService {
       const address = await this.addressRepository.findOne({
         where: { user_id: user.user_id, default_addr: 'Y' },
       });
-      const product = await  this.productRepository.findOne({where: {product_id: insertOrderDto.product_no}, select: ['price']})
+      const product = await this.productRepository.findOne({
+        where: { product_id: insertOrderDto.product_no },
+        select: ['price'],
+      });
       const product_option = await this.product_optionRepository.findOne({
-        where: { option_id: insertOrderDto.option_id, product_no: {product_id: insertOrderDto.product_no}},
-      })
+        where: {
+          option_id: insertOrderDto.option_id,
+          product_no: { product_id: insertOrderDto.product_no },
+        },
+      });
 
       if (!user || !address || !product_option) {
         throw new BadRequestException(
@@ -99,7 +143,7 @@ export class OrderService {
       const saveResult = await this.orderRepository.save(result);
       const orderItems = {
         user_id: user.user_id,
-        order_no: saveResult.order_no,
+        order_no: { order_no: saveResult.order_no },
         option_id: product_option,
         quantity: insertOrderDto.quantity,
         unit_price: product.price,
@@ -108,7 +152,7 @@ export class OrderService {
 
       console.log(orderItems);
 
-      const saveItems = this.orderItemsRepository.create(orderItems)
+      const saveItems = this.orderItemsRepository.create(orderItems);
       await this.orderItemsRepository.save(saveItems);
 
       return { success: true };
@@ -130,19 +174,23 @@ export class OrderService {
 
       const cart_product = await this.cartRepository
         .createQueryBuilder('cart')
-        .leftJoin('product_option', 'product_option', 'product_option.option_id = cart.option_id')
-        .leftJoin('product', 'product', 'product.product_id = product_option.product_no')
-        .where('cart.user_id = :user_id', { user_id: cartOrderDto.user_id })
-        .select([
-          'cart',
+        .leftJoin(
           'product_option',
-          'product.price'
-        ])
+          'product_option',
+          'product_option.option_id = cart.option_id',
+        )
+        .leftJoin(
+          'product',
+          'product',
+          'product.product_id = product_option.product_no',
+        )
+        .where('cart.user_id = :user_id', { user_id: cartOrderDto.user_id })
+        .select(['cart', 'product_option', 'product.price'])
         .groupBy('cart.option_id')
-        .getRawMany()
+        .getRawMany();
 
       const product_nos = cart_product.map(
-        (cartItem) => cartItem.cart_option_id
+        (cartItem) => cartItem.cart_option_id,
       );
 
       const product_data = await this.product_optionRepository.find({
@@ -159,18 +207,19 @@ export class OrderService {
 
       cart_product.forEach((cartItem) => {
         const product_option = product_data.find(
-          (product_option) => product_option.option_id === cartItem.cart_option_id,
+          (product_option) =>
+            product_option.option_id === cartItem.cart_option_id,
         );
         if (product_option) {
-            total_price += cartItem.product_price * cartItem.cart_quantity;
-            total_quantity += cartItem.cart_quantity;
-            product_items.push({
-              option_id: product_option.option_id,
-              unit_price: cartItem.cart_quantity * cartItem.product_price,
-              quantity: cartItem.cart_quantity,
-            });
+          total_price += cartItem.product_price * cartItem.cart_quantity;
+          total_quantity += cartItem.cart_quantity;
+          product_items.push({
+            option_id: product_option.option_id,
+            unit_price: cartItem.cart_quantity * cartItem.product_price,
+            quantity: cartItem.cart_quantity,
+          });
         }
-        console.log(cartItem)
+        console.log(cartItem);
       });
 
       cartOrderDto.address_no = address.address_no;
@@ -199,7 +248,8 @@ export class OrderService {
       await Promise.all(
         cart_product.map(async (cartItem) => {
           const product_option = product_data.find(
-            (product_option) => product_option.option_id === cartItem.cart_option_id,
+            (product_option) =>
+              product_option.option_id === cartItem.cart_option_id,
           );
           if (product_option) {
             const updateStock = product_option.stock - cartItem.cart_quantity;
@@ -230,7 +280,7 @@ export class OrderService {
 
       const findOrderItems = await this.orderItemsRepository.find({
         where: {
-          order_no: refundOrderDto.order_no,
+          order_no: { order_no: refundOrderDto.order_no },
         },
         relations: ['product_no'],
       });

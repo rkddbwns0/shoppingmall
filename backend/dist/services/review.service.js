@@ -95,7 +95,7 @@ let ReviewService = class ReviewService {
         try {
             const findItem = await this.orderItemRepository.findOne({
                 where: {
-                    order_no,
+                    order_no: { order_no: order_no },
                     option_id: { option_id: option_id },
                     user_id,
                 },

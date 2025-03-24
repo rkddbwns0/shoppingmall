@@ -20,13 +20,16 @@ export class OrderItemEntity {
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'order_no' })
-  order_no: number;
+  order_no: OrderEntity;
 
   @ManyToOne(() => UserEntity, (user) => user.user_id)
   @JoinColumn({ name: 'user_id' })
   user_id: number;
 
-  @ManyToOne(() => Product_optionEntity, (product_option) => product_option.option_id)
+  @ManyToOne(
+    () => Product_optionEntity,
+    (product_option) => product_option.option_id,
+  )
   @JoinColumn({ name: 'option_id' })
   option_id: Product_optionEntity;
 

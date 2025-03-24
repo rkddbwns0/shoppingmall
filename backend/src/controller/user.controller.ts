@@ -26,6 +26,7 @@ export class UserController {
   ) {}
 
   @ApiOperation({ summary: '회원가입 중복 검사 라우터' })
+  @Public()
   @Post('/duplicate_user')
   async duplicateUser(
     @Body() body: { email?: string; phone?: string },
@@ -43,6 +44,7 @@ export class UserController {
   }
 
   @ApiOperation({ summary: '회원가입 라우터' })
+  @Public()
   @Post('/signup')
   async signup(@Body() signupUserDto: SignUpUserDto, @Res() res: Response) {
     try {
@@ -96,7 +98,7 @@ export class UserController {
 
       res
         .status(HttpStatus.OK)
-        .json({ message: '로그인 성공', data: token.user_info });
+        .json({ message: '로그인 성공', data: token });
 
       return;
     } catch (error) {

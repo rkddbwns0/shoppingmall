@@ -31,6 +31,15 @@ let OrderController = class OrderController {
             res.status(400).json({ message: '에러' });
         }
     }
+    async orderDetail(user_id, cart_id, res) {
+        try {
+            const result = await this.orderService.orderDetail(user_id, cart_id);
+            res.status(200).json({ data: result });
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     async insertOrder(insertOrderDto, res) {
         try {
             if (!insertOrderDto) {
@@ -94,14 +103,23 @@ let OrderController = class OrderController {
 exports.OrderController = OrderController;
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '주문 내역 확인 라우터' }),
-    (0, public_decorator_1.Public)(),
-    (0, common_1.Get)('/select'),
+    (0, common_1.Get)('/select/:user_id'),
     __param(0, (0, common_1.Param)('user_id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "orderList", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: '주문 상세 내역' }),
+    (0, common_1.Get)('/detail/select/:user_id/:cart_id'),
+    __param(0, (0, common_1.Param)('user_id')),
+    __param(1, (0, common_1.Param)('cart_id')),
+    __param(2, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, Object]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "orderDetail", null);
 __decorate([
     (0, swagger_1.ApiOperation)({
         summary: '제품 주문 라우터',

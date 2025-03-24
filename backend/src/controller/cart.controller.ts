@@ -18,8 +18,9 @@ export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @ApiOperation({ summary: '장바구니 내역' })
-  @Get('select')
+  @Get('/select/:user_id')
   async selectCart(@Param('user_id') user_id: number, @Res() res: Response) {
+    console.log(user_id);
     try {
       const result = await this.cartService.selectCart(user_id);
       if (result.success === true) {

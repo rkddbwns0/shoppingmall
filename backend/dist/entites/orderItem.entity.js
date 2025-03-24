@@ -27,7 +27,7 @@ __decorate([
         onUpdate: 'CASCADE',
     }),
     (0, typeorm_1.JoinColumn)({ name: 'order_no' }),
-    __metadata("design:type", Number)
+    __metadata("design:type", order_entity_1.OrderEntity)
 ], OrderItemEntity.prototype, "order_no", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (user) => user.user_id),

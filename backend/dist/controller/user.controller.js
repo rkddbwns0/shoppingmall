@@ -71,7 +71,7 @@ let UserController = class UserController {
             });
             res
                 .status(common_1.HttpStatus.OK)
-                .json({ message: '로그인 성공', data: token.user_info });
+                .json({ message: '로그인 성공', data: token });
             return;
         }
         catch (error) {
@@ -108,6 +108,7 @@ let UserController = class UserController {
 exports.UserController = UserController;
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '회원가입 중복 검사 라우터' }),
+    (0, public_decorator_1.Public)(),
     (0, common_1.Post)('/duplicate_user'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
@@ -117,6 +118,7 @@ __decorate([
 ], UserController.prototype, "duplicateUser", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '회원가입 라우터' }),
+    (0, public_decorator_1.Public)(),
     (0, common_1.Post)('/signup'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),

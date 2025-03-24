@@ -37,14 +37,50 @@ let OrderService = class OrderService {
     }
     async orderList(user_id) {
         try {
-            const order = await this.orderRepository.find({
-                where: { user_id: user_id },
-                order: { order_at: 'DESC' },
-            });
+            const order = await this.orderRepository
+                .createQueryBuilder('order')
+                .leftJoinAndSelect('order.address_no', 'address')
+                .leftJoinAndSelect('order.orderItem', 'order_items')
+                .leftJoinAndSelect('order_items.option_id', 'product_option')
+                .leftJoinAndSelect('product_option.product_no', 'product')
+                .select([
+                'order.order_no AS order_no',
+                'order.quantity AS order_quantity',
+                'order.payment_method AS payment_method',
+                'order.total_price AS total_price',
+                'order.order_state AS order_state',
+                'order.order_at AS order_at',
+                'order_items.quantity AS items_qauntity',
+                'order_items.unit_price AS unit_price',
+                'product_option.color AS color',
+                'product_option.size AS size',
+                'product.product_name AS product_name',
+                'product.price AS price',
+                'address.name AS name',
+                'address.zip_code AS zip_code',
+                'address.address AS address',
+            ])
+                .where('order.user_id = :user_id', { user_id })
+                .getRawMany();
+            console.log(order);
             return order;
         }
         catch (error) {
             throw new common_1.UnauthorizedException();
+        }
+    }
+    async orderDetail(user_id, cart_id) {
+        try {
+            const detail_info = await this.cartRepository.findOne({
+                where: { user_id: user_id, cart_id: cart_id },
+            });
+            if (!detail_info) {
+                throw new common_1.UnauthorizedException();
+            }
+            return detail_info;
+        }
+        catch (error) {
+            console.error(error);
         }
     }
     async insertOrder(insertOrderDto) {
@@ -55,9 +91,15 @@ let OrderService = class OrderService {
             const address = await this.addressRepository.findOne({
                 where: { user_id: user.user_id, default_addr: 'Y' },
             });
-            const product = await this.productRepository.findOne({ where: { product_id: insertOrderDto.product_no }, select: ['price'] });
+            const product = await this.productRepository.findOne({
+                where: { product_id: insertOrderDto.product_no },
+                select: ['price'],
+            });
             const product_option = await this.product_optionRepository.findOne({
-                where: { option_id: insertOrderDto.option_id, product_no: { product_id: insertOrderDto.product_no } },
+                where: {
+                    option_id: insertOrderDto.option_id,
+                    product_no: { product_id: insertOrderDto.product_no },
+                },
             });
             if (!user || !address || !product_option) {
                 throw new common_1.BadRequestException('정보가 존재하지 않습니다. 다시 확인해 주세요.');
@@ -79,7 +121,7 @@ let OrderService = class OrderService {
             const saveResult = await this.orderRepository.save(result);
             const orderItems = {
                 user_id: user.user_id,
-                order_no: saveResult.order_no,
+                order_no: { order_no: saveResult.order_no },
                 option_id: product_option,
                 quantity: insertOrderDto.quantity,
                 unit_price: product.price,
@@ -108,11 +150,7 @@ let OrderService = class OrderService {
                 .leftJoin('product_option', 'product_option', 'product_option.option_id = cart.option_id')
                 .leftJoin('product', 'product', 'product.product_id = product_option.product_no')
                 .where('cart.user_id = :user_id', { user_id: cartOrderDto.user_id })
-                .select([
-                'cart',
-                'product_option',
-                'product.price'
-            ])
+                .select(['cart', 'product_option', 'product.price'])
                 .groupBy('cart.option_id')
                 .getRawMany();
             const product_nos = cart_product.map((cartItem) => cartItem.cart_option_id);
@@ -179,7 +217,7 @@ let OrderService = class OrderService {
             await this.checkOrderState(refundOrderDto.order_no);
             const findOrderItems = await this.orderItemsRepository.find({
                 where: {
-                    order_no: refundOrderDto.order_no,
+                    order_no: { order_no: refundOrderDto.order_no },
                 },
                 relations: ['product_no'],
             });

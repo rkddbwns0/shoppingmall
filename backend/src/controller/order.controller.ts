@@ -14,14 +14,28 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @ApiOperation({ summary: '주문 내역 확인 라우터' })
-  @Public()
-  @Get('/select')
+  @Get('/select/:user_id')
   async orderList(@Param('user_id') user_id: number, @Res() res: Response) {
     try {
       const result = await this.orderService.orderList(user_id);
       res.status(200).json(result);
     } catch (error) {
       res.status(400).json({ message: '에러' });
+    }
+  }
+
+  @ApiOperation({ summary: '주문 상세 내역' })
+  @Get('/detail/select/:user_id/:cart_id')
+  async orderDetail(
+    @Param('user_id') user_id: number,
+    @Param('cart_id') cart_id: number,
+    @Res() res: Response,
+  ) {
+    try {
+      const result = await this.orderService.orderDetail(user_id, cart_id);
+      res.status(200).json({ data: result });
+    } catch (error) {
+      console.error(error);
     }
   }
 

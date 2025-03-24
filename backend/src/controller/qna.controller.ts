@@ -24,7 +24,7 @@ export class QnAController {
   }
 
   @ApiOperation({ summary: 'Q&A 목록 라우터 (없을 경우에는 null)' })
-  @Get('/select_qna')
+  @Get('/select_qna/:product_no')
   async selectQnA(
     @Query('product_no') product_no: number,
     @Res() res: Response,

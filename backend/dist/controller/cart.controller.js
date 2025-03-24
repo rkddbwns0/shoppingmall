@@ -22,6 +22,7 @@ let CartController = class CartController {
         this.cartService = cartService;
     }
     async selectCart(user_id, res) {
+        console.log(user_id);
         try {
             const result = await this.cartService.selectCart(user_id);
             if (result.success === true) {
@@ -83,7 +84,7 @@ let CartController = class CartController {
 exports.CartController = CartController;
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: '장바구니 내역' }),
-    (0, common_1.Get)('select'),
+    (0, common_1.Get)('/select/:user_id'),
     __param(0, (0, common_1.Param)('user_id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

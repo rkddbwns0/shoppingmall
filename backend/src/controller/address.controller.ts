@@ -22,8 +22,9 @@ export class AddressController {
   constructor(private readonly addressService: AddressService) {}
 
   @ApiOperation({ summary: '사용자 주문지 확인 라우터' })
-  @Get('/select')
+  @Get('/select/:user_id')
   async selectAddress(@Param('user_id') user_id: number, @Res() res: Response) {
+    console.log(user_id)
     try {
       const result = await this.addressService.selectAddress(user_id);
       console.log(result)
