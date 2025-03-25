@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const admin_dto_1 = require("../dto/admin.dto");
 const admin_service_1 = require("../services/admin.service");
+const public_decorator_1 = require("../../auth/decorator/public.decorator");
 let AdminController = class AdminController {
     constructor(adminService) {
         this.adminService = adminService;
@@ -69,6 +70,7 @@ __decorate([
 ], AdminController.prototype, "adminLogin", null);
 exports.AdminController = AdminController = __decorate([
     (0, swagger_1.ApiTags)('admin/manage'),
+    (0, public_decorator_1.Public)(),
     (0, common_1.Controller)('admin/'),
     __metadata("design:paramtypes", [admin_service_1.AdminService])
 ], AdminController);

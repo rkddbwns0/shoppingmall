@@ -4,6 +4,7 @@ import { Response } from 'express';
 import { InsertQnADto } from 'src/dto/qna.dto';
 import { QnAService } from 'src/services/qna.service';
 import { JwtServiceAuthGuard } from '../auth/jwt/jwt-service.guard';
+import { Public } from '../auth/decorator/public.decorator';
 
 @UseGuards(JwtServiceAuthGuard)
 @Controller('QnA')
@@ -26,13 +27,13 @@ export class QnAController {
   }
 
   @ApiOperation({ summary: 'Q&A 목록 라우터 (없을 경우에는 null)' })
+  @Public()
   @Get('/select_qna/:product_no')
   async selectQnA(
-    @Query('product_no') product_no: number,
+    @Param('product_no') product_no: number,
     @Res() res: Response,
   ) {
     try {
-      console.log(product_no);
       const result = await this.qnaService.selectAllQnATitle(product_no);
       res.status(200).json({ data: result.data });
     } catch (error) {

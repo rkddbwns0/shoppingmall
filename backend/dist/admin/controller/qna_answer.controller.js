@@ -16,6 +16,7 @@ exports.QnA_AdminController = void 0;
 const common_1 = require("@nestjs/common");
 const qna_answer_service_1 = require("../services/qna_answer.service");
 const qna_answer_dto_1 = require("../dto/qna_answer.dto");
+const public_decorator_1 = require("../../auth/decorator/public.decorator");
 let QnA_AdminController = class QnA_AdminController {
     constructor(qna_answerService) {
         this.qna_answerService = qna_answerService;
@@ -93,6 +94,7 @@ __decorate([
 ], QnA_AdminController.prototype, "qna_answer", null);
 exports.QnA_AdminController = QnA_AdminController = __decorate([
     (0, common_1.Controller)('admin/qna'),
+    (0, public_decorator_1.Public)(),
     __metadata("design:paramtypes", [qna_answer_service_1.QnA_AnswerService])
 ], QnA_AdminController);
 //# sourceMappingURL=qna_answer.controller.js.map

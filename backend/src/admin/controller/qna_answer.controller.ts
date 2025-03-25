@@ -2,8 +2,10 @@ import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
 import { QnA_AnswerService } from '../services/qna_answer.service';
 import { Response } from 'express';
 import { QnA_AnswerDto } from '../dto/qna_answer.dto';
+import { Public } from '../../auth/decorator/public.decorator';
 
 @Controller('admin/qna')
+@Public()
 export class QnA_AdminController {
   constructor(private readonly qna_answerService: QnA_AnswerService) {}
 

@@ -46,7 +46,7 @@ export class QnAEntity {
   @Column({ type: 'varchar', nullable: true, length: 20 })
   private_pwd: string;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: false })
   answer_yn: boolean;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })

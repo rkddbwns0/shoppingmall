@@ -21,9 +21,6 @@ export declare class ReviewService {
         message: any;
     }>;
     insertReview(insertReviewDto: InsertReviewDto): Promise<{
-        message: any;
-        success?: undefined;
-    } | {
         success: boolean;
         message?: undefined;
     } | {

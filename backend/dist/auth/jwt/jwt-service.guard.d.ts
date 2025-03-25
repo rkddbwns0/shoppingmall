@@ -11,4 +11,6 @@ export declare class JwtServiceAuthGuard implements CanActivate {
     private user_token;
     constructor(reflector: Reflector, jwtService: JwtService, configService: ConfigService, user_token: Repository<UserTokenEntity>);
     canActivate(context: ExecutionContext): Promise<boolean>;
+    private checkRefreshToken;
+    private checkAccessToken;
 }

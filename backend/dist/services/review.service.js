@@ -70,20 +70,7 @@ let ReviewService = class ReviewService {
     }
     async insertReview(insertReviewDto) {
         try {
-            const result = await this.findItemReview(insertReviewDto.order_no, insertReviewDto.product_no, insertReviewDto.option_id, insertReviewDto.user_id);
-            if (result.check === true) {
-                const writeReview = this.reviewRepository.create(insertReviewDto);
-                const saveReview = await this.reviewRepository.save(writeReview);
-                await this.orderItemRepository.update(result.result, {
-                    review_status: 'O',
-                });
-                if (!saveReview) {
-                    throw new common_1.BadRequestException('리뷰 작성에 실패하였습니다. 다시 시도해 주세요.');
-                }
-            }
-            else {
-                return { message: result.message };
-            }
+            const result = await this.findItemReview(insertReviewDto.order_no, insertReviewDto.option_id, insertReviewDto.user_id);
             return { success: true };
         }
         catch (error) {
@@ -91,16 +78,23 @@ let ReviewService = class ReviewService {
             return { success: false, message: error.message };
         }
     }
-    async findItemReview(order_no, product_no, option_id, user_id) {
+    async findItemReview(order_no, option_id, user_id) {
         try {
-            const findItem = await this.orderItemRepository.findOne({
-                where: {
-                    order_no: { order_no: order_no },
-                    option_id: { option_id: option_id },
-                    user_id,
-                },
-                relations: ['product_no'],
-            });
+            const findItem = await this.orderItemRepository
+                .createQueryBuilder('orderItems')
+                .leftJoin('orderItems.order_no', 'order')
+                .leftJoin('orderItems.option_id', 'product_option')
+                .select([
+                'orderItems.orderItem_no AS orderItem_no',
+                'orderItems.review_status AS review_status',
+                'order.order_no AS order_no',
+                'product_option.option_id AS option_id'
+            ])
+                .where('orderItems.user_id = :user_id', { user_id: user_id })
+                .andWhere('orderItems.order_no = :order_no', { order_no: order_no })
+                .andWhere('orderItems.option_id = :option_id', { option_id: option_id })
+                .getRawOne();
+            console.log(findItem.review_status);
             if (!findItem) {
                 throw new common_1.BadRequestException('구매 내역에 존재하지 않는 제품입니다.');
             }

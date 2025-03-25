@@ -3,8 +3,10 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AdminLoginDto, CreateAdminDto } from 'src/admin/dto/admin.dto';
 import { AdminService } from 'src/admin/services/admin.service';
+import { Public } from '../../auth/decorator/public.decorator';
 
 @ApiTags('admin/manage')
+@Public()
 @Controller('admin/')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}

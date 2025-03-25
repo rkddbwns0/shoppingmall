@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserTokenEntity } from 'src/entites/user_token.entity';
 import { Repository } from 'typeorm';
+import { response } from 'express';
 
 @Injectable()
 export class JwtServiceAuthGuard implements CanActivate {
@@ -31,44 +32,36 @@ export class JwtServiceAuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse();
-
     const accessToken = request.cookies['shop_access_token'];
     const refreshToken = request.cookies['shop_refresh_token'];
     const device_id = request.headers['device-id'];
+    const requestUserId = request.body.user_id || request.params.user_id;
 
     if (!accessToken) {
       throw new UnauthorizedException();
     }
 
-    try {
-      // access_token 검증
-      const payload = await this.jwtService.verifyAsync(accessToken, {
-        secret: this.configService.get<string>('JWT_SECRET_KEY'),
-      });
-      request.user = payload.user_id
-      return true
-    } catch (error) {
-      console.error(error);
+    await this.checkRefreshToken(requestUserId, device_id, refreshToken)
+
+    const access_payload = await this.checkAccessToken(accessToken);
+
+    if (Number(requestUserId) !== access_payload.user_id) {
+      throw new UnauthorizedException('아이디 넘버가 일치하지 않습니다.');
     }
 
-    if (!refreshToken) {
-      throw new UnauthorizedException('refresh_token이 존재하지 않습니다. 로그인을 해 주세요.');
-    }
-
-    console.log(request.user)
+    request.user = access_payload;
 
     // refresh_token이 db에 저장되어 있는 토큰과 일치하는지 확인
     const storeToken = await this.user_token.findOne({
       where: {
-        user_id: request.user,
+        user_id: request.user.user_id,
         device_id: device_id,
         token: refreshToken,
       },
     });
-    console.log(storeToken)
 
     if(!storeToken) {
-        throw new UnauthorizedException();
+        throw new UnauthorizedException("refresh_token이 존재하지 않습니다.");
     } else {
       try {
         // refresh_toekn 검증
@@ -112,6 +105,38 @@ export class JwtServiceAuthGuard implements CanActivate {
           '토큰이 만료되었습니다. 다시 로그인해 주세요.',
         );
       }
+    }
+  }
+
+  private async checkRefreshToken(user_id: number, device_id: any, refreshToken: any) {
+    try {
+      const payloadRefreshToken = await this.jwtService.verifyAsync(refreshToken, {
+        secret: this.configService.get<string>('JWT_SECRET_KEY'),
+      });
+      return true
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+          console.error('만료된 refreshToken입니다.')
+
+          await this.user_token.delete({user_id: user_id, device_id: device_id, token: refreshToken});
+
+          response.clearCookie('shop_access_token');
+          response.clearCookie('shop_refresh_token');
+          throw new UnauthorizedException('토큰이 만료되었습니다. 다시 로그인해 주세요.')
+        }
+        throw new UnauthorizedException(error.message)
+    }
+  }
+
+  private async checkAccessToken(accessToken: any) {
+    try {
+      // access_token 검증
+      const payload = await this.jwtService.verifyAsync(accessToken, {
+        secret: this.configService.get<string>('JWT_SECRET_KEY'),
+      });
+      return payload
+    } catch (error) {
+      console.error(error);
     }
   }
 }

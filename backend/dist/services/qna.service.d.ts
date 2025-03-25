@@ -17,18 +17,6 @@ export declare class QnAService {
     }>;
     private hashPrivatePwd;
     selectAllQnATitle(product_no: number): Promise<{
-        data: {
-            title: string;
-            answer_yn: string;
-            qna_no: number;
-            product_no: ProductEntity;
-            option_id: import("../entites/product_option.entity").Product_optionEntity;
-            user_id: number;
-            content: string;
-            private: string;
-            private_pwd: string;
-            write_at: Date;
-            qna_answer: import("../entites/qna_answer.entity").QnA_AnswerEntity;
-        }[];
+        data: any[];
     }>;
 }

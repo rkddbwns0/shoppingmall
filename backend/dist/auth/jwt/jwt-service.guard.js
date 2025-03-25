@@ -20,6 +20,7 @@ const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_token_entity_1 = require("../../entites/user_token.entity");
 const typeorm_2 = require("typeorm");
+const express_1 = require("express");
 let JwtServiceAuthGuard = class JwtServiceAuthGuard {
     constructor(reflector, jwtService, configService, user_token) {
         this.reflector = reflector;
@@ -40,33 +41,25 @@ let JwtServiceAuthGuard = class JwtServiceAuthGuard {
         const accessToken = request.cookies['shop_access_token'];
         const refreshToken = request.cookies['shop_refresh_token'];
         const device_id = request.headers['device-id'];
+        const requestUserId = request.body.user_id || request.params.user_id;
         if (!accessToken) {
             throw new common_1.UnauthorizedException();
         }
-        try {
-            const payload = await this.jwtService.verifyAsync(accessToken, {
-                secret: this.configService.get('JWT_SECRET_KEY'),
-            });
-            request.user = payload.user_id;
-            return true;
+        await this.checkRefreshToken(requestUserId, device_id, refreshToken);
+        const access_payload = await this.checkAccessToken(accessToken);
+        if (Number(requestUserId) !== access_payload.user_id) {
+            throw new common_1.UnauthorizedException('아이디 넘버가 일치하지 않습니다.');
         }
-        catch (error) {
-            console.error(error);
-        }
-        if (!refreshToken) {
-            throw new common_1.UnauthorizedException('refresh_token이 존재하지 않습니다. 로그인을 해 주세요.');
-        }
-        console.log(request.user);
+        request.user = access_payload;
         const storeToken = await this.user_token.findOne({
             where: {
-                user_id: request.user,
+                user_id: request.user.user_id,
                 device_id: device_id,
                 token: refreshToken,
             },
         });
-        console.log(storeToken);
         if (!storeToken) {
-            throw new common_1.UnauthorizedException();
+            throw new common_1.UnauthorizedException("refresh_token이 존재하지 않습니다.");
         }
         else {
             try {
@@ -96,6 +89,35 @@ let JwtServiceAuthGuard = class JwtServiceAuthGuard {
                 response.clearCookie('shop_refresh_token');
                 throw new common_1.UnauthorizedException('토큰이 만료되었습니다. 다시 로그인해 주세요.');
             }
+        }
+    }
+    async checkRefreshToken(user_id, device_id, refreshToken) {
+        try {
+            const payloadRefreshToken = await this.jwtService.verifyAsync(refreshToken, {
+                secret: this.configService.get('JWT_SECRET_KEY'),
+            });
+            return true;
+        }
+        catch (error) {
+            if (error.name === 'TokenExpiredError') {
+                console.error('만료된 refreshToken입니다.');
+                await this.user_token.delete({ user_id: user_id, device_id: device_id, token: refreshToken });
+                express_1.response.clearCookie('shop_access_token');
+                express_1.response.clearCookie('shop_refresh_token');
+                throw new common_1.UnauthorizedException('토큰이 만료되었습니다. 다시 로그인해 주세요.');
+            }
+            throw new common_1.UnauthorizedException(error.message);
+        }
+    }
+    async checkAccessToken(accessToken) {
+        try {
+            const payload = await this.jwtService.verifyAsync(accessToken, {
+                secret: this.configService.get('JWT_SECRET_KEY'),
+            });
+            return payload;
+        }
+        catch (error) {
+            console.error(error);
         }
     }
 };

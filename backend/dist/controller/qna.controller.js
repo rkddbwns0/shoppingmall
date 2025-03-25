@@ -18,6 +18,7 @@ const swagger_1 = require("@nestjs/swagger");
 const qna_dto_1 = require("../dto/qna.dto");
 const qna_service_1 = require("../services/qna.service");
 const jwt_service_guard_1 = require("../auth/jwt/jwt-service.guard");
+const public_decorator_1 = require("../auth/decorator/public.decorator");
 let QnAController = class QnAController {
     constructor(qnaService) {
         this.qnaService = qnaService;
@@ -38,7 +39,6 @@ let QnAController = class QnAController {
     }
     async selectQnA(product_no, res) {
         try {
-            console.log(product_no);
             const result = await this.qnaService.selectAllQnATitle(product_no);
             res.status(200).json({ data: result.data });
         }
@@ -59,8 +59,9 @@ __decorate([
 ], QnAController.prototype, "insertQnA", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Q&A 목록 라우터 (없을 경우에는 null)' }),
+    (0, public_decorator_1.Public)(),
     (0, common_1.Get)('/select_qna/:product_no'),
-    __param(0, (0, common_1.Query)('product_no')),
+    __param(0, (0, common_1.Param)('product_no')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Object]),

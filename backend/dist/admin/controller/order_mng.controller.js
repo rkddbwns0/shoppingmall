@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const order_mng_service_1 = require("../services/order_mng.service");
 const swagger_1 = require("@nestjs/swagger");
 const order_mng_dto_1 = require("../dto/order_mng.dto");
+const public_decorator_1 = require("../../auth/decorator/public.decorator");
 let OrderMngController = class OrderMngController {
     constructor(orderMngService) {
         this.orderMngService = orderMngService;
@@ -54,6 +55,7 @@ __decorate([
 ], OrderMngController.prototype, "successRefund", null);
 exports.OrderMngController = OrderMngController = __decorate([
     (0, common_1.Controller)('admin/order_mng'),
+    (0, public_decorator_1.Public)(),
     __metadata("design:paramtypes", [order_mng_service_1.OrderMngService])
 ], OrderMngController);
 //# sourceMappingURL=order_mng.controller.js.map

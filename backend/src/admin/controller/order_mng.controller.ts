@@ -3,8 +3,10 @@ import { OrderMngService } from '../services/order_mng.service';
 import { ApiOperation } from '@nestjs/swagger';
 import { OrderMngDto } from '../dto/order_mng.dto';
 import { Response } from 'express';
+import { Public } from '../../auth/decorator/public.decorator';
 
 @Controller('admin/order_mng')
+@Public()
 export class OrderMngController {
   constructor(private readonly orderMngService: OrderMngService) {}
 

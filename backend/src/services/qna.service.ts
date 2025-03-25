@@ -53,11 +53,23 @@ export class QnAService {
 
   async selectAllQnATitle(product_no: number) {
     try {
-      const allQna = await this.qnaRepository.find({
-        where: { product_no: { product_id: product_no } },
-        select: ['qna_no', 'title', 'private', 'answer_yn'],
-        relations: ['product_no'],
-      });
+      const allQna = await this.qnaRepository
+        .createQueryBuilder('qna')
+        .leftJoinAndSelect('qna.product_no', 'product')
+        .leftJoinAndSelect('qna.option_id', 'product_option')
+        .select([
+          'qna.title AS title',
+          'qna.content AS content',
+          'qna.private AS private',
+          'qna.answer_yn AS answer_yn',
+          'product.product_id AS product_id',
+          'product.product_name AS product_name',
+          'product_option.option_id AS option_id',
+          'product_option.color AS color',
+          'product_option.size AS size'
+        ])
+        .where('qna.product_no = :product_no', { product_no })
+        .getRawMany();
 
       const qnaData = allQna.map((item) => ({
         ...item,

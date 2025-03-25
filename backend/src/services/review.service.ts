@@ -79,26 +79,25 @@ export class ReviewService {
     try {
       const result = await this.findItemReview(
         insertReviewDto.order_no,
-        insertReviewDto.product_no,
         insertReviewDto.option_id,
         insertReviewDto.user_id,
       );
 
-      if (result.check === true) {
-        const writeReview = this.reviewRepository.create(insertReviewDto);
-        const saveReview = await this.reviewRepository.save(writeReview);
-        await this.orderItemRepository.update(result.result, {
-          review_status: 'O',
-        });
-
-        if (!saveReview) {
-          throw new BadRequestException(
-            '리뷰 작성에 실패하였습니다. 다시 시도해 주세요.',
-          );
-        }
-      } else {
-        return { message: result.message };
-      }
+      // if (result.check === true) {
+      //   const writeReview = this.reviewRepository.create(insertReviewDto);
+      //   const saveReview = await this.reviewRepository.save(writeReview);
+      //   await this.orderItemRepository.update(result.result, {
+      //     review_status: 'O',
+      //   });
+      //
+      //   if (!saveReview) {
+      //     throw new BadRequestException(
+      //       '리뷰 작성에 실패하였습니다. 다시 시도해 주세요.',
+      //     );
+      //   }
+      // } else {
+      //   return { message: result.message };
+      // }
       return { success: true };
     } catch (error) {
       console.error(error);
@@ -108,19 +107,28 @@ export class ReviewService {
 
   private async findItemReview(
     order_no: number,
-    product_no: number,
     option_id: number,
     user_id: number,
   ) {
     try {
-      const findItem = await this.orderItemRepository.findOne({
-        where: {
-          order_no: { order_no: order_no },
-          option_id: { option_id: option_id },
-          user_id,
-        },
-        relations: ['product_no'],
-      });
+      const findItem = await this.orderItemRepository
+        .createQueryBuilder('orderItems')
+        .leftJoin('orderItems.order_no', 'order')
+        .leftJoin('orderItems.option_id', 'product_option')
+        .select(
+          [
+            'orderItems.orderItem_no AS orderItem_no',
+            'orderItems.review_status AS review_status',
+            'order.order_no AS order_no',
+            'product_option.option_id AS option_id'
+          ]
+        )
+        .where('orderItems.user_id = :user_id', { user_id: user_id })
+        .andWhere('orderItems.order_no = :order_no', { order_no: order_no })
+        .andWhere('orderItems.option_id = :option_id', { option_id: option_id })
+        .getRawOne()
+
+      console.log(findItem.review_status)
 
       if (!findItem) {
         throw new BadRequestException('구매 내역에 존재하지 않는 제품입니다.');

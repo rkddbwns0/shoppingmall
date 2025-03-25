@@ -60,7 +60,7 @@ __decorate([
     __metadata("design:type", String)
 ], QnAEntity.prototype, "private_pwd", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'boolean' }),
+    (0, typeorm_1.Column)({ type: 'boolean', default: false }),
     __metadata("design:type", Boolean)
 ], QnAEntity.prototype, "answer_yn", void 0);
 __decorate([
