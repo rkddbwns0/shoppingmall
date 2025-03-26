@@ -6,4 +6,5 @@ export declare class QnAController {
     constructor(qnaService: QnAService);
     insertQnA(insertQnADto: InsertQnADto, res: Response): Promise<void>;
     selectQnA(product_no: number, res: Response): Promise<void>;
+    myQnA(user_id: number, res: Response): Promise<void>;
 }

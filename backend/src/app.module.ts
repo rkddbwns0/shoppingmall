@@ -53,7 +53,6 @@ import { JwtServiceStrategy } from './auth/jwt/jwt-service.strategy';
         synchronize: false,
         retryAttempts: 1,
         retryDelay: 3000,
-        logging: true,
         entities: [
           AdminEntity,
           UserEntity,

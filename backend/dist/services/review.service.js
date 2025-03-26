@@ -54,6 +54,21 @@ let ReviewService = class ReviewService {
             console.error(error);
         }
     }
+    async myReview(user_id) {
+        try {
+            const review = await this.reviewRepository.find({
+                where: { user_id: user_id },
+                relations: ['option_id']
+            });
+            if (!review) {
+                return null;
+            }
+            return review;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     async checkOrder(user_id) {
         try {
             const checkOrderState = await this.orderRepository.find({
@@ -71,6 +86,20 @@ let ReviewService = class ReviewService {
     async insertReview(insertReviewDto) {
         try {
             const result = await this.findItemReview(insertReviewDto.order_no, insertReviewDto.option_id, insertReviewDto.user_id);
+            console.log('result : ', result);
+            if (result.check === true) {
+                const writeReview = this.reviewRepository.create(insertReviewDto);
+                const saveReview = await this.reviewRepository.save(writeReview);
+                await this.orderItemRepository.update(result.result, {
+                    review_status: true,
+                });
+                if (!saveReview) {
+                    throw new common_1.BadRequestException('리뷰 작성에 실패하였습니다. 다시 시도해 주세요.');
+                }
+            }
+            else {
+                return { message: result.message };
+            }
             return { success: true };
         }
         catch (error) {
@@ -94,11 +123,10 @@ let ReviewService = class ReviewService {
                 .andWhere('orderItems.order_no = :order_no', { order_no: order_no })
                 .andWhere('orderItems.option_id = :option_id', { option_id: option_id })
                 .getRawOne();
-            console.log(findItem.review_status);
             if (!findItem) {
                 throw new common_1.BadRequestException('구매 내역에 존재하지 않는 제품입니다.');
             }
-            if (findItem.review_status === 'O') {
+            if (findItem.review_status === 1) {
                 throw new common_1.BadRequestException('이미 리뷰를 작성한 제품입니다.');
             }
             return { check: true, result: findItem };

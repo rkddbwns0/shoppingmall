@@ -32,7 +32,7 @@ let ReviewController = class ReviewController {
                     res.status(200).json({ message: '리뷰 작성에 성공하였습니다.' });
                 }
                 else {
-                    res.status(403).json({ message: result.message });
+                    res.status(403).json({ message: result.message, result: result });
                 }
             }
             else {
@@ -47,6 +47,15 @@ let ReviewController = class ReviewController {
         try {
             const result = await this.reviewSerview.selectReview(product_no);
             console.log(result);
+            res.status(200).json({ result });
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async myReview(user_id, res) {
+        try {
+            const result = await this.reviewSerview.myReview(user_id);
             res.status(200).json({ result });
         }
         catch (error) {
@@ -74,6 +83,15 @@ __decorate([
     __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], ReviewController.prototype, "selectReview", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: '사용자가 작성한 리뷰 확인 라우터' }),
+    (0, common_1.Get)('/myReview/:user_id'),
+    __param(0, (0, common_1.Param)('user_id')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], ReviewController.prototype, "myReview", null);
 exports.ReviewController = ReviewController = __decorate([
     (0, common_1.UseGuards)(jwt_service_guard_1.JwtServiceAuthGuard),
     (0, common_1.Controller)('review'),

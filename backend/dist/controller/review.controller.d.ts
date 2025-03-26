@@ -6,4 +6,5 @@ export declare class ReviewController {
     constructor(reviewSerview: ReviewService);
     insertReview(insertReviewDto: InsertReviewDto, res: Response): Promise<void>;
     selectReview(product_no: number, res: Response): Promise<void>;
+    myReview(user_id: number, res: Response): Promise<void>;
 }

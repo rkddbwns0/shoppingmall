@@ -56,23 +56,17 @@ export class InsertQnADto {
 
   @ApiProperty({
     description: '비밀글 적용 여부',
-    type: 'string',
-    enum: ['O', 'X'],
-    default: 'X',
+    type: 'boolean',
+    nullable: false,
+    default: false,
   })
   @IsString()
-  private: string;
+  private: boolean;
 
   @ApiProperty({
     description: '비밀글 확인 비밀번호',
     type: 'string',
   })
   @IsString()
-  @MaxLength(20, {
-    message: '비밀번호는 4자 이상, 20자 이하로 숫자, 영문으로 입력해 주세요.',
-  })
-  @MinLength(4, {
-    message: '비밀번호는 4자 이상, 20자 이하로 숫자, 영문으로 입력해 주세요.',
-  })
   private_pwd: string;
 }

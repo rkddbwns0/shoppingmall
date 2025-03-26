@@ -22,13 +22,13 @@ export class QnAService {
 
   async insertQnA(insertQnADto: InsertQnADto) {
     try {
-      if (insertQnADto.private === 'O' && !insertQnADto.private_pwd) {
+      if (insertQnADto.private === true && !insertQnADto.private_pwd) {
         throw new BadRequestException(
           '비밀글을 작성하기 위해서는 비밀번호를 등록해야 합니다.',
         );
       }
 
-      if (insertQnADto.private === 'O') {
+      if (insertQnADto.private === true) {
         const hashPassword = await  this.hashPrivatePwd(insertQnADto.private_pwd);
         insertQnADto.private_pwd = hashPassword;
       }
@@ -74,8 +74,8 @@ export class QnAService {
       const qnaData = allQna.map((item) => ({
         ...item,
         title:
-          item.private === 'O' ? (item.title = '비밀글 입니다.') : item.title,
-        answer_yn: item.answer_yn === true ? '답변 완료' : '답변 대기 중',
+          item.private === 1 ? (item.title = '비밀글 입니다.') : item.title,
+        answer_yn: item.answer_yn === 1 ? '답변 완료' : '답변 대기 중',
       }));
 
       if (!qnaData) {
@@ -85,6 +85,52 @@ export class QnAService {
       return { data: qnaData };
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  async myQnA(user_id: number) {
+    try {
+      const myQnA = await  this.qnaRepository
+        .createQueryBuilder('qna')
+        .leftJoinAndSelect('qna.product_no', 'product')
+        .leftJoinAndSelect('qna.option_id', 'product_option')
+        .leftJoinAndSelect('qna.user_id', 'user')
+        .select([
+          'qna.qna_no AS qna_no',
+          'qna.title AS title',
+          'qna.content AS content',
+          'qna.write_at AS write_at',
+          'product.product_name AS product_name',
+          'product_option.color AS color',
+          'product_option.size AS size',
+          'user.name AS name',
+          'user.email AS email',
+        ])
+        .where('qna.user_id = :user_id', {user_id})
+        .getRawMany();
+      
+      if (!myQnA) {
+        return null;
+      }
+      return myQnA;
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async selectQnA(user_id: number, qna_no: number, pwd?: string) {
+    try {
+      const selectQnA = await this.qnaRepository.findOne({
+        where: {user_id: user_id, qna_no: qna_no},
+        select: ['private']
+      })
+
+      if (!selectQnA) {
+        throw new BadRequestException('존재하지 않는 QnA입니다.')
+      }
+
+    } catch (error) {
+      console.error(error)
     }
   }
 }

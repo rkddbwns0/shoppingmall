@@ -13,6 +13,7 @@ export declare class ReviewService {
     private readonly reviewRepository;
     constructor(userRepository: Repository<UserEntity>, productRepository: Repository<ProductEntity>, orderRepository: Repository<OrderEntity>, orderItemRepository: Repository<OrderItemEntity>, reviewRepository: Repository<ReviewEntity>);
     selectReview(product_no: number): Promise<any[]>;
+    myReview(user_id: number): Promise<ReviewEntity[]>;
     checkOrder(user_id: number): Promise<{
         check: boolean;
         message?: undefined;
@@ -21,6 +22,9 @@ export declare class ReviewService {
         message: any;
     }>;
     insertReview(insertReviewDto: InsertReviewDto): Promise<{
+        message: any;
+        success?: undefined;
+    } | {
         success: boolean;
         message?: undefined;
     } | {

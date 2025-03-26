@@ -40,4 +40,15 @@ export class QnAController {
       console.error(error);
     }
   }
+
+  @ApiOperation({summary: '사용자가 작성한 QnA 확인 라우터'})
+  @Get('/myQnA/:user_id')
+  async myQnA(@Param('user_id') user_id: number, @Res() res: Response) {
+    try {
+      const result = await this.qnaService.myQnA(user_id);
+      res.status(200).json({result})
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }

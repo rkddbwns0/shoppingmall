@@ -52,8 +52,8 @@ __decorate([
     __metadata("design:type", String)
 ], QnAEntity.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: ['O', 'X'], default: 'X' }),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ type: 'boolean', nullable: false, default: false }),
+    __metadata("design:type", Boolean)
 ], QnAEntity.prototype, "private", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', nullable: true, length: 20 }),

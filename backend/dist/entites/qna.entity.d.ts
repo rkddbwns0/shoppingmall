@@ -8,7 +8,7 @@ export declare class QnAEntity {
     user_id: number;
     title: string;
     content: string;
-    private: string;
+    private: boolean;
     private_pwd: string;
     answer_yn: boolean;
     write_at: Date;

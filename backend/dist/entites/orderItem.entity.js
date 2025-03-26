@@ -52,8 +52,8 @@ __decorate([
     __metadata("design:type", Number)
 ], OrderItemEntity.prototype, "total_price", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: ['O', 'X'], default: 'X' }),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ type: 'boolean', nullable: false, default: false }),
+    __metadata("design:type", Boolean)
 ], OrderItemEntity.prototype, "review_status", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }),

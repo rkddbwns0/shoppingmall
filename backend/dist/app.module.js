@@ -64,7 +64,6 @@ exports.AppModule = AppModule = __decorate([
                     synchronize: false,
                     retryAttempts: 1,
                     retryDelay: 3000,
-                    logging: true,
                     entities: [
                         admin_entity_1.AdminEntity,
                         user_entity_1.UserEntity,

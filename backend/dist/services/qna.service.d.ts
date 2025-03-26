@@ -19,4 +19,6 @@ export declare class QnAService {
     selectAllQnATitle(product_no: number): Promise<{
         data: any[];
     }>;
+    myQnA(user_id: number): Promise<any[]>;
+    selectQnA(user_id: number, qna_no: number, pwd?: string): Promise<void>;
 }

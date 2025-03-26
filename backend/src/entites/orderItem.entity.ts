@@ -42,8 +42,8 @@ export class OrderItemEntity {
   @Column({ type: 'int', nullable: false })
   total_price: number;
 
-  @Column({ type: 'enum', enum: ['O', 'X'], default: 'X' })
-  review_status: string;
+  @Column({ type: 'boolean', nullable: false, default: false })
+  review_status: boolean;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   create_at: Date;

@@ -16,7 +16,7 @@ export declare class QnA_AnswerService {
         user_id: number;
         title: string;
         content: string;
-        private: string;
+        private: boolean;
         private_pwd: string;
         write_at: Date;
         qna_answer: QnA_AnswerEntity;

@@ -46,6 +46,15 @@ let QnAController = class QnAController {
             console.error(error);
         }
     }
+    async myQnA(user_id, res) {
+        try {
+            const result = await this.qnaService.myQnA(user_id);
+            res.status(200).json({ result });
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
 };
 exports.QnAController = QnAController;
 __decorate([
@@ -67,6 +76,15 @@ __decorate([
     __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], QnAController.prototype, "selectQnA", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: '사용자가 작성한 QnA 확인 라우터' }),
+    (0, common_1.Get)('/myQnA/:user_id'),
+    __param(0, (0, common_1.Param)('user_id')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], QnAController.prototype, "myQnA", null);
 exports.QnAController = QnAController = __decorate([
     (0, common_1.UseGuards)(jwt_service_guard_1.JwtServiceAuthGuard),
     (0, common_1.Controller)('QnA'),

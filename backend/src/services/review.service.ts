@@ -59,6 +59,21 @@ export class ReviewService {
     }
   }
 
+  async myReview(user_id: number) {
+    try {
+      const review = await this.reviewRepository.find({
+        where: {user_id: user_id},
+        relations: ['option_id']
+      })
+      if (!review) {
+        return null
+      }
+      return review;
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   async checkOrder(user_id: number) {
     try {
       const checkOrderState = await this.orderRepository.find({
@@ -83,21 +98,23 @@ export class ReviewService {
         insertReviewDto.user_id,
       );
 
-      // if (result.check === true) {
-      //   const writeReview = this.reviewRepository.create(insertReviewDto);
-      //   const saveReview = await this.reviewRepository.save(writeReview);
-      //   await this.orderItemRepository.update(result.result, {
-      //     review_status: 'O',
-      //   });
-      //
-      //   if (!saveReview) {
-      //     throw new BadRequestException(
-      //       '리뷰 작성에 실패하였습니다. 다시 시도해 주세요.',
-      //     );
-      //   }
-      // } else {
-      //   return { message: result.message };
-      // }
+      console.log('result : ', result)
+
+      if (result.check === true) {
+        const writeReview = this.reviewRepository.create(insertReviewDto);
+        const saveReview = await this.reviewRepository.save(writeReview);
+        await this.orderItemRepository.update(result.result, {
+          review_status: true,
+        });
+
+        if (!saveReview) {
+          throw new BadRequestException(
+            '리뷰 작성에 실패하였습니다. 다시 시도해 주세요.',
+          );
+        }
+      } else {
+        return { message: result.message };
+      }
       return { success: true };
     } catch (error) {
       console.error(error);
@@ -128,13 +145,11 @@ export class ReviewService {
         .andWhere('orderItems.option_id = :option_id', { option_id: option_id })
         .getRawOne()
 
-      console.log(findItem.review_status)
-
       if (!findItem) {
         throw new BadRequestException('구매 내역에 존재하지 않는 제품입니다.');
       }
 
-      if (findItem.review_status === 'O') {
+      if (findItem.review_status === 1) {
         throw new BadRequestException('이미 리뷰를 작성한 제품입니다.');
       }
 

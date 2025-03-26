@@ -6,6 +6,6 @@ export declare class InsertQnADto {
     user_id: number;
     title: string;
     content: string;
-    private: string;
+    private: boolean;
     private_pwd: string;
 }

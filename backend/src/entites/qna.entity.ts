@@ -40,8 +40,8 @@ export class QnAEntity {
   })
   content: string;
 
-  @Column({ type: 'enum', enum: ['O', 'X'], default: 'X' })
-  private: string;
+  @Column({ type: 'boolean', nullable: false, default: false})
+  private: boolean;
 
   @Column({ type: 'varchar', nullable: true, length: 20 })
   private_pwd: string;

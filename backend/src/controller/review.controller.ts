@@ -26,7 +26,7 @@ export class ReviewController {
         if (result.success === true) {
           res.status(200).json({ message: '리뷰 작성에 성공하였습니다.' });
         } else {
-          res.status(403).json({ message: result.message });
+          res.status(403).json({ message: result.message, result: result });
         }
       } else {
         res.status(403).json({ message: checkResult.message });
@@ -49,6 +49,17 @@ export class ReviewController {
       res.status(200).json({ result });
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  @ApiOperation({ summary: '사용자가 작성한 리뷰 확인 라우터' })
+  @Get('/myReview/:user_id')
+  async myReview(@Param('user_id') user_id: number, @Res() res: Response) {
+    try {
+      const result = await this.reviewSerview.myReview(user_id);
+      res.status(200).json({result})
+    } catch(error) {
+      console.error(error)
     }
   }
 }

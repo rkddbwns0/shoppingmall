@@ -69,12 +69,12 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: '비밀글 적용 여부',
-        type: 'string',
-        enum: ['O', 'X'],
-        default: 'X',
+        type: 'boolean',
+        nullable: false,
+        default: false,
     }),
     (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Boolean)
 ], InsertQnADto.prototype, "private", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
@@ -82,12 +82,6 @@ __decorate([
         type: 'string',
     }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MaxLength)(20, {
-        message: '비밀번호는 4자 이상, 20자 이하로 숫자, 영문으로 입력해 주세요.',
-    }),
-    (0, class_validator_1.MinLength)(4, {
-        message: '비밀번호는 4자 이상, 20자 이하로 숫자, 영문으로 입력해 주세요.',
-    }),
     __metadata("design:type", String)
 ], InsertQnADto.prototype, "private_pwd", void 0);
 //# sourceMappingURL=qna.dto.js.map
