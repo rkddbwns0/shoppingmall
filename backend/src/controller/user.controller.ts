@@ -56,9 +56,11 @@ export class UserController {
 
       const result = await this.userService.signupUser(signupUserDto);
 
-      return res
+      console.log(result)
+
+      res
         .status(result.success ? 201 : 400)
-        .json({ message: result.message });
+        .json({ message: result.message, data: result.data });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: '서버에러입니다.' });
@@ -111,6 +113,7 @@ export class UserController {
   @Get('/me')
   async getProfile(@Req() req) {
     try {
+      console.log(req.user)
       return {
         user_id: req.user.user_id,
         email: req.user.email,

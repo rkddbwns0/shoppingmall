@@ -15,10 +15,10 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Swagger Example')
-    .setDescription('Swagger study API description')
+    .setTitle('쇼핑몰 API 문서')
+    .setDescription('API 라우터')
     .setVersion('1.0.0')
-    .addTag('swagger')
+    .addTag('API 설계')
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);

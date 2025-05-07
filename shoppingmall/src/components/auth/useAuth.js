@@ -20,6 +20,7 @@ export const UserProvider = ({ children }) => {
                     headers: { 'device-id': deviceId },
                 });
                 setUser(response.data);
+                console.log(response.data);
             } catch (error) {
                 setUser(null);
                 console.error(error);

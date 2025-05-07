@@ -102,7 +102,12 @@ export class ProductService {
         categoryResult,
       })
       .select([
-        'product',
+        'product.product_id AS product_id',
+        'product.product_name AS product_name',
+        'product.price AS price',
+        'product.reg_at AS reg_at',
+        'product.update_at AS updated_at',
+        'product.product_category AS product_category',
         'IFNULL(COUNT(review.product_no), 0) AS review_count',
         'IFNULL(ROUND(AVG(review.scope), 1), 0) AS review_scope',
         'IFNULL(COUNT(like_product.product_no), 0) as liked_count',

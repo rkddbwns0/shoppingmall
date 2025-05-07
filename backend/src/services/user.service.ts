@@ -82,7 +82,7 @@ export class UserService {
         );
       }
 
-      return { suceess: true, message: '회원가입에 성공하였습니다.' };
+      return { success: true, message: '회원가입에 성공하였습니다.', data: saveSignup };
     } catch (error) {
       console.error(error);
       return { success: false, message: error.message };

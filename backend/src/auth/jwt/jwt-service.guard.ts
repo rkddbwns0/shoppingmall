@@ -35,19 +35,18 @@ export class JwtServiceAuthGuard implements CanActivate {
     const accessToken = request.cookies['shop_access_token'];
     const refreshToken = request.cookies['shop_refresh_token'];
     const device_id = request.headers['device-id'];
-    const requestUserId = request.body.user_id || request.params.user_id;
 
     if (!accessToken) {
       throw new UnauthorizedException();
     }
 
-    await this.checkRefreshToken(requestUserId, device_id, refreshToken)
-
     const access_payload = await this.checkAccessToken(accessToken);
 
-    if (Number(requestUserId) !== access_payload.user_id) {
-      throw new UnauthorizedException('아이디 넘버가 일치하지 않습니다.');
-    }
+    await this.checkRefreshToken(
+      access_payload.user_id,
+      device_id,
+      refreshToken,
+    );
 
     request.user = access_payload;
 
@@ -60,8 +59,8 @@ export class JwtServiceAuthGuard implements CanActivate {
       },
     });
 
-    if(!storeToken) {
-        throw new UnauthorizedException("refresh_token이 존재하지 않습니다.");
+    if (!storeToken) {
+      throw new UnauthorizedException('refresh_token이 존재하지 않습니다.');
     } else {
       try {
         // refresh_toekn 검증
@@ -108,23 +107,36 @@ export class JwtServiceAuthGuard implements CanActivate {
     }
   }
 
-  private async checkRefreshToken(user_id: number, device_id: any, refreshToken: any) {
+  private async checkRefreshToken(
+    user_id: number,
+    device_id: any,
+    refreshToken: any,
+  ) {
     try {
-      const payloadRefreshToken = await this.jwtService.verifyAsync(refreshToken, {
-        secret: this.configService.get<string>('JWT_SECRET_KEY'),
-      });
-      return true
+      const payloadRefreshToken = await this.jwtService.verifyAsync(
+        refreshToken,
+        {
+          secret: this.configService.get<string>('JWT_SECRET_KEY'),
+        },
+      );
+      return true;
     } catch (error) {
-        if (error.name === 'TokenExpiredError') {
-          console.error('만료된 refreshToken입니다.')
+      if (error.name === 'TokenExpiredError') {
+        console.error('만료된 refreshToken입니다.');
 
-          await this.user_token.delete({user_id: user_id, device_id: device_id, token: refreshToken});
+        await this.user_token.delete({
+          user_id: user_id,
+          device_id: device_id,
+          token: refreshToken,
+        });
 
-          response.clearCookie('shop_access_token');
-          response.clearCookie('shop_refresh_token');
-          throw new UnauthorizedException('토큰이 만료되었습니다. 다시 로그인해 주세요.')
-        }
-        throw new UnauthorizedException(error.message)
+        response.clearCookie('shop_access_token');
+        response.clearCookie('shop_refresh_token');
+        throw new UnauthorizedException(
+          '토큰이 만료되었습니다. 다시 로그인해 주세요.',
+        );
+      }
+      throw new UnauthorizedException(error.message);
     }
   }
 
@@ -134,7 +146,7 @@ export class JwtServiceAuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(accessToken, {
         secret: this.configService.get<string>('JWT_SECRET_KEY'),
       });
-      return payload
+      return payload;
     } catch (error) {
       console.error(error);
     }
